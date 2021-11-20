@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="_0_projektSpoldzielnia" />
+        <module name="wyklad_1_2" />
+        <module name="pierwszy" />
+        <module name="wyklad_4" />
+        <module name="wyklad_3" />
+        <module name="wyklad_2" />
+        <module name="wyklad_1" />
+        <module name="wyklad_8" />
+        <module name="wyklad_7" />
+        <module name="wyklad_6" />
+        <module name="wyklad_5" />
+        <module name="wyklad_10" />
+        <module name="wyklad_9" />
+        <module name="wyklad_10_2" />
+        <module name="wyklad_6_2" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

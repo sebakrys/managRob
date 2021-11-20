@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="base.definition"
+                template="/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/header.jsp"/>
+        <put-attribute name="menu" value="/menu.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/footer.jsp" />
+    </definition>
+    <definition name="app_usr" extends="base.definition">
+        <put-attribute name="title" value="/app_usr_title.jsp" />
+        <put-attribute name="body" value="/app_usr.jsp" />
+    </definition>
+
+    <definition name="hello" extends="base.definition">
+        <put-attribute name="title" value="/hello_title.jsp" />
+        <put-attribute name="body" value="/hello.jsp" />
+    </definition>
+    <definition name="added_usr" extends="base.definition">
+        <put-attribute name="title" value="/added_usr_title.jsp" />
+        <put-attribute name="body" value="/added_usr.jsp" />
+    </definition>
+    <definition name="example_one" extends="base.definition">
+        <put-attribute name="title" value="ExampleOne" />
+        <put-attribute name="body" value="/views/example_one.jsp" />
+    </definition>
+    <definition name="example_two" extends="base.definition">
+        <put-attribute name="title" value="ExampleTwo" />
+        <put-attribute name="body" value="/views/example_two.jsp" />
+    </definition>
+    <definition name="example_three" extends="base.definition">
+        <put-attribute name="title" value="ExampleThree" />
+        <put-attribute name="body" value="/views/example_three.jsp" />
+    </definition>
+    <definition name="login" extends="base.definition">
+        <put-attribute name="title" value="Login" />
+        <put-attribute name="body" value="/views/sp_login.jsp" />
+    </definition>
+    <definition name="access_denied" extends="base.definition">
+        <put-attribute name="title" value="AccessDenied" />
+        <put-attribute name="body" value="/views/access_denied.jsp" />
+    </definition>
+    <definition name="userRole" extends="base.definition">
+        <put-attribute name="title" value="UserRole" />
+        <put-attribute name="body" value="/views/user_role.jsp" />
+    </definition>
+    <definition name="register" extends="base.definition">
+        <put-attribute name="title" value="Register" />
+        <put-attribute name="body" value="/views/sp_register.jsp" />
+    </definition>
+    <definition name="registered" extends="base.definition">
+        <put-attribute name="title" value="Registered" />
+        <put-attribute name="body" value="/views/sp_registered.jsp" />
+    </definition>
+    <definition name="in_user_edit" extends="base.definition">
+        <put-attribute name="title" value="User" />
+        <put-attribute name="body" value="/views/in/in_user_edit.jsp" />
+    </definition>
+    <definition name="in_adm_users" extends="base.definition">
+        <put-attribute name="title" value="Users" />
+        <put-attribute name="body" value="/views/in/in_adm_users.jsp" />
+    </definition>
+    <definition name="in_adm_user_edit" extends="base.definition">
+        <put-attribute name="title" value="Users" />
+        <put-attribute name="body" value="/views/in/in_adm_user_edit.jsp" />
+    </definition>
+    <definition name="in_buildings" extends="base.definition">
+        <put-attribute name="title" value="Buildings" />
+        <put-attribute name="body" value="/views/in/in_buildings.jsp" />
+    </definition>
+    <definition name="in_building_flats_manager" extends="base.definition">
+        <put-attribute name="title" value="Buildings" />
+        <put-attribute name="body" value="/views/in/in_building_flats_manag.jsp" />
+    </definition>
+    <definition name="in_building_flats" extends="base.definition">
+        <put-attribute name="title" value="Buildings" />
+        <put-attribute name="body" value="/views/in/in_building_flats.jsp" />
+    </definition>
+    <definition name="in_flat" extends="base.definition">
+        <put-attribute name="title" value="Flat" />
+        <put-attribute name="body" value="/views/in/in_flat.jsp" />
+    </definition>
+    <definition name="in_flat_locator" extends="base.definition">
+        <put-attribute name="title" value="Flat" />
+        <put-attribute name="body" value="/views/in/in_flat_locator.jsp" />
+    </definition>
+    <definition name="in_home" extends="base.definition">
+        <put-attribute name="title" value="Home" />
+        <put-attribute name="body" value="/views/in/in_home.jsp" />
+    </definition>
+</tiles-definitions>
