@@ -6,7 +6,7 @@
     <packaging>war</packaging>
 
     <groupId>pl.skrys</groupId>
-    <artifactId>wyklad_7</artifactId>
+    <artifactId>managRob</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.1.4.Final</version>
+            <version>5.2.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

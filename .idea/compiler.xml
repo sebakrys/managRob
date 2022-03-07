@@ -14,12 +14,12 @@
         <module name="wyklad_2" />
         <module name="wyklad_1" />
         <module name="wyklad_8" />
-        <module name="wyklad_7" />
         <module name="wyklad_6" />
         <module name="wyklad_5" />
         <module name="wyklad_10" />
         <module name="wyklad_9" />
         <module name="wyklad_10_2" />
+        <module name="managRob" />
         <module name="wyklad_6_2" />
       </profile>
     </annotationProcessing>
