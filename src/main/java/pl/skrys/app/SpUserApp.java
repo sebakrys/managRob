@@ -44,7 +44,7 @@ public class SpUserApp {
     private String pesel;
 
     @NotNull
-    @Size(min = 6, message = "{error.size.pass}")
+    //@Size(min = 6, message = "{error.size.pass}")//validacja wystepuje w innym miejscu
     private String password;
 
     @Transient

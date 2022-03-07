@@ -12,6 +12,7 @@ import pl.skrys.service.SpUserService;
 import pl.skrys.service.UserRoleService;
 import pl.skrys.validator.SpUserValidator;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -35,9 +36,9 @@ public class SpUserEdit {
         // todo poprawić zmienianie PESELu, zeby przelogowało uzytkownika
         //todo albo na sztywno zablokowac mozliwosc  zmieniania PESELu
 
+
+
         System.out.println("Principal Name: "+principal.getName());
-
-
 
         String userPesel = principal.getName();
 
@@ -45,6 +46,14 @@ public class SpUserEdit {
             System.out.println("jest jakis user ID");
 
             SpUserApp userApp = userService.findByPesel(userPesel);
+            if(userApp==null){//zmienił sie pesel ,  wylogowanie usera
+                try {
+                    request.logout();
+                } catch (ServletException e) {
+                    e.printStackTrace();
+                }
+                return "login";
+            }
             userApp.setPassword("");
             userApp.setConfirmPassword("");
             model.addAttribute("userEdit", userApp);
@@ -74,10 +83,32 @@ public class SpUserEdit {
     @RequestMapping(value = "/inUserEdit", method = RequestMethod.POST)
     public String editUserWoPass(@Valid @ModelAttribute("userEdit") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getPesel());
-        userApp.setPassword("      ");
-        userApp.setConfirmPassword("      ");
+        userApp.setPassword("");
+        userApp.setConfirmPassword("");
         System.out.println(userApp.getPesel()+" "+userApp.getId()+" -"+userApp.getPassword()+"-");
+        System.out.println(result.getErrorCount());
         spUserValidator.validateWoPassword(userApp, result);
+
+
+        SpUserApp oldUser = userService.getUserApp(userApp.getId());
+
+        if(userService.findByPesel(userApp.getPesel())!=null){
+            //todo duplikat pesel
+            if(!oldUser.getPesel().equals(userApp.getPesel())){
+                result.rejectValue("pesel", "error.alreadyExists");
+            }
+
+        }
+        /*todo moze kiedys
+        if(userService.findByTel(userApp.getTelephone()).size()!=0){
+            //todo duplikat tele
+            result.rejectValue("telephone", "error.alreadyExists");
+        }
+        if(userService.findByEmail(userApp.getEmail()).size()!=0){
+            //todo duplikat email
+            result.rejectValue("email", "error.alreadyExists");
+        }*/
+
 
         if (result.getErrorCount() == 0) {
             if (userApp.getId() == 0) {

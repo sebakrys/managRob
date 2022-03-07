@@ -84,7 +84,7 @@ public class SpAdmListUsers {
         userApp.setConfirmPassword("");
         userApp.setUserRole(userService.getUserApp(userApp.getId()).getUserRole());
         System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
-        spUserValidator.validate(userApp, result);
+        spUserValidator.validateWoPassword(userApp, result);
 
         if (result.getErrorCount() == 0) {
             if (userApp.getId() == 0) {

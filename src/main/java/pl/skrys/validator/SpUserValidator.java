@@ -33,17 +33,23 @@ public class SpUserValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "error.field.required");
         //ValidationUtils.rejectIfEmpty(errors, "age", "error.field.required");
 
-
+        if((((SpUserApp)arg0).getPassword()).length()<6){
+            errors.rejectValue("password", "error.size.pass");
+        }
 
         if(errors.getErrorCount()==0){
             if(StringUtils.hasText(((SpUserApp)arg0).getEmail()) && emailValidator.isValid(((SpUserApp)arg0).getEmail())==false){
                 errors.rejectValue("email", "error.email.invalid");
             }
-            if(StringUtils.hasText(((SpUserApp)arg0).getPassword()) && StringUtils.hasText(((SpUserApp)arg0).getPassword())){
+
+
+            if(StringUtils.hasText(((SpUserApp)arg0).getPassword()) && StringUtils.hasText(((SpUserApp)arg0).getConfirmPassword())){
                 if(!((SpUserApp)arg0).getPassword().equals(((SpUserApp)arg0).getConfirmPassword())){
                     errors.rejectValue("confirmPassword", "error.notMatch");
                 }
             }
+
+
 
             if(!((SpUserApp)arg0).getPesel().matches("[0-9]+")){
                 errors.rejectValue("pesel", "error.size.pesel");
@@ -60,9 +66,13 @@ public class SpUserValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "password", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "error.field.required");
 
-
+        if((((SpUserApp)arg0).getPassword()).length()<6){
+            errors.rejectValue("password", "error.size.pass");
+        }
 
         if(errors.getErrorCount()==0){
+
+
 
             if(StringUtils.hasText(((SpUserApp)arg0).getPassword()) && StringUtils.hasText(((SpUserApp)arg0).getPassword())){
                 if(!((SpUserApp)arg0).getPassword().equals(((SpUserApp)arg0).getConfirmPassword())){
