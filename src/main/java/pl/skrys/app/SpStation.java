@@ -12,14 +12,10 @@ public class SpStation {
     long id;
 
 
-
+    private String hala;
+    private String sterownik;
 
     private String nazwa;
-
-    private String city;
-    private String street;
-    private String stationNumber;
-    private String postalCode;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "station")
@@ -56,35 +52,19 @@ public class SpStation {
         this.robot.forEach(sprobot -> sprobot.setStation(this));
     }
 
-    public String getCity() {
-        return city;
+    public String getHala() {
+        return hala;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setHala(String hala) {
+        this.hala = hala;
     }
 
-    public String getStreet() {
-        return street;
+    public String getSterownik() {
+        return sterownik;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getStationNumber() {
-        return stationNumber;
-    }
-
-    public void setStationNumber(String stationNumber) {
-        this.stationNumber = stationNumber;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setSterownik(String sterownik) {
+        this.sterownik = sterownik;
     }
 }

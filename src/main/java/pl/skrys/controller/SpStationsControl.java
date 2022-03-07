@@ -158,7 +158,7 @@ public class SpStationsControl {
 
 
 
-        System.out.println(station.getNazwa()+" "+station.getId()+" "+station.getCity());
+        System.out.println(station.getNazwa()+" "+station.getId()+" ");
         validator.validateStation(station, result);
 
 
@@ -352,6 +352,7 @@ public class SpStationsControl {
                 date.setMinutes(59);
                 date.setSeconds(59);
 
+                /*
                 //todo stawki
                 //fundusz remontowy 2 zł za m2
                 //gaz 1.3 zł za m3
@@ -368,6 +369,7 @@ public class SpStationsControl {
                 robotCharges.setWoda_zimna_stawka(cwoda_zimna_stawka);
                 robotCharges.setWoda_ciepla_stawka(cwoda_ciepla_stawka);
                 //todo stawki
+                 */
 
 
 
@@ -560,7 +562,7 @@ public class SpStationsControl {
 
         model.addAttribute("addCharges", lastRobotCharges);
 
-
+        /*
         double kwota = 0.0;
         kwota+=lastRobotCharges.getFunduszRemontowy()*lastRobotCharges.getFunduszRemontowy_stawka();
         kwota+=lastRobotCharges.getGaz()*lastRobotCharges.getGaz_stawka();
@@ -570,7 +572,7 @@ public class SpStationsControl {
         kwota+=lastRobotCharges.getWoda_ciepla()*lastRobotCharges.getWoda_ciepla_stawka();
         kwota+=lastRobotCharges.getWoda_zimna()*lastRobotCharges.getWoda_zimna_stawka();
         model.addAttribute("doZaplaty", kwota);
-
+*/
 
 
         //model.addAttribute("userRoleList", userRoleService.listUserRole());
@@ -638,7 +640,6 @@ public class SpStationsControl {
             zaplaconeCheck = false;
         }
 
-        robotCharges.setZaplacone(zaplaconeCheck);
 
         SpRobotCharges oldrobotCharges = robotChargesService.getRobotCharges(robotCharges.getId());
 
@@ -651,7 +652,7 @@ public class SpStationsControl {
         robotCharges.setRobot(oldrobotCharges.getRobot());
         robotCharges.setData(oldrobotCharges.getData());
         robotCharges.setId(oldrobotCharges.getId());
-
+/*
         robotCharges.setWoda_ciepla_stawka(oldrobotCharges.getWoda_ciepla_stawka());
         robotCharges.setWoda_zimna_stawka(oldrobotCharges.getWoda_zimna_stawka());
         robotCharges.setScieki_stawka(oldrobotCharges.getScieki_stawka());
@@ -659,7 +660,7 @@ public class SpStationsControl {
         robotCharges.setOgrzewanie_stawka(oldrobotCharges.getOgrzewanie_stawka());
         robotCharges.setGaz_stawka(oldrobotCharges.getGaz_stawka());
         robotCharges.setFunduszRemontowy_stawka(oldrobotCharges.getFunduszRemontowy_stawka());
-
+*/
 
 
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="sp_appuser")
+@Table(name="user")
 public class SpUserApp {
 
     @Id

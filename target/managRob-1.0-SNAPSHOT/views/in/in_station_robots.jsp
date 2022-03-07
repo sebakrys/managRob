@@ -65,19 +65,19 @@
         </td>
         <td>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <form:form method="post" action="inStationAddZarzadca.html" modelAttribute="addZarzadca">
+                <form:form method="post" action="inStationAddManager.html" modelAttribute="addManager">
             <div class="form-group">
                 <form:hidden path="station.id" modelAttribute="addRobot"/>
                 <div class="overflow-auto" style="max-height: 260px;">
                 <table class="table table-hover" >
 
 
-                    <c:forEach items="${zarzadcy}" var="zaUser">
+                    <c:forEach items="${managers}" var="zaUser">
                         <tr><td><input type="checkbox" class="btn-check" autocomplete="off" id="btn-check-outlined ${zaUser.id}" name="ZaIds" value="${zaUser.id}"
 
-                        <c:forEach items="${zarzadcyBudynku}" var="zarzadcyBud">
+                        <c:forEach items="${managersStacji}" var="managersStacja">
 
-                            ${zaUser.id == zarzadcyBud.id ? 'checked' : ''}
+                            ${zaUser.id == managersStacja.id ? 'checked' : ''}
 
                         </c:forEach>
 
@@ -113,7 +113,7 @@
                     <tr>
                         <td>${robotsL.robotNumber}</td>
                         <td><a type="button" class="btn btn-danger btn-sm" href="deleteRobot/${robotsL.id}.html?bId=${selectedStation.id}"><spring:message code="label.delete"/></a></td>
-                        <td><a ype="button" class="btn btn-secondary btn-sm" href="inRobotManag.html?fId=${robotsL.id}"><spring:message code="label.addLocators"/></a></td>
+                        <td><a ype="button" class="btn btn-secondary btn-sm" href="inRobotManag.html?fId=${robotsL.id}"><spring:message code="label.addRobprogs"/></a></td>
 
                     </tr>
                 </c:forEach>

@@ -41,8 +41,8 @@ public class PdfServiceImpl implements PdfService{
             PdfPTable table1 = new PdfPTable(2);
 
             table1.addCell("Address");
-            table1.addCell("Ul. "+tempStation.getStreet()+" nr. "+tempStation.getStationNumber()+"/"+tempRobot.getRobotNumber()+"\r\n"
-                    +tempStation.getPostalCode()+", "+tempStation.getCity());
+            //todo table1.addCell("Ul. "+tempStation.getStreet()+" nr. "+tempStation.getStationNumber()+"/"+tempRobot.getRobotNumber()+"\r\n"
+            //        +tempStation.getPostalCode()+", "+tempStation.getCity());
 
             table1.addCell("Period");
             table1.addCell(robotCharges.getData().getYear()+" "+robotCharges.getData().getMonth());
@@ -55,7 +55,7 @@ public class PdfServiceImpl implements PdfService{
 
             double suma = 0;
             DecimalFormat df = new DecimalFormat("#.00");
-
+/*
             table2.addCell("Fundusz Remontowy");
             table2.addCell(String.valueOf(robotCharges.getFunduszRemontowy()));
             table2.addCell(String.valueOf(robotCharges.getFunduszRemontowy_stawka()));
@@ -110,7 +110,7 @@ public class PdfServiceImpl implements PdfService{
             table2.addCell(String.valueOf(df.format(robotCharges.getWoda_zimna_stawka()
                     *robotCharges.getWoda_zimna())));
             suma+=robotCharges.getWoda_zimna_stawka()
-                    *robotCharges.getWoda_zimna();
+                    *robotCharges.getWoda_zimna();*/
 
             table2.addCell("Suma");
             table2.addCell("");

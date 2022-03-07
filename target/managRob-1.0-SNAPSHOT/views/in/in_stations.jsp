@@ -37,27 +37,15 @@
 
 
 
-
-
                 <tr>
-                    <td><form:label path="stationNumber"><spring:message code="label.number"/>:</form:label></td>
-                    <td><form:input path="stationNumber"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="stationNumber"/></p></td>
+                    <td><form:label path="hala"><spring:message code="label.Hala"/>:</form:label></td>
+                    <td><form:input path="hala"/></td>
+                    <td><p style="font-size:10px; color:red"><form:errors path="hala"/></p></td>
                 </tr>
                 <tr>
-                    <td><form:label path="street"><spring:message code="label.street"/>:</form:label></td>
-                    <td><form:input path="street"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="street"/></p></td>
-                </tr>
-                <tr>
-                    <td><form:label path="postalCode"><spring:message code="label.PostalCode"/>:</form:label></td>
-                    <td><form:input path="postalCode"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="postalCode"/></p></td>
-                </tr>
-                <tr>
-                    <td><form:label path="city"><spring:message code="label.City"/>:</form:label></td>
-                    <td><form:input path="city"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="city"/></p></td>
+                    <td><form:label path="sterownik"><spring:message code="label.Sterownik"/>:</form:label></td>
+                    <td><form:input path="sterownik"/></td>
+                    <td><p style="font-size:10px; color:red"><form:errors path="sterownik"/></p></td>
                 </tr>
 
 
@@ -77,11 +65,9 @@
             <c:if test="${!empty stationsList}">
                 <table class="table table-striped">
                     <tr>
+                        <th><spring:message code="label.Hala"/></th>
                         <th><spring:message code="label.bName"/></th>
-                        <th><spring:message code="label.number"/></th>
-                        <th><spring:message code="label.street"/></th>
-                        <th><spring:message code="label.PostalCode"/></th>
-                        <th><spring:message code="label.City"/></th>
+                        <th><spring:message code="label.Sterownik"/></th>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <th>&nbsp;</th>
                         </sec:authorize>
@@ -89,11 +75,9 @@
 
                     </tr><c:forEach items="${stationsList}" var="stationsL">
                     <tr>
+                        <td>${stationsL.hala}</td>
                         <td>${stationsL.nazwa}</td>
-                        <td>${stationsL.stationNumber}</td>
-                        <td>${stationsL.street}</td>
-                        <td>${stationsL.postalCode}</td>
-                        <td>${stationsL.city}</td>
+                        <td>${stationsL.sterownik}</td>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html"><spring:message code="label.delete"/></a></td>
                         </sec:authorize>

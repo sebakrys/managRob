@@ -24,12 +24,6 @@
                 <tr>
                     <td>${selectedStation.nazwa}</td>
                 </tr>
-                <tr>
-                    <td>Ul. ${selectedStation.street} ${selectedStation.stationNumber} / ${selectedRobot.robotNumber}</td>
-                </tr>
-                <tr>
-                    <td>${selectedStation.postalCode}, ${selectedStation.city}</td>
-                </tr>
 
             </table></h3>
 

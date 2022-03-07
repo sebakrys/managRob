@@ -1,5 +1,5 @@
 package pl.skrys.configuration;
-
+/*
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pl.skrys.app.SpRobot;
@@ -176,11 +176,11 @@ public class TimeScheduleRun {
         }
 
 
-    }
+    }*/
 
 
-    @Scheduled(cron = "*/30 * * * * *")// co 30 s //todo (cron = "1 0 0 1 * ? *") domyslnie ma to być co miesiac i bedzie wtedy generowana nowa krotka z miesiacem i odczytami
-    public void newMonthRowGen(){
+    //@Scheduled(cron = "*/30 * * * * *")// co 30 s //todo (cron = "1 0 0 1 * ? *") domyslnie ma to być co miesiac i bedzie wtedy generowana nowa krotka z miesiacem i odczytami
+    /*public void newMonthRowGen(){
         System.out.println("Wyzwolenie co 30 s - tworzenie nowej krotki ");
 
         List<SpRobot> robotsList = robotService.listRobots();
@@ -276,3 +276,4 @@ public class TimeScheduleRun {
 
     }
 }
+*/

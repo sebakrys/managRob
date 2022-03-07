@@ -24,12 +24,6 @@
                 <tr>
                     <td>${selectedStation.nazwa}</td>
                 </tr>
-                <tr>
-                    <td>Ul. ${selectedStation.street} ${selectedStation.stationNumber} / ${selectedRobot.robotNumber}</td>
-                </tr>
-                <tr>
-                    <td>${selectedStation.postalCode}, ${selectedStation.city}</td>
-                </tr>
 
             </table></h3>
 
@@ -37,7 +31,7 @@
         <th><div class="float-right">
             <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
                 <c:if test="${managerB}">
-            <h3><spring:message code="label.addLocators"/></h3>
+            <h3><spring:message code="label.addRobprogs"/></h3>
             </c:if>
             </sec:authorize>
         </div></th>
@@ -127,7 +121,7 @@
 
             <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
                 <c:if test="${managerB}">
-                <form:form method="post" action="inRobotAddLocator.html" modelAttribute="addLocator">
+                <form:form method="post" action="inRobotAddRobprog.html" modelAttribute="addRobprog">
             <div class="form-group">
                 <form:hidden path="station.id" modelAttribute="selectedRobot"/>
                 <form:hidden path="id" modelAttribute="selectedRobot"/>
@@ -135,10 +129,10 @@
                 <table class="table table-hover" >
 
 
-                    <c:forEach items="${locators}" var="zaUser">
+                    <c:forEach items="${robprogs}" var="zaUser">
                         <tr><td><input type="checkbox" class="btn-check" autocomplete="off" id="btn-check-outlined ${zaUser.id}" name="ZaIds" value="${zaUser.id}"
 
-                        <c:forEach items="${locatorsRobot}" var="locRobot">
+                        <c:forEach items="${robprogsRobot}" var="locRobot">
 
                             ${zaUser.id == locRobot.id ? 'checked' : ''}
 

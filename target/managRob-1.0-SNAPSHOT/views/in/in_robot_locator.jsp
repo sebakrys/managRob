@@ -38,7 +38,7 @@
 
             </th>
         <th><div class="float-right">
-            <h3><spring:message code="label.addLocators"/></h3>
+            <h3><spring:message code="label.addRobprogs"/></h3>
         </div></th>
     </tr>
     <tr>

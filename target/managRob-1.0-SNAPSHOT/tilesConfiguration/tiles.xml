@@ -84,9 +84,9 @@
         <put-attribute name="title" value="Robot" />
         <put-attribute name="body" value="/views/in/in_robot.jsp" />
     </definition>
-    <definition name="in_robot_locator" extends="base.definition">
+    <definition name="in_robot_robprog" extends="base.definition">
         <put-attribute name="title" value="Robot" />
-        <put-attribute name="body" value="/views/in/in_robot_locator.jsp" />
+        <put-attribute name="body" value="/views/in/in_robot_robprog.jsp" />
     </definition>
     <definition name="in_home" extends="base.definition">
         <put-attribute name="title" value="Home" />

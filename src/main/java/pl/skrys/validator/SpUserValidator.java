@@ -112,10 +112,9 @@ public class SpUserValidator implements Validator {
     }
 
     public void validateStation(Object arg0, Errors errors) {
-        ValidationUtils.rejectIfEmpty(errors, "stationNumber", "error.field.required");
-        ValidationUtils.rejectIfEmpty(errors, "street", "error.field.required");
-        ValidationUtils.rejectIfEmpty(errors, "postalCode", "error.field.required");
-        ValidationUtils.rejectIfEmpty(errors, "city", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "nazwa", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "hala", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "sterownik", "error.field.required");
         //ValidationUtils.rejectIfEmpty(errors, "age", "error.field.required");
 
         if(errors.getErrorCount()==0){
