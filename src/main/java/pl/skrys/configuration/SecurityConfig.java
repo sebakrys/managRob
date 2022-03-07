@@ -24,10 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN","MIESZKANIEC", "ZARZADCA");
-        auth.inMemoryAuthentication().withUser("skrys").password("{noop}skrys").roles("ZARZADCA");
-        auth.inMemoryAuthentication().withUser("zarzadca").password("{noop}zarzadca").roles("ZARZADCA");
-        auth.inMemoryAuthentication().withUser("mieszkaniec").password("{noop}mieszkaniec").roles("MIESZKANIEC");
+        auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN","ROBPROG", "MANAGER");
+        auth.inMemoryAuthentication().withUser("skrys").password("{noop}skrys").roles("MANAGER");
+        auth.inMemoryAuthentication().withUser("manager").password("{noop}manager").roles("MANAGER");
+        auth.inMemoryAuthentication().withUser("robprog").password("{noop}robprog").roles("ROBPROG");
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
@@ -44,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/appUsers*").access("hasRole('ADMIN')")
                 .antMatchers("/userAppRole*").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/exampleOne*").access("hasRole('ROLE_MIESZKANIEC') or hasRole('ADMIN')")
-                .antMatchers("/exampleTwo*").access("hasRole('ROLE_ZARZADCA')")
-                .antMatchers("/exampleThree*").access("hasRole('ROLE_MIESZKANIEC')")
+                .antMatchers("/exampleOne*").access("hasRole('ROLE_ROBPROG') or hasRole('ADMIN')")
+                .antMatchers("/exampleTwo*").access("hasRole('ROLE_MANAGER')")
+                .antMatchers("/exampleThree*").access("hasRole('ROLE_ROBPROG')")
                 //.and().formLogin().permitAll();//default strona logowania
                 .and().formLogin().loginPage("/login").permitAll()// custom login page
                 .usernameParameter("login").passwordParameter("password")

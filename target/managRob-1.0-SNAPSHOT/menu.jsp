@@ -32,13 +32,13 @@
     <button type="button" class="btn btn-labeled btn-success" disabled>
         <span class="btn-label"><i class="fa fa-check"></i></span><spring:message code="rol.admin"/></button><br>
 </sec:authorize>
-<sec:authorize access="hasRole('ROLE_ZARZADCA')">
+<sec:authorize access="hasRole('ROLE_MANAGER')">
     <button type="button" class="btn btn-labeled btn-success" disabled>
-        <span class="btn-label"><i class="fa fa-check"></i></span><spring:message code="rol.zarzadca"/></button><br>
+        <span class="btn-label"><i class="fa fa-check"></i></span><spring:message code="rol.manager"/></button><br>
 </sec:authorize>
-<sec:authorize access="hasRole('ROLE_MIESZKANIEC')">
+<sec:authorize access="hasRole('ROLE_ROBPROG')">
     <button type="button" class="btn btn-labeled btn-success" disabled>
-        <span class="btn-label"><i class="fa fa-check"></i></span><spring:message code="rol.mieszkaniec"/></button><br>
+        <span class="btn-label"><i class="fa fa-check"></i></span><spring:message code="rol.robprog"/></button><br>
 </sec:authorize>
 
 

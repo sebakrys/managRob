@@ -42,8 +42,8 @@ public class UserRoleControl {
     public List<String> getRolesStringList() {
         List<String> webFrameworkList = new ArrayList<String>();
         webFrameworkList.add("ROLE_ADMIN");
-        webFrameworkList.add("ROLE_ZARZADCA");
-        webFrameworkList.add("ROLE_MIESZKANIEC");
+        webFrameworkList.add("ROLE_MANAGER");
+        webFrameworkList.add("ROLE_ROBPROG");
         return webFrameworkList;
     }
 

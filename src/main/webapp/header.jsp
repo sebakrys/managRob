@@ -20,7 +20,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <sec:authorize access="hasAnyRole('ROLE_MIESZKANIEC', 'ROLE_ZARZADCA')">
+                <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER')">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/inUser.html"><spring:message code="label.user"/></a>
                     </li>
@@ -30,7 +30,7 @@
                         <a class="nav-link" href="/inAdmUsers.html"><spring:message code="label.users"/></a>
                     </li>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('ROLE_MIESZKANIEC', 'ROLE_ZARZADCA', 'ROLE_ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
                     <li class="nav-item">
                         <a class="nav-link" href="/inBuildings.html"><spring:message code="label.buildings"/></a>
                     </li>

@@ -119,7 +119,7 @@ public class SpAdmListUsers {
 
 
     @RequestMapping(value = "/inAdmRoleUserEdit", method = RequestMethod.POST)
-    public String editAdmUserRoleWoPass(@RequestParam("id") long uID, @RequestParam(required = false, name = "ROLE_ADMIN") boolean rAdmin, @RequestParam(required = false, name = "ROLE_ZARZADCA") boolean rZarzadca, @RequestParam(required = false, name = "ROLE_MIESZKANIEC") boolean rMieszkaniec, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+    public String editAdmUserRoleWoPass(@RequestParam("id") long uID, @RequestParam(required = false, name = "ROLE_ADMIN") boolean rAdmin, @RequestParam(required = false, name = "ROLE_MANAGER") boolean rZarzadca, @RequestParam(required = false, name = "ROLE_ROBPROG") boolean rMieszkaniec, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         SpUserApp userApp = userService.getUserApp(uID);
         userApp.setPassword("");
         userApp.setConfirmPassword("");
@@ -135,11 +135,11 @@ public class SpAdmListUsers {
 
         }
         if (rZarzadca){
-            UserRole tempUserRole = userRoleService.getUserRoleByName("ROLE_ZARZADCA");
+            UserRole tempUserRole = userRoleService.getUserRoleByName("ROLE_MANAGER");
             tempUserRoleSet.add(tempUserRole);
         }
         if (rMieszkaniec){
-            UserRole tempUserRole = userRoleService.getUserRoleByName("ROLE_MIESZKANIEC");
+            UserRole tempUserRole = userRoleService.getUserRoleByName("ROLE_ROBPROG");
             tempUserRoleSet.add(tempUserRole);
         }
         userApp.setUserRole(tempUserRoleSet);
@@ -216,8 +216,8 @@ public class SpAdmListUsers {
     public List<String> getRolesStringList() {
         List<String> rolesStringList = new ArrayList<String>();
         rolesStringList.add("ROLE_ADMIN");
-        rolesStringList.add("ROLE_ZARZADCA");
-        rolesStringList.add("ROLE_MIESZKANIEC");
+        rolesStringList.add("ROLE_MANAGER");
+        rolesStringList.add("ROLE_ROBPROG");
         return rolesStringList;
     }*/
 

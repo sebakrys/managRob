@@ -61,28 +61,28 @@ public class SpBuildingsControl {
     }
 
 
-    @Secured({"ROLE_ZARZADCA", "ROLE_MIESZKANIEC", "ROLE_ADMIN"})
+    @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
     @RequestMapping(value = "/inBuildings")
     public String zarzBuildingsList(Model model, HttpServletRequest request, Principal principal){
 
-        System.out.println("ROLE_ZARZADCA lub MIESZKANIEC");
+        System.out.println("ROLE_MANAGER lub ROBPROG");
 
         String userPesel = principal.getName();
 
         if(userPesel != null) {
             boolean admin = false;
-            boolean mieszkaniec = false;
-            boolean zarzadca = false;
+            boolean robprog = false;
+            boolean manager = false;
 
             SpUserApp userApp = userService.findByPesel(userPesel);
 
             for (UserRole ur: userApp.getUserRole()) {
                 if(ur.getRole().equals("ROLE_ADMIN")){
                     admin = true;
-                }else if(ur.getRole().equals("ROLE_ZARZADCA")){
-                    zarzadca = true;
-                }else if(ur.getRole().equals("ROLE_MIESZKANIEC")){
-                    mieszkaniec = true;
+                }else if(ur.getRole().equals("ROLE_MANAGER")){
+                    manager = true;
+                }else if(ur.getRole().equals("ROLE_ROBPROG")){
+                    robprog = true;
                 }
             }
 
@@ -114,7 +114,7 @@ public class SpBuildingsControl {
 
 
 
-            if(mieszkaniec){
+            if(robprog){
 
 
                 for (SpFlat tempFlat : spFlatSet) {
@@ -124,7 +124,7 @@ public class SpBuildingsControl {
 
 
 
-            if(zarzadca){
+            if(manager){
                 for (SpBuilding zarzBuild:
                 userApp.getBuildings()) {
                     spBuildingSet.add(zarzBuild);
@@ -185,7 +185,7 @@ public class SpBuildingsControl {
         return "in_buildings";
     }
 
-    @Secured({"ROLE_ZARZADCA", "ROLE_MIESZKANIEC", "ROLE_ADMIN"})
+    @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
     @RequestMapping(value = "/buildingFlatsManag")
     public String flatsManagList(Model model, HttpServletRequest request, Principal principal){
 
@@ -193,23 +193,23 @@ public class SpBuildingsControl {
         boolean flatExists = ServletRequestUtils.getBooleanParameter(request, "flatExists", false);
         String userPesel = principal.getName();
 
-        boolean zarzadcaBuilding = false;
+        boolean managerBuilding = false;
         boolean admin = false;
 
         if(userPesel != null) {
 
-            boolean mieszkaniec = false;
-            boolean zarzadca = false;
+            boolean robprog = false;
+            boolean manager = false;
 
 
             SpUserApp userApp = userService.findByPesel(userPesel);
             for (UserRole ur: userApp.getUserRole()) {
                 if(ur.getRole().equals("ROLE_ADMIN")){
                     admin = true;
-                }else if(ur.getRole().equals("ROLE_ZARZADCA")){
-                    zarzadca = true;
-                }else if(ur.getRole().equals("ROLE_MIESZKANIEC")){
-                    mieszkaniec = true;
+                }else if(ur.getRole().equals("ROLE_MANAGER")){
+                    manager = true;
+                }else if(ur.getRole().equals("ROLE_ROBPROG")){
+                    robprog = true;
                 }
             }
 
@@ -217,7 +217,7 @@ public class SpBuildingsControl {
             for (SpBuilding tempBuilding:
             userBuildings) {
                 if(tempBuilding.getId()==buildingId){
-                    zarzadcaBuilding=true;
+                    managerBuilding=true;
                     break;
                 }
             }
@@ -225,14 +225,14 @@ public class SpBuildingsControl {
 
 
 
-            if(zarzadcaBuilding && zarzadca || admin){
-                System.out.println("ZARZADCA I POSIADA TEN BUILDING");
-                model.addAttribute("zarzadcaB", true);
+            if(managerBuilding && manager || admin){
+                System.out.println("MANAGER I POSIADA TEN BUILDING");
+                model.addAttribute("managerB", true);
                 model.addAttribute("flatsList", buildingService.getBuilding(buildingId).getFlat());
 
             }else{
-                System.out.println("NIE JEST !!!!!ZARZADCA I POSIADA TEN BUILDING");
-                model.addAttribute("zarzadcaB", false);
+                System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN BUILDING");
+                model.addAttribute("managerB", false);
 
                 Set<SpFlat> userFlats = userApp.getFlat();
                 Set<SpFlat> nUserFlats = new HashSet<SpFlat>(0);
@@ -257,7 +257,7 @@ public class SpBuildingsControl {
 
 
 
-        List<SpUserApp> zarzadcyUsers = userRepository.findBySpecificRoles("ROLE_ZARZADCA");
+        List<SpUserApp> zarzadcyUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
         List<SpUserApp> zarzadcyBudynku = userService.getUserAppByBuilding(buildingId);
         System.out.println("l wszy ZARZADCOW "+zarzadcyUsers.size());
@@ -280,7 +280,7 @@ public class SpBuildingsControl {
 
 
 
-        //model.addAttribute("zarzadca", buildingService.listZarzadcy(buildingService.getBuilding(buildingId)));//todo wyswietlic liste wszytskich zarzadcow i miec jako selected tych co są aktualnie
+        //model.addAttribute("manager", buildingService.listZarzadcy(buildingService.getBuilding(buildingId)));//todo wyswietlic liste wszytskich zarzadcow i miec jako selected tych co są aktualnie
 
 
 
@@ -430,7 +430,7 @@ public class SpBuildingsControl {
     public String addZarzadcyToBuilding(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds,@RequestParam("building.id") long bID, Model model, HttpServletRequest request) {
 
 
-        List<SpUserApp> zarzadcyUsers = userRepository.findBySpecificRoles("ROLE_ZARZADCA");
+        List<SpUserApp> zarzadcyUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
 
 
@@ -490,23 +490,23 @@ public class SpBuildingsControl {
 
         String userPesel = principal.getName();
 
-        boolean zarzadcaBuilding = false;
+        boolean managerBuilding = false;
         boolean admin = false;
 
         if(userPesel != null) {
 
-            boolean mieszkaniec = false;
-            boolean zarzadca = false;
+            boolean robprog = false;
+            boolean manager = false;
 
 
             SpUserApp userApp = userService.findByPesel(userPesel);
             for (UserRole ur : userApp.getUserRole()) {
                 if (ur.getRole().equals("ROLE_ADMIN")) {
                     admin = true;
-                } else if (ur.getRole().equals("ROLE_ZARZADCA")) {
-                    zarzadca = true;
-                } else if (ur.getRole().equals("ROLE_MIESZKANIEC")) {
-                    mieszkaniec = true;
+                } else if (ur.getRole().equals("ROLE_MANAGER")) {
+                    manager = true;
+                } else if (ur.getRole().equals("ROLE_ROBPROG")) {
+                    robprog = true;
                 }
             }
 
@@ -514,20 +514,20 @@ public class SpBuildingsControl {
             for (SpBuilding tempBuilding :
                     userBuildings) {
                 if (tempBuilding.getId() == sflat.getBuilding().getId()) {
-                    zarzadcaBuilding = true;
+                    managerBuilding = true;
                     break;
                 }
             }
 
 
-            if(zarzadcaBuilding && zarzadca || admin){
-                System.out.println("ZARZADCA I POSIADA TEN BUILDING");
-                model.addAttribute("zarzadcaB", true);
+            if(managerBuilding && manager || admin){
+                System.out.println("MANAGER I POSIADA TEN BUILDING");
+                model.addAttribute("managerB", true);
 
 
             }else{
-                System.out.println("NIE JEST !!!!!ZARZADCA I POSIADA TEN BUILDING");
-                model.addAttribute("zarzadcaB", false);
+                System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN BUILDING");
+                model.addAttribute("managerB", false);
 
 
             }
@@ -540,13 +540,13 @@ public class SpBuildingsControl {
         model.addAttribute("selectedFlat", sflat);
         model.addAttribute("selectedBuilding", sflat.getBuilding());
 
-        List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_MIESZKANIEC");
+        List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_ROBPROG");
 
 
 
         List<SpUserApp> locatorsFlat = userService.getUserAppByFlat(flatId);
 
-        model.addAttribute("locators", mieszkancyUsers);//todo wszyscy uzytkownicy z rola MIESZKANIEC
+        model.addAttribute("locators", mieszkancyUsers);//todo wszyscy uzytkownicy z rola ROBPROG
         model.addAttribute("locatorsFlat", locatorsFlat);// wszyscy Lokatorzy
         model.addAttribute("addLocator", sflat);
 
@@ -592,7 +592,7 @@ public class SpBuildingsControl {
     public String addLocatorToFlat(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds, @RequestParam("building.id") long bID, @RequestParam("id") long fID, Model model, HttpServletRequest request) {
 
 
-        List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_MIESZKANIEC");
+        List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_ROBPROG");
 
 
         System.out.println("fid "+fID+" bid "+bID);
@@ -646,7 +646,7 @@ public class SpBuildingsControl {
         long fID = oldflatCharges.getFlat().getId();
         long bID = oldflatCharges.getFlat().getBuilding().getId();
 
-        //List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_MIESZKANIEC");
+        //List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_ROBPROG");
 
 
         flatCharges.setFlat(oldflatCharges.getFlat());

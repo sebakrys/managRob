@@ -17,14 +17,14 @@
     <tr>
         <th><h3></h3></th>
         <th>
-<sec:authorize access="hasAnyRole('ROLE_MIESZKANIEC', 'ROLE_ZARZADCA')">
+<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER')">
     <a href="/inUser.html"><spring:message code="label.user"/></a>
 </sec:authorize>
     </th>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <a href="/inAdmUsers.html"><spring:message code="label.users"/></a></th>
 </sec:authorize>
-<sec:authorize access="hasAnyRole('ROLE_MIESZKANIEC', 'ROLE_ZARZADCA', 'ROLE_ADMIN')">
+<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
         <th><a href="/inBuildings.html"><spring:message code="label.buildings"/></a></th>
 </sec:authorize>
     </tr>

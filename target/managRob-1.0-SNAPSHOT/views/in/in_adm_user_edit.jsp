@@ -87,22 +87,22 @@
             </c:forEach>
             >
             <label for="admin">ADMIN</label><br>
-            <input type="checkbox" id="zarzadca" name="ROLE_ZARZADCA" value="true"
+            <input type="checkbox" id="manager" name="ROLE_MANAGER" value="true"
             <c:forEach items="${admUserEdit.userRole}" var="userRole">
-            <c:if test="${userRole.getRole()=='ROLE_ZARZADCA'}">
+            <c:if test="${userRole.getRole()=='ROLE_MANAGER'}">
                    checked
             </c:if>
             </c:forEach>
             >
-            <label for="zarzadca">ZARZADCA</label><br>
-            <input type="checkbox" id="mieszkaniec" name="ROLE_MIESZKANIEC" value="true"
+            <label for="manager">MANAGER</label><br>
+            <input type="checkbox" id="robprog" name="ROLE_ROBPROG" value="true"
             <c:forEach items="${admUserEdit.userRole}" var="userRole">
-            <c:if test="${userRole.getRole()=='ROLE_MIESZKANIEC'}">
+            <c:if test="${userRole.getRole()=='ROLE_ROBPROG'}">
                    checked
             </c:if>
             </c:forEach>
             >
-            <label for="mieszkaniec">MIESZKANIEC</label><br><br>
+            <label for="robprog">ROBPROG</label><br><br>
             <input type="submit" class="btn btn-primary" value="<spring:message code="button.submit"/>">
         </form:form>
 

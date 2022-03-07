@@ -42,8 +42,8 @@
     </tr>
     <tr>
         <td>
-            <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                <c:if test="${zarzadcaB}">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <c:if test="${managerB}">
 
 
 
@@ -117,14 +117,14 @@
                 <table class="table table-striped">
                     <tr>
                         <th><spring:message code="label.number"/></th>
-                <c:if test="${zarzadcaB}">
+                <c:if test="${managerB}">
                         <th>&nbsp;</th>
                 </c:if>
                         <th>&nbsp;</th>
                     </tr><c:forEach items="${flatsList}" var="flatsL">
                     <tr>
                         <td>${flatsL.flatNumber}</td>
-                        <c:if test="${zarzadcaB}">
+                        <c:if test="${managerB}">
                         <td><a type="button" class="btn btn-danger btn-sm" href="deleteFlat/${flatsL.id}.html?bId=${selectedBuilding.id}"><spring:message code="label.delete"/></a></td>
                         </c:if>
                         <td><a ype="button" class="btn btn-secondary btn-sm" href="inFlatManag.html?fId=${flatsL.id}"><spring:message code="label.flatAndMedia"/></a></td>

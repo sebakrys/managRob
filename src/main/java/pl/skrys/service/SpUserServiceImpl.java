@@ -41,7 +41,7 @@ public class SpUserServiceImpl implements SpUserService {
     @Transactional
     public void addUser(SpUserApp spUserApp) {
         System.out.println("addUserApp SPUserServiceIMPL");
-        spUserApp.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));//domyślna rola podczas tworzenia
+        spUserApp.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));//domyślna rola podczas tworzenia
 
 
 
@@ -64,7 +64,7 @@ public class SpUserServiceImpl implements SpUserService {
 
     @Transactional
     public void editUserApp(SpUserApp userApp) {
-        //userApp.getUserAppRole().add(userAppRoleRepository.findByRole("ROLE_MIESZKANIEC"));//TODO domyślna rola podczas edycji
+        //userApp.getUserAppRole().add(userAppRoleRepository.findByRole("ROLE_ROBPROG"));//TODO domyślna rola podczas edycji
         userApp.setPassword(hashPassword(userApp.getPassword()));
         spUserRepository.save(userApp);
     }
@@ -75,7 +75,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
         System.out.println("stare hasło"+oldUser.getPassword());//todo usunac
         System.out.println("nowe hasło"+user.getPassword());
@@ -98,7 +98,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
         System.out.println("stare hasło"+oldUser.getPassword());//todo usunac
         System.out.println("nowe hasło"+user.getPassword());
@@ -128,7 +128,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         user = oldUser;
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
 
 
@@ -173,7 +173,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         user = oldUser;
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
 
 
@@ -202,7 +202,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         user = oldUser;
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
 
 
@@ -250,7 +250,7 @@ public class SpUserServiceImpl implements SpUserService {
 
         user = oldUser;
 
-        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_MIESZKANIEC"));
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
 
 
 

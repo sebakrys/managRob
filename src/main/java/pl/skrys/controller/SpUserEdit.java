@@ -74,10 +74,10 @@ public class SpUserEdit {
     @RequestMapping(value = "/inUserEdit", method = RequestMethod.POST)
     public String editUserWoPass(@Valid @ModelAttribute("userEdit") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getPesel());
-        userApp.setPassword("");
-        userApp.setConfirmPassword("");
-        System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
-        spUserValidator.validate(userApp, result);
+        userApp.setPassword("      ");
+        userApp.setConfirmPassword("      ");
+        System.out.println(userApp.getPesel()+" "+userApp.getId()+" -"+userApp.getPassword()+"-");
+        spUserValidator.validateWoPassword(userApp, result);
 
         if (result.getErrorCount() == 0) {
             if (userApp.getId() == 0) {

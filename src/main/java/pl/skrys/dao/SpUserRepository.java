@@ -25,7 +25,7 @@ public interface SpUserRepository extends JpaRepository<SpUserApp, Long> {
     @Query( "select u from SpUserApp u JOIN FETCH u.userRole r where r.role = :roleName" )
     List<SpUserApp> findBySpecificRoles(@Param("roleName") String roleName);
 
-    //@Query( "select u from SpUserApp u JOIN FETCH u.userRole r, u.buildings b where r.role = 'ROLE_ZARZADCA' and b.id= :buildingId" )
+    //@Query( "select u from SpUserApp u JOIN FETCH u.userRole r, u.buildings b where r.role = 'ROLE_MANAGER' and b.id= :buildingId" )
     @Query( "select u from SpUserApp u JOIN FETCH u.buildings b where b.id = :buildingId" )
     List<SpUserApp> findByBuildingId(@Param("buildingId") long buildingId);
 

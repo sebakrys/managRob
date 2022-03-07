@@ -35,8 +35,8 @@
 
             </th>
         <th><div class="float-right">
-            <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                <c:if test="${zarzadcaB}">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <c:if test="${managerB}">
             <h3><spring:message code="label.addLocators"/></h3>
             </c:if>
             </sec:authorize>
@@ -50,15 +50,15 @@
                 <tr>
                 <th colspan="1"><spring:message code="label.data"/>: ${addCharges.data.getMonth()} ${addCharges.data.getYear()}</th>
                 <th>&nbsp;<spring:message code="label.accepted"/>: ${addCharges.accepted}
-                    <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                        <c:if test="${zarzadcaB}">
+                    <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                        <c:if test="${managerB}">
                         <input type="checkbox" name="acceptedCheck" id="i" value="true" ${addCharges.accepted == true ? 'checked' : ''}/>
                         </c:if>
                     </sec:authorize>
                 </th>
                 <th>&nbsp;<spring:message code="label.paid"/>: ${addCharges.zaplacone}
-                        <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                            <c:if test="${zarzadcaB}">
+                        <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                            <c:if test="${managerB}">
                                 <c:if test="${addCharges.accepted == true}">
                                     <input type="checkbox" name="zaplaconeCheck" id="i" value="true" ${addCharges.zaplacone == true ? 'checked' : ''}/>
                                 </c:if>
@@ -114,8 +114,8 @@
             <c:if test="${addCharges.accepted == true}">
             Do zapłaty: ${addCharges.zaplacone == true ? 0.00 : doZaplaty}
             </c:if>
-            <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                <c:if test="${zarzadcaB}">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <c:if test="${managerB}">
 
                     <c:if test="${addCharges.accepted == false}">
                         Symulacja kwoty do zapłaty: ${doZaplaty}
@@ -125,8 +125,8 @@
         </td>
         <td>
 
-            <sec:authorize access="hasAnyRole('ROLE_ZARZADCA', 'ROLE_ADMIN')">
-                <c:if test="${zarzadcaB}">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <c:if test="${managerB}">
                 <form:form method="post" action="inFLatAddLocator.html" modelAttribute="addLocator">
             <div class="form-group">
                 <form:hidden path="building.id" modelAttribute="selectedFlat"/>

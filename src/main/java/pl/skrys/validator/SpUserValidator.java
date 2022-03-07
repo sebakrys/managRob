@@ -82,6 +82,8 @@ public class SpUserValidator implements Validator {
 
 
     public void validateWoPassword(Object arg0, Errors errors) {
+        System.out.println(errors.getAllErrors());
+
         ValidationUtils.rejectIfEmpty(errors, "firstName", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "lastName", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "telephone", "error.field.required");
@@ -94,7 +96,7 @@ public class SpUserValidator implements Validator {
             }
         }else{
 
-            System.out.println("BLEDY Validator");
+            System.out.println("BLEDY Validator Wo pass");
             System.out.println(errors.getAllErrors());
         }
     }
