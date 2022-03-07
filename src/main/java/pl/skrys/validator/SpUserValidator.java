@@ -111,8 +111,8 @@ public class SpUserValidator implements Validator {
         }
     }
 
-    public void validateBuilding(Object arg0, Errors errors) {
-        ValidationUtils.rejectIfEmpty(errors, "buildingNumber", "error.field.required");
+    public void validateStation(Object arg0, Errors errors) {
+        ValidationUtils.rejectIfEmpty(errors, "stationNumber", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "street", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "postalCode", "error.field.required");
         ValidationUtils.rejectIfEmpty(errors, "city", "error.field.required");
@@ -127,8 +127,8 @@ public class SpUserValidator implements Validator {
         }
     }
 
-    public void validateFlat(Object arg0, Errors errors) {
-        ValidationUtils.rejectIfEmpty(errors, "flatNumber", "error.field.required");
+    public void validateRobot(Object arg0, Errors errors) {
+        ValidationUtils.rejectIfEmpty(errors, "robotNumber", "error.field.required");
 
         if(errors.getErrorCount()==0){
 

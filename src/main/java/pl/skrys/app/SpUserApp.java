@@ -76,10 +76,10 @@ public class SpUserApp {
     private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<SpBuilding> buildings = new HashSet<SpBuilding>(0);
+    private Set<SpStation> stations = new HashSet<SpStation>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<SpFlat> flat = new HashSet<SpFlat>(0);
+    private Set<SpRobot> robot = new HashSet<SpRobot>(0);
 
 
 /*
@@ -102,12 +102,12 @@ public class SpUserApp {
     }*/
 
 
-    public Set<SpFlat> getFlat() {
-        return flat;
+    public Set<SpRobot> getRobot() {
+        return robot;
     }
 
-    public void setFlat(Set<SpFlat> flat) {
-        this.flat = flat;
+    public void setRobot(Set<SpRobot> robot) {
+        this.robot = robot;
     }
 
     public long getId() {
@@ -205,12 +205,12 @@ public class SpUserApp {
         this.userRole = userRole;
     }
 
-    public Set<SpBuilding> getBuildings() {
-        return buildings;
+    public Set<SpStation> getStations() {
+        return stations;
     }
 
-    public void setBuildings(Set<SpBuilding> buildings) {
-        this.buildings = buildings;
+    public void setStations(Set<SpStation> stations) {
+        this.stations = stations;
     }
 
 

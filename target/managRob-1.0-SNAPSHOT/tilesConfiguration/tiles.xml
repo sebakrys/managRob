@@ -68,25 +68,25 @@
         <put-attribute name="title" value="Users" />
         <put-attribute name="body" value="/views/in/in_adm_user_edit.jsp" />
     </definition>
-    <definition name="in_buildings" extends="base.definition">
-        <put-attribute name="title" value="Buildings" />
-        <put-attribute name="body" value="/views/in/in_buildings.jsp" />
+    <definition name="in_stations" extends="base.definition">
+        <put-attribute name="title" value="Stations" />
+        <put-attribute name="body" value="/views/in/in_stations.jsp" />
     </definition>
-    <definition name="in_building_flats_manager" extends="base.definition">
-        <put-attribute name="title" value="Buildings" />
-        <put-attribute name="body" value="/views/in/in_building_flats_manag.jsp" />
+    <definition name="in_station_robots_manager" extends="base.definition">
+        <put-attribute name="title" value="Stations" />
+        <put-attribute name="body" value="/views/in/in_station_robots_manag.jsp" />
     </definition>
-    <definition name="in_building_flats" extends="base.definition">
-        <put-attribute name="title" value="Buildings" />
-        <put-attribute name="body" value="/views/in/in_building_flats.jsp" />
+    <definition name="in_station_robots" extends="base.definition">
+        <put-attribute name="title" value="Stations" />
+        <put-attribute name="body" value="/views/in/in_station_robots.jsp" />
     </definition>
-    <definition name="in_flat" extends="base.definition">
-        <put-attribute name="title" value="Flat" />
-        <put-attribute name="body" value="/views/in/in_flat.jsp" />
+    <definition name="in_robot" extends="base.definition">
+        <put-attribute name="title" value="Robot" />
+        <put-attribute name="body" value="/views/in/in_robot.jsp" />
     </definition>
-    <definition name="in_flat_locator" extends="base.definition">
-        <put-attribute name="title" value="Flat" />
-        <put-attribute name="body" value="/views/in/in_flat_locator.jsp" />
+    <definition name="in_robot_locator" extends="base.definition">
+        <put-attribute name="title" value="Robot" />
+        <put-attribute name="body" value="/views/in/in_robot_locator.jsp" />
     </definition>
     <definition name="in_home" extends="base.definition">
         <put-attribute name="title" value="Home" />

@@ -2,10 +2,10 @@ package pl.skrys.configuration;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import pl.skrys.app.SpFlat;
-import pl.skrys.app.SpFlatCharges;
+import pl.skrys.app.SpRobot;
+import pl.skrys.app.SpRobotCharges;
 import pl.skrys.app.SpUserApp;
-import pl.skrys.controller.SpBuildingsControl;
+import pl.skrys.controller.SpStationsControl;
 import pl.skrys.dao.SpUserRepository;
 import pl.skrys.service.*;
 import pl.skrys.validator.SpUserValidator;
@@ -21,19 +21,19 @@ public class TimeScheduleRun {
 
     private SpUserService userService;
     private UserRoleService userRoleService;
-    private SpBuildingService buildingService;
-    private SpFlatService flatService;
-    private SpFlatChargesService flatChargesService;
+    private SpStationService stationService;
+    private SpRobotService robotService;
+    private SpRobotChargesService robotChargesService;
     private SpUserRepository userRepository;
     private SpMailService mailService;
     private SpUserValidator validator  = new SpUserValidator();
 
-    public TimeScheduleRun(SpUserService userService, UserRoleService userRoleService, SpBuildingService buildingService, SpFlatService flatService, SpFlatChargesService flatChargesService, SpUserRepository userRepository, SpMailService mailService) {
+    public TimeScheduleRun(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotChargesService robotChargesService, SpUserRepository userRepository, SpMailService mailService) {
         this.userService = userService;
         this.userRoleService = userRoleService;
-        this.buildingService = buildingService;
-        this.flatService = flatService;
-        this.flatChargesService = flatChargesService;
+        this.stationService = stationService;
+        this.robotService = robotService;
+        this.robotChargesService = robotChargesService;
         this.userRepository = userRepository;
         this.mailService = mailService;
     }
@@ -43,22 +43,22 @@ public class TimeScheduleRun {
     public void mailSendPayment(){//todo wysłanie rachunku, jesli odczyty nie zaakceptowana uzupełnić ryczałatem
         System.out.println("Wyzwolenie co 2 min mail rachunek");
 
-        List<SpFlat> flatList = flatService.listFlats();
+        List<SpRobot> robotList = robotService.listRobots();
 
-        for (SpFlat tempFlat : flatList) {
-            SpFlatCharges lastFlatCharges =  flatChargesService.getLastFlatChargesFromFlat(tempFlat.getId());
-            System.out.println("DATA: "+lastFlatCharges.getData().getYear()+" _ "+lastFlatCharges.getData().getMonth());
+        for (SpRobot tempRobot : robotList) {
+            SpRobotCharges lastRobotCharges =  robotChargesService.getLastRobotChargesFromRobot(tempRobot.getId());
+            System.out.println("DATA: "+lastRobotCharges.getData().getYear()+" _ "+lastRobotCharges.getData().getMonth());
 
-            if(lastFlatCharges.isAccepted()){//todo zaakceptowne odczyty, wysłać tylko rachunek
+            if(lastRobotCharges.isAccepted()){//todo zaakceptowne odczyty, wysłać tylko rachunek
                 //wysylanie maila z rachunkiem
-                System.out.println("wysylanie maila z rachunkiem "+tempFlat.getId());
+                System.out.println("wysylanie maila z rachunkiem "+tempRobot.getId());
 
-                List<SpUserApp> flatUsers = userService.getUserAppByFlat(tempFlat.getId());
+                List<SpUserApp> robotUsers = userService.getUserAppByRobot(tempRobot.getId());
 
                 //wysylanie maila z rachunkiem
-                for (SpUserApp locator : flatUsers) {
-                    System.out.println("wysylanie maila z rachunkiem "+tempFlat.getId()+" usr "+locator.getEmail());
-                    mailService.sendSimpleMessage(locator.getEmail(), "Bill for "+lastFlatCharges.getData().getMonth()+" "+lastFlatCharges.getData().getYear(), "Hello "+locator.getFirstName()+" "+locator.getLastName()+"\r\nHere we are sending you bill for this month: "+"http://localhost:8080/rachuneko_"+locator.getId()+"_"+lastFlatCharges.getId());
+                for (SpUserApp robprog : robotUsers) {
+                    System.out.println("wysylanie maila z rachunkiem "+tempRobot.getId()+" usr "+robprog.getEmail());
+                    mailService.sendSimpleMessage(robprog.getEmail(), "Bill for "+lastRobotCharges.getData().getMonth()+" "+lastRobotCharges.getData().getYear(), "Hello "+robprog.getFirstName()+" "+robprog.getLastName()+"\r\nHere we are sending you bill for this month: "+"http://localhost:8080/rachuneko_"+robprog.getId()+"_"+lastRobotCharges.getId());
 
                 }
 
@@ -66,11 +66,11 @@ public class TimeScheduleRun {
 
             }else{// RYCZALT, odczyty nie zakceptowane, wygenerowac ryczałt
 
-                System.out.println("przed getCountOfFlatChargesAcceptedFromFlat");
-                if(flatChargesService.getCountOfFlatChargesAcceptedFromFlat(tempFlat.getId())>0){//jest conajmniej jeden zaakceptowany wpis
+                System.out.println("przed getCountOfRobotChargesAcceptedFromRobot");
+                if(robotChargesService.getCountOfRobotChargesAcceptedFromRobot(tempRobot.getId())>0){//jest conajmniej jeden zaakceptowany wpis
 
-                    System.out.println("przed getLast12AcceptedFlatChargesByFlat");
-                    List<SpFlatCharges> last12FlatCharges = flatChargesService.getLast12AcceptedFlatChargesByFlat(tempFlat.getId());
+                    System.out.println("przed getLast12AcceptedRobotChargesByRobot");
+                    List<SpRobotCharges> last12RobotCharges = robotChargesService.getLast12AcceptedRobotChargesByRobot(tempRobot.getId());
 
 
                     double pradSr = 0;
@@ -81,7 +81,7 @@ public class TimeScheduleRun {
                     double ogrzewanieSr = 0;
                     double funduszRemontowySr = 0;
 
-                    for (SpFlatCharges fc1z12 : last12FlatCharges) {
+                    for (SpRobotCharges fc1z12 : last12RobotCharges) {
                         pradSr+=fc1z12.getPrad();
                         gazSr+=fc1z12.getGaz();
                         woda_cieplaSr+=fc1z12.getWoda_ciepla();
@@ -90,54 +90,54 @@ public class TimeScheduleRun {
                         ogrzewanieSr+=fc1z12.getOgrzewanie();
                         funduszRemontowySr+=fc1z12.getFunduszRemontowy();
                     }
-                    pradSr/=last12FlatCharges.size();
-                    gazSr/=last12FlatCharges.size();
-                    woda_cieplaSr/=last12FlatCharges.size();
-                    woda_zimnaSr/=last12FlatCharges.size();
-                    sciekiSr/=last12FlatCharges.size();
-                    ogrzewanieSr/=last12FlatCharges.size();
-                    funduszRemontowySr/=last12FlatCharges.size();
+                    pradSr/=last12RobotCharges.size();
+                    gazSr/=last12RobotCharges.size();
+                    woda_cieplaSr/=last12RobotCharges.size();
+                    woda_zimnaSr/=last12RobotCharges.size();
+                    sciekiSr/=last12RobotCharges.size();
+                    ogrzewanieSr/=last12RobotCharges.size();
+                    funduszRemontowySr/=last12RobotCharges.size();
 
-                    lastFlatCharges.setPrad(pradSr);
-                    lastFlatCharges.setGaz(gazSr);
-                    lastFlatCharges.setWoda_ciepla(woda_cieplaSr);
-                    lastFlatCharges.setWoda_zimna(woda_zimnaSr);
-                    lastFlatCharges.setScieki(sciekiSr);
-                    lastFlatCharges.setOgrzewanie(ogrzewanieSr);
-                    lastFlatCharges.setFunduszRemontowy(funduszRemontowySr);
+                    lastRobotCharges.setPrad(pradSr);
+                    lastRobotCharges.setGaz(gazSr);
+                    lastRobotCharges.setWoda_ciepla(woda_cieplaSr);
+                    lastRobotCharges.setWoda_zimna(woda_zimnaSr);
+                    lastRobotCharges.setScieki(sciekiSr);
+                    lastRobotCharges.setOgrzewanie(ogrzewanieSr);
+                    lastRobotCharges.setFunduszRemontowy(funduszRemontowySr);
 
                     System.out.println("Zapisywanie kwot ryczalt srednia");
-                    lastFlatCharges.setAccepted(true);
+                    lastRobotCharges.setAccepted(true);
 
                 }else{//brak zaakceptowanych wpisów
                     //ryczalt * liczba mieszkancow
 
-                    int liczLokatorow = userService.getUserAppByFlat(tempFlat.getId()).size();
+                    int liczLokatorow = userService.getUserAppByRobot(tempRobot.getId()).size();
 
-                    lastFlatCharges.setPrad(liczLokatorow*SpBuildingsControl.prad_ryczalt);
-                    lastFlatCharges.setGaz(liczLokatorow*SpBuildingsControl.gaz_ryczalt);
-                    lastFlatCharges.setWoda_ciepla(liczLokatorow*SpBuildingsControl.woda_ciepla_ryczalt);
-                    lastFlatCharges.setWoda_zimna(liczLokatorow*SpBuildingsControl.woda_zimna_ryczalt);
-                    lastFlatCharges.setScieki(liczLokatorow*SpBuildingsControl.scieki_ryczalt);
-                    lastFlatCharges.setOgrzewanie(liczLokatorow*SpBuildingsControl.ogrzewanie_ryczalt);
-                    lastFlatCharges.setFunduszRemontowy(SpBuildingsControl.funduszRemontowy_ryczalt);// na mieszkanie
+                    lastRobotCharges.setPrad(liczLokatorow*SpStationsControl.prad_ryczalt);
+                    lastRobotCharges.setGaz(liczLokatorow*SpStationsControl.gaz_ryczalt);
+                    lastRobotCharges.setWoda_ciepla(liczLokatorow*SpStationsControl.woda_ciepla_ryczalt);
+                    lastRobotCharges.setWoda_zimna(liczLokatorow*SpStationsControl.woda_zimna_ryczalt);
+                    lastRobotCharges.setScieki(liczLokatorow*SpStationsControl.scieki_ryczalt);
+                    lastRobotCharges.setOgrzewanie(liczLokatorow*SpStationsControl.ogrzewanie_ryczalt);
+                    lastRobotCharges.setFunduszRemontowy(SpStationsControl.funduszRemontowy_ryczalt);// na mieszkanie
 
                     System.out.println("Zapisywanie kwot ryczalt domyslny");
-                    lastFlatCharges.setAccepted(true);
+                    lastRobotCharges.setAccepted(true);
 
                 }
                 //zapisywanie ryczaltu
-                flatChargesService.editFlatCharges(lastFlatCharges);
+                robotChargesService.editRobotCharges(lastRobotCharges);
 
-                List<SpUserApp> flatUsers = userService.getUserAppByFlat(tempFlat.getId());
+                List<SpUserApp> robotUsers = userService.getUserAppByRobot(tempRobot.getId());
 
 
                 //wysylanie maila z rachunkiem ryczalt
-                for (SpUserApp locator : flatUsers) {
-                    System.out.println("wysylanie maila z rachunkiem RYCZALT "+tempFlat.getId()+" usr "+locator.getEmail());
+                for (SpUserApp robprog : robotUsers) {
+                    System.out.println("wysylanie maila z rachunkiem RYCZALT "+tempRobot.getId()+" usr "+robprog.getEmail());
 
 
-                    mailService.sendSimpleMessage(locator.getEmail(), "Bill for "+lastFlatCharges.getData().getMonth()+" "+lastFlatCharges.getData().getYear(), "Hello "+locator.getFirstName()+" "+locator.getLastName()+"\r\nHere we are sending you bill with a lump sum for:"+lastFlatCharges.getData().getMonth()+"_"+lastFlatCharges.getData().getYear()+" : "+"http://localhost:8080/rachunekr_"+locator.getId()+"_"+lastFlatCharges.getId());
+                    mailService.sendSimpleMessage(robprog.getEmail(), "Bill for "+lastRobotCharges.getData().getMonth()+" "+lastRobotCharges.getData().getYear(), "Hello "+robprog.getFirstName()+" "+robprog.getLastName()+"\r\nHere we are sending you bill with a lump sum for:"+lastRobotCharges.getData().getMonth()+"_"+lastRobotCharges.getData().getYear()+" : "+"http://localhost:8080/rachunekr_"+robprog.getId()+"_"+lastRobotCharges.getId());
 
                 }
 
@@ -155,19 +155,19 @@ public class TimeScheduleRun {
     public void mailSendReminder(){// przypomnienie o uzupełnieniu odczytow jesli odczyty nie zaakceptowane
         System.out.println("Wyzwolenie co 2 min mail przypomnienie odczyty");
 
-        List<SpFlat> flatList = flatService.listFlats();
+        List<SpRobot> robotList = robotService.listRobots();
 
-        for (SpFlat tempFlat : flatList) {
-            SpFlatCharges lastFlatCharges = flatChargesService.getLastFlatChargesFromFlat(tempFlat.getId());
-            System.out.println("DATA: " + lastFlatCharges.getData().getYear() + " _ " + lastFlatCharges.getData().getMonth());
+        for (SpRobot tempRobot : robotList) {
+            SpRobotCharges lastRobotCharges = robotChargesService.getLastRobotChargesFromRobot(tempRobot.getId());
+            System.out.println("DATA: " + lastRobotCharges.getData().getYear() + " _ " + lastRobotCharges.getData().getMonth());
 
-            if (!lastFlatCharges.isAccepted()) {//todo Wysłać przypomnienie na maila o uzupełnienieniu odczytów
-                List<SpUserApp> flatUsers = userService.getUserAppByFlat(tempFlat.getId());
+            if (!lastRobotCharges.isAccepted()) {//todo Wysłać przypomnienie na maila o uzupełnienieniu odczytów
+                List<SpUserApp> robotUsers = userService.getUserAppByRobot(tempRobot.getId());
 
 
                 //wysylanie pRZYPOMNIENIA
-                for (SpUserApp locator : flatUsers) {
-                    mailService.sendSimpleMessage(locator.getEmail(), "Reminder "+lastFlatCharges.getData().getMonth()+" "+lastFlatCharges.getData().getYear(), "Hello "+locator.getFirstName()+" "+locator.getLastName()+"\r\nWe would like to remind You to fill readings for current period: "+lastFlatCharges.getData().getMonth()+"_"+lastFlatCharges.getData().getYear()+", flat: "+"Ul. "+tempFlat.getBuilding().getStreet()+" nr. "+tempFlat.getBuilding().getBuildingNumber()+"/"+tempFlat.getFlatNumber()+", " +tempFlat.getBuilding().getPostalCode()+", "+tempFlat.getBuilding().getCity());
+                for (SpUserApp robprog : robotUsers) {
+                    mailService.sendSimpleMessage(robprog.getEmail(), "Reminder "+lastRobotCharges.getData().getMonth()+" "+lastRobotCharges.getData().getYear(), "Hello "+robprog.getFirstName()+" "+robprog.getLastName()+"\r\nWe would like to remind You to fill readings for current period: "+lastRobotCharges.getData().getMonth()+"_"+lastRobotCharges.getData().getYear()+", robot: "+"Ul. "+tempRobot.getStation().getStreet()+" nr. "+tempRobot.getStation().getStationNumber()+"/"+tempRobot.getRobotNumber()+", " +tempRobot.getStation().getPostalCode()+", "+tempRobot.getStation().getCity());
 
                 }
 
@@ -183,29 +183,29 @@ public class TimeScheduleRun {
     public void newMonthRowGen(){
         System.out.println("Wyzwolenie co 30 s - tworzenie nowej krotki ");
 
-        List<SpFlat> flatsList = flatService.listFlats();
+        List<SpRobot> robotsList = robotService.listRobots();
 
 
 
-        for (SpFlat sFlat : flatsList) {
-            SpFlatCharges lastFlatCharges = null;
-            for (SpFlatCharges tempFlatCharges : sFlat.getFlatCharges()) {// wpis z ostatniego miesiaca
-                if(lastFlatCharges==null){
-                    lastFlatCharges=tempFlatCharges;
-                }else if(lastFlatCharges.getData().getTime()<tempFlatCharges.getData().getTime()){
-                    lastFlatCharges = tempFlatCharges;
+        for (SpRobot sRobot : robotsList) {
+            SpRobotCharges lastRobotCharges = null;
+            for (SpRobotCharges tempRobotCharges : sRobot.getRobotCharges()) {// wpis z ostatniego miesiaca
+                if(lastRobotCharges==null){
+                    lastRobotCharges=tempRobotCharges;
+                }else if(lastRobotCharges.getData().getTime()<tempRobotCharges.getData().getTime()){
+                    lastRobotCharges = tempRobotCharges;
                 }
             }
 
 
             LocalDate currentdate = LocalDate.now();
 
-            if(lastFlatCharges.getData().getYear()<currentdate.getYear() || lastFlatCharges.getData().getMonth()!=currentdate.getMonthValue()){
+            if(lastRobotCharges.getData().getYear()<currentdate.getYear() || lastRobotCharges.getData().getMonth()!=currentdate.getMonthValue()){
                 //tworzymy odczyty dla nowego miesiaca
-                System.out.println("tworzymy odczyty dla nowego miesiaca "+sFlat.getFlatNumber()+" "+lastFlatCharges.getData().getMonth());
+                System.out.println("tworzymy odczyty dla nowego miesiaca "+sRobot.getRobotNumber()+" "+lastRobotCharges.getData().getMonth());
 
-                SpFlatCharges nFlatCharges = new SpFlatCharges();
-                nFlatCharges.setFlat(sFlat);
+                SpRobotCharges nRobotCharges = new SpRobotCharges();
+                nRobotCharges.setRobot(sRobot);
                 Date date = new Date();
                 date.setYear(currentdate.getYear());
                 //System.out.println("Y: "+date.getYear());
@@ -225,31 +225,31 @@ public class TimeScheduleRun {
                 //ścieki 9 zł 1m2
                 //woda zimna 6 zł
                 //woda ciepla 35zł
-                nFlatCharges.setFunduszRemontowy_stawka(SpBuildingsControl.cfunduszRemontowy_stawka);
-                nFlatCharges.setGaz_stawka(SpBuildingsControl.cgaz_stawka);
-                nFlatCharges.setOgrzewanie_stawka(SpBuildingsControl.cogrzewanie_stawka);
-                nFlatCharges.setPrad_stawka(SpBuildingsControl.cprad_stawka);
-                nFlatCharges.setScieki_stawka(SpBuildingsControl.cscieki_stawka);
-                nFlatCharges.setWoda_zimna_stawka(SpBuildingsControl.cwoda_zimna_stawka);
-                nFlatCharges.setWoda_ciepla_stawka(SpBuildingsControl.cwoda_ciepla_stawka);
+                nRobotCharges.setFunduszRemontowy_stawka(SpStationsControl.cfunduszRemontowy_stawka);
+                nRobotCharges.setGaz_stawka(SpStationsControl.cgaz_stawka);
+                nRobotCharges.setOgrzewanie_stawka(SpStationsControl.cogrzewanie_stawka);
+                nRobotCharges.setPrad_stawka(SpStationsControl.cprad_stawka);
+                nRobotCharges.setScieki_stawka(SpStationsControl.cscieki_stawka);
+                nRobotCharges.setWoda_zimna_stawka(SpStationsControl.cwoda_zimna_stawka);
+                nRobotCharges.setWoda_ciepla_stawka(SpStationsControl.cwoda_ciepla_stawka);
                 //todo stawki
 
 
                 System.out.println(date.getYear()+" miesiac: "+date.getMonth()+" dzien "+date.getDate());
 
-                nFlatCharges.setData(date);
+                nRobotCharges.setData(date);
 
-                //List<SpFlatCharges> oldCharges = sFlat.getFlatCharges();
-                //oldCharges.add(nFlatCharges);
-                sFlat.addFlatCharges(nFlatCharges);
+                //List<SpRobotCharges> oldCharges = sRobot.getRobotCharges();
+                //oldCharges.add(nRobotCharges);
+                sRobot.addRobotCharges(nRobotCharges);
 
-                flatChargesService.addFlatCharges(nFlatCharges);
-                flatService.editFlat(sFlat);
+                robotChargesService.addRobotCharges(nRobotCharges);
+                robotService.editRobot(sRobot);
 
 
             }else{
                 //nie tworzymy, nadal aktualny miesiac
-                System.out.println("nie tworzymy, nadal aktualny miesiac "+sFlat.getFlatNumber()+" "+lastFlatCharges.getData().getMonth());
+                System.out.println("nie tworzymy, nadal aktualny miesiac "+sRobot.getRobotNumber()+" "+lastRobotCharges.getData().getMonth());
 
             }
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.skrys.app.SpUserApp;
 import pl.skrys.service.PdfService;
-import pl.skrys.service.SpFlatChargesService;
+import pl.skrys.service.SpRobotChargesService;
 import pl.skrys.service.SpUserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +18,13 @@ public class PdfControl {
 
     private PdfService pdfService;
     private SpUserService userAppService;
-    private SpFlatChargesService flatChargesService;
+    private SpRobotChargesService robotChargesService;
 
     @Autowired
-    public PdfControl(PdfService pdfService, SpUserService userAppService, SpFlatChargesService flatChargesService) {
+    public PdfControl(PdfService pdfService, SpUserService userAppService, SpRobotChargesService robotChargesService) {
         this.pdfService = pdfService;
         this.userAppService = userAppService;
-        this.flatChargesService = flatChargesService;
+        this.robotChargesService = robotChargesService;
     }
 
 
@@ -39,13 +39,13 @@ public class PdfControl {
     @RequestMapping(value = "/rachunek{r}_{userId}_{rachunekID}", method = RequestMethod.GET)
     public void generateRachunekPdf(@PathVariable Integer userId, @PathVariable Integer rachunekID, @PathVariable char r, HttpServletResponse response){
 
-        List<SpUserApp> userAppList = userAppService.getUserAppByFlat(flatChargesService.getFlatCharges(rachunekID).getFlat().getId());
-        boolean locatorValid = false;
+        List<SpUserApp> userAppList = userAppService.getUserAppByRobot(robotChargesService.getRobotCharges(rachunekID).getRobot().getId());
+        boolean robprogValid = false;
 
         for (SpUserApp user:
         userAppList) {
             if(user.getId()==userId){
-                locatorValid=true;
+                robprogValid=true;
             }
         }
 
@@ -56,8 +56,8 @@ public class PdfControl {
             ryczalt = true;
         }
 
-        if(locatorValid){
-            pdfService.generateRachunekPdf(flatChargesService.getFlatCharges(rachunekID), userAppService.getUserAppByFlat(flatChargesService.getFlatCharges(rachunekID).getFlat().getId()),  userAppService.getUserApp(userId), ryczalt,  response);
+        if(robprogValid){
+            pdfService.generateRachunekPdf(robotChargesService.getRobotCharges(rachunekID), userAppService.getUserAppByRobot(robotChargesService.getRobotCharges(rachunekID).getRobot().getId()),  userAppService.getUserApp(userId), ryczalt,  response);
 
         }else{
             System.out.println("BRAK DOSTEPU bledne dane rachunku");

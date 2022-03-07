@@ -119,14 +119,14 @@ public class SpAdmListUsers {
 
 
     @RequestMapping(value = "/inAdmRoleUserEdit", method = RequestMethod.POST)
-    public String editAdmUserRoleWoPass(@RequestParam("id") long uID, @RequestParam(required = false, name = "ROLE_ADMIN") boolean rAdmin, @RequestParam(required = false, name = "ROLE_MANAGER") boolean rZarzadca, @RequestParam(required = false, name = "ROLE_ROBPROG") boolean rMieszkaniec, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+    public String editAdmUserRoleWoPass(@RequestParam("id") long uID, @RequestParam(required = false, name = "ROLE_ADMIN") boolean rAdmin, @RequestParam(required = false, name = "ROLE_MANAGER") boolean rManager, @RequestParam(required = false, name = "ROLE_ROBPROG") boolean rMieszkaniec, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         SpUserApp userApp = userService.getUserApp(uID);
         userApp.setPassword("");
         userApp.setConfirmPassword("");
         System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
         model.addAttribute("admUserEdit", userApp);
 
-        System.out.println("a "+rAdmin+" z "+rZarzadca+" m "+rMieszkaniec);
+        System.out.println("a "+rAdmin+" z "+rManager+" m "+rMieszkaniec);
 
         Set<UserRole> tempUserRoleSet = new HashSet<UserRole>(0);
         if (rAdmin){
@@ -134,7 +134,7 @@ public class SpAdmListUsers {
             tempUserRoleSet.add(tempUserRole);
 
         }
-        if (rZarzadca){
+        if (rManager){
             UserRole tempUserRole = userRoleService.getUserRoleByName("ROLE_MANAGER");
             tempUserRoleSet.add(tempUserRole);
         }

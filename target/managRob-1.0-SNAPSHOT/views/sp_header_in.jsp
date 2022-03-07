@@ -25,7 +25,7 @@
     <a href="/inAdmUsers.html"><spring:message code="label.users"/></a></th>
 </sec:authorize>
 <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
-        <th><a href="/inBuildings.html"><spring:message code="label.buildings"/></a></th>
+        <th><a href="/inStations.html"><spring:message code="label.stations"/></a></th>
 </sec:authorize>
     </tr>
 </table>

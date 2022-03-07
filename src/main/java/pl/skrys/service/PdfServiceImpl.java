@@ -6,9 +6,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
-import pl.skrys.app.SpBuilding;
-import pl.skrys.app.SpFlat;
-import pl.skrys.app.SpFlatCharges;
+import pl.skrys.app.SpStation;
+import pl.skrys.app.SpRobot;
+import pl.skrys.app.SpRobotCharges;
 import pl.skrys.app.SpUserApp;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,15 +20,15 @@ import java.util.List;
 public class PdfServiceImpl implements PdfService{
 
     @Override
-    public void generateRachunekPdf(SpFlatCharges flatCharges, List<SpUserApp> usersList, SpUserApp userCharges, boolean ryczalt, HttpServletResponse response) {
+    public void generateRachunekPdf(SpRobotCharges robotCharges, List<SpUserApp> usersList, SpUserApp userCharges, boolean ryczalt, HttpServletResponse response) {
         try {
-            SpFlat tempFlat = flatCharges.getFlat();
-            SpBuilding tempBuilding = flatCharges.getFlat().getBuilding();
+            SpRobot tempRobot = robotCharges.getRobot();
+            SpStation tempStation = robotCharges.getRobot().getStation();
 
             OutputStream o = response.getOutputStream();
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/pdf");//todo \/ nazwa pliku: idBud_idFlat_Rok_Miesiac.pdf
-            response.setHeader("Content-Disposition", "inline; filename=" +tempFlat.getBuilding().getId()+"_"+tempFlat.getId()+"_"+flatCharges.getData().getYear()+"_"+flatCharges.getData().getMonth() + ".pdf");
+            response.setContentType("application/pdf");//todo \/ nazwa pliku: idStacja_idRobot_Rok_Miesiac.pdf
+            response.setHeader("Content-Disposition", "inline; filename=" +tempRobot.getStation().getId()+"_"+tempRobot.getId()+"_"+robotCharges.getData().getYear()+"_"+robotCharges.getData().getMonth() + ".pdf");
             Document pdf = new Document();
             PdfWriter.getInstance(pdf, o);
             pdf.open();
@@ -41,11 +41,11 @@ public class PdfServiceImpl implements PdfService{
             PdfPTable table1 = new PdfPTable(2);
 
             table1.addCell("Address");
-            table1.addCell("Ul. "+tempBuilding.getStreet()+" nr. "+tempBuilding.getBuildingNumber()+"/"+tempFlat.getFlatNumber()+"\r\n"
-                    +tempBuilding.getPostalCode()+", "+tempBuilding.getCity());
+            table1.addCell("Ul. "+tempStation.getStreet()+" nr. "+tempStation.getStationNumber()+"/"+tempRobot.getRobotNumber()+"\r\n"
+                    +tempStation.getPostalCode()+", "+tempStation.getCity());
 
             table1.addCell("Period");
-            table1.addCell(flatCharges.getData().getYear()+" "+flatCharges.getData().getMonth());
+            table1.addCell(robotCharges.getData().getYear()+" "+robotCharges.getData().getMonth());
 
             pdf.add(table1);
 
@@ -57,60 +57,60 @@ public class PdfServiceImpl implements PdfService{
             DecimalFormat df = new DecimalFormat("#.00");
 
             table2.addCell("Fundusz Remontowy");
-            table2.addCell(String.valueOf(flatCharges.getFunduszRemontowy()));
-            table2.addCell(String.valueOf(flatCharges.getFunduszRemontowy_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getFunduszRemontowy_stawka()
-                    *flatCharges.getFunduszRemontowy())));
-            suma+=flatCharges.getFunduszRemontowy_stawka()
-                    *flatCharges.getFunduszRemontowy();
+            table2.addCell(String.valueOf(robotCharges.getFunduszRemontowy()));
+            table2.addCell(String.valueOf(robotCharges.getFunduszRemontowy_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getFunduszRemontowy_stawka()
+                    *robotCharges.getFunduszRemontowy())));
+            suma+=robotCharges.getFunduszRemontowy_stawka()
+                    *robotCharges.getFunduszRemontowy();
 
             table2.addCell("Gaz");
-            table2.addCell(String.valueOf(flatCharges.getGaz()));
-            table2.addCell(String.valueOf(flatCharges.getGaz_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getGaz_stawka()
-                    *flatCharges.getGaz())));
-            suma+=flatCharges.getGaz_stawka()
-                    *flatCharges.getGaz();
+            table2.addCell(String.valueOf(robotCharges.getGaz()));
+            table2.addCell(String.valueOf(robotCharges.getGaz_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getGaz_stawka()
+                    *robotCharges.getGaz())));
+            suma+=robotCharges.getGaz_stawka()
+                    *robotCharges.getGaz();
 
             table2.addCell("Ogrzewanie");
-            table2.addCell(String.valueOf(flatCharges.getOgrzewanie()));
-            table2.addCell(String.valueOf(flatCharges.getOgrzewanie_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getOgrzewanie_stawka()
-                    *flatCharges.getOgrzewanie())));
-            suma+=flatCharges.getOgrzewanie_stawka()
-                    *flatCharges.getOgrzewanie();
+            table2.addCell(String.valueOf(robotCharges.getOgrzewanie()));
+            table2.addCell(String.valueOf(robotCharges.getOgrzewanie_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getOgrzewanie_stawka()
+                    *robotCharges.getOgrzewanie())));
+            suma+=robotCharges.getOgrzewanie_stawka()
+                    *robotCharges.getOgrzewanie();
 
             table2.addCell("Prad");
-            table2.addCell(String.valueOf(flatCharges.getPrad()));
-            table2.addCell(String.valueOf(flatCharges.getPrad_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getPrad_stawka()
-                    *flatCharges.getPrad())));
-            suma+=flatCharges.getPrad_stawka()
-                    *flatCharges.getPrad();
+            table2.addCell(String.valueOf(robotCharges.getPrad()));
+            table2.addCell(String.valueOf(robotCharges.getPrad_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getPrad_stawka()
+                    *robotCharges.getPrad())));
+            suma+=robotCharges.getPrad_stawka()
+                    *robotCharges.getPrad();
 
             table2.addCell("Scieki");
-            table2.addCell(String.valueOf(flatCharges.getScieki()));
-            table2.addCell(String.valueOf(flatCharges.getScieki_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getScieki_stawka()
-                    *flatCharges.getScieki())));
-            suma+=flatCharges.getScieki_stawka()
-                    *flatCharges.getScieki();
+            table2.addCell(String.valueOf(robotCharges.getScieki()));
+            table2.addCell(String.valueOf(robotCharges.getScieki_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getScieki_stawka()
+                    *robotCharges.getScieki())));
+            suma+=robotCharges.getScieki_stawka()
+                    *robotCharges.getScieki();
 
             table2.addCell("Ciepla woda");
-            table2.addCell(String.valueOf(flatCharges.getWoda_ciepla()));
-            table2.addCell(String.valueOf(flatCharges.getWoda_ciepla_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getWoda_ciepla_stawka()
-                    *flatCharges.getWoda_ciepla())));
-            suma+=flatCharges.getWoda_ciepla_stawka()
-                    *flatCharges.getWoda_ciepla();
+            table2.addCell(String.valueOf(robotCharges.getWoda_ciepla()));
+            table2.addCell(String.valueOf(robotCharges.getWoda_ciepla_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getWoda_ciepla_stawka()
+                    *robotCharges.getWoda_ciepla())));
+            suma+=robotCharges.getWoda_ciepla_stawka()
+                    *robotCharges.getWoda_ciepla();
 
             table2.addCell("Zimna zimna");
-            table2.addCell(String.valueOf(flatCharges.getWoda_zimna()));
-            table2.addCell(String.valueOf(flatCharges.getWoda_zimna_stawka()));
-            table2.addCell(String.valueOf(df.format(flatCharges.getWoda_zimna_stawka()
-                    *flatCharges.getWoda_zimna())));
-            suma+=flatCharges.getWoda_zimna_stawka()
-                    *flatCharges.getWoda_zimna();
+            table2.addCell(String.valueOf(robotCharges.getWoda_zimna()));
+            table2.addCell(String.valueOf(robotCharges.getWoda_zimna_stawka()));
+            table2.addCell(String.valueOf(df.format(robotCharges.getWoda_zimna_stawka()
+                    *robotCharges.getWoda_zimna())));
+            suma+=robotCharges.getWoda_zimna_stawka()
+                    *robotCharges.getWoda_zimna();
 
             table2.addCell("Suma");
             table2.addCell("");
@@ -125,7 +125,7 @@ public class PdfServiceImpl implements PdfService{
             table2.addCell(" ");
             table2.addCell(" ");
             table2.addCell(" ");
-            table2.addCell("Locators");
+            table2.addCell("Robprogs");
 
 
 
