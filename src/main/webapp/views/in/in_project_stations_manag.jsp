@@ -2,7 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: diron
@@ -16,16 +15,43 @@
     <title>Title</title>
 </head>
 <body>
-<table>
+
+<table width="100%">
+    <tr>
+        <th>
+            <h3><table>
+                <tr>
+                    <td>${selectedProject.nazwa}</td>
+                </tr>
+                <tr>
+                    <td>${selectedProject.country}, ${selectedProject.city}, ${selectedProject.standard}</td>
+                </tr>
+
+            </table></h3>
+
+            </th>
+        <th><div class="float-right">
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <h3><spring:message code="label.addManagers"/></h3>
+
+            </sec:authorize>
+        </div></th>
+    </tr>
     <tr>
         <td>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <c:if test="${managerB}">
+
+
+
             <form:form method="post" action="inAddNewStation.html" modelAttribute="addStation"><!--modelAttribute="userApp" musi sie pokrywać z tym co jest w AddUserControl.java attributeName "userApp" -->
-            <table>
+            <table class="data">
                 <tr>
                     <td>
 
                         <form:hidden path="id"/>
+                        <form:hidden path="project.id"/>
+
                     </td>
                 </tr>
 
@@ -34,8 +60,6 @@
                     <td><form:input path="nazwa" /></td>
                     <td><form:errors path="nazwa" /></td>
                 </tr>
-
-
 
                 <tr>
                     <td><form:label path="hala"><spring:message code="label.Hala"/>:</form:label></td>
@@ -52,14 +76,46 @@
                     <td><form:input path="sterownik"/></td>
                     <td><p style="font-size:10px; color:red"><form:errors path="sterownik"/></p></td>
                 </tr>
-
-
-                <td colspan="2">
-                    <input type="submit" class="btn btn-primary" value="<spring:message code="button.addStation"/>"/>
+                <td colspan="1">
+                    <input class="btn btn-primary" type="submit" value="<spring:message code="button.addStation"/>"/>
                 </td>
             </table>
             </form:form>
+                </c:if>
 </sec:authorize>
+        </td>
+        <td>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+                <form:form method="post" action="inProjectAddManager.html" modelAttribute="addManager">
+            <div class="form-group">
+                <form:hidden path="project.id" modelAttribute="addStation"/>
+                <div class="overflow-auto" style="max-height: 260px;">
+                <table class="table table-hover" >
+
+
+                    <c:forEach items="${managers}" var="zaUser">
+                        <tr><td><input type="checkbox" class="btn-check" autocomplete="off" id="btn-check-outlined ${zaUser.id}" name="ZaIds" value="${zaUser.id}"
+
+                        <c:forEach items="${managersStacji}" var="managersStacja">
+
+                            ${zaUser.id == managersStacja.id ? 'checked' : ''}
+
+                        </c:forEach>
+
+                        >
+                            <label class="btn btn-outline-primary" for="btn-check-outlined ${zaUser.id}"> ${zaUser.pesel}<br>${zaUser.firstName} ${zaUser.lastName}</label></td></tr>
+
+
+                    </c:forEach>
+
+
+                </table>
+            </div>
+                <input class="btn btn-primary" type="submit" value="<spring:message code="button.submit"/>"/>
+            </div>
+                </form:form>
+</sec:authorize>
+
         </td>
     </tr>
     <tr colspan="2">
@@ -75,7 +131,7 @@
                         <th><spring:message code="label.bName"/></th>
                         <th><spring:message code="label.Sterownik"/></th>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        <th>&nbsp;</th>
+                            <th>&nbsp;</th>
                         </sec:authorize>
                         <th>&nbsp;</th>
 
@@ -86,7 +142,7 @@
                         <td>${stationsL.nazwa}</td>
                         <td>${stationsL.sterownik}</td>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html"><spring:message code="label.delete"/></a></td>
+                            <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html"><spring:message code="label.delete"/></a></td>
                         </sec:authorize>
 
                         <td>

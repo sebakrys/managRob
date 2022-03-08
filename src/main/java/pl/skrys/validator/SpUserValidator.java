@@ -3,9 +3,11 @@ package pl.skrys.validator;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import pl.skrys.app.Project;
 import pl.skrys.app.SpUserApp;
 import pl.skrys.service.SpUserService;
 import pl.skrys.service.SpUserServiceImpl;
@@ -139,7 +141,8 @@ public class SpUserValidator implements Validator {
     }
 
 
-
-
-
+    public void validateProject(Project project, BindingResult result) {
+        //TODO
+        System.out.println("Validate Project");
+    }
 }

@@ -29,6 +29,10 @@ public interface SpUserRepository extends JpaRepository<SpUserApp, Long> {
     @Query( "select u from SpUserApp u JOIN FETCH u.stations b where b.id = :stationId" )
     List<SpUserApp> findByStationId(@Param("stationId") long stationId);
 
+    @Query( "select u from SpUserApp u JOIN FETCH u.projects b where b.id = :projectId" )
+    List<SpUserApp> findByProjectId(@Param("projectId")long projectId);
+
+
     @Query( "select u from SpUserApp u JOIN FETCH u.robot b where b.id = :robotId" )
     List<SpUserApp> findByByRobotId(@Param("robotId") long robotId);
 
@@ -37,5 +41,6 @@ public interface SpUserRepository extends JpaRepository<SpUserApp, Long> {
 
     @Query( "select u.robot from SpUserApp u  where u.id = :userId" )
     List<SpRobot> findRobotsByUserId(@Param("userId") long userId);
+
 
 }

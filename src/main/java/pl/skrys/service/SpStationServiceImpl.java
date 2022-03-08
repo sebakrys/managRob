@@ -22,7 +22,10 @@ public class SpStationServiceImpl implements SpStationService{
         this.spUserService = spUserService;
     }
 
-
+    @Transactional
+    public List<SpStation> listStationsByProject(long id){
+        return spStationRepository.findAllByProjectId(id);
+    }
 
 
 

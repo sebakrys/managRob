@@ -92,4 +92,12 @@
         <put-attribute name="title" value="Home" />
         <put-attribute name="body" value="/views/in/in_home.jsp" />
     </definition>
+    <definition name="in_projects" extends="base.definition">
+        <put-attribute name="title" value="Projects" />
+        <put-attribute name="body" value="/views/in/in_projects.jsp" />
+    </definition>
+    <definition name="in_project_stations_manager" extends="base.definition">
+        <put-attribute name="title" value="Project" />
+        <put-attribute name="body" value="/views/in/in_project_stations_manag.jsp" />
+    </definition>
 </tiles-definitions>
