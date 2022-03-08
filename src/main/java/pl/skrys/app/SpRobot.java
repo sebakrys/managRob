@@ -22,7 +22,7 @@ public class SpRobot {
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<SpRobotCharges> robotCharges;
+    private List<SpRobotStatus> robotStatus;
 
     private String robotNumber;
     //private String city;
@@ -30,24 +30,24 @@ public class SpRobot {
     //private String postalCode;
 
 
-    public List<SpRobotCharges> getRobotCharges() {
-        return robotCharges;
+    public List<SpRobotStatus> getRobotStatus() {
+        return robotStatus;
     }
 
-    public void addRobotCharges(SpRobotCharges robotCharge) {
-        robotCharges.add(robotCharge);
+    public void addRobotStatus(SpRobotStatus robotCharge) {
+        robotStatus.add(robotCharge);
         robotCharge.setRobot(this);
     }
 
-    public void removeRobotCharges(SpRobotCharges robotCharge) {
-        robotCharges.remove(robotCharge);
+    public void removeRobotStatus(SpRobotStatus robotCharge) {
+        robotStatus.remove(robotCharge);
         robotCharge.setRobot(null);
     }
 
 
-    public void setRobotCharges(List<SpRobotCharges> robotCharges) {
-        this.robotCharges = robotCharges;
-        this.robotCharges.forEach(spRobotCharges -> spRobotCharges.setRobot(this));
+    public void setRobotStatus(List<SpRobotStatus> robotStatus) {
+        this.robotStatus = robotStatus;
+        this.robotStatus.forEach(spRobotStatus -> spRobotStatus.setRobot(this));
     }
 
 

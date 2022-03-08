@@ -24,10 +24,7 @@
                     <td>${selectedStation.nazwa}</td>
                 </tr>
                 <tr>
-                    <td>Ul. ${selectedStation.street} ${selectedStation.stationNumber}</td>
-                </tr>
-                <tr>
-                    <td>${selectedStation.postalCode}, ${selectedStation.city}</td>
+                    <td>${selectedStation.hala}, ${selectedStation.sterownik}</td>
                 </tr>
 
             </table></h3>

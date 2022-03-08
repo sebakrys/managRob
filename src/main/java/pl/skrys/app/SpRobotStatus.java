@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "robot_charges")
-public class SpRobotCharges {
+@Table(name = "robot_status")
+public class SpRobotStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="robot_id", nullable=false)
     private SpRobot robot;
 

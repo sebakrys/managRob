@@ -16,15 +16,15 @@ public class SpRobotServiceImpl implements SpRobotService{
     private SpRobotRepository spRobotRepository;
     private SpStationRepository stationRepository;
     private SpStationService stationService;
-    private SpRobotChargesService robotChargesService;
+    private SpRobotStatusService robotStatusService;
 
 
     @Autowired
-    public SpRobotServiceImpl(SpRobotRepository spRobotRepository, SpStationRepository stationRepository, SpStationService stationService, SpRobotChargesService robotChargesService) {
+    public SpRobotServiceImpl(SpRobotRepository spRobotRepository, SpStationRepository stationRepository, SpStationService stationService, SpRobotStatusService robotStatusService) {
         this.spRobotRepository = spRobotRepository;
         this.stationRepository = stationRepository;
         this.stationService = stationService;
-        this.robotChargesService = robotChargesService;
+        this.robotStatusService = robotStatusService;
     }
 
 

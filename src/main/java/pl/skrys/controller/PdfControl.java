@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.skrys.app.SpUserApp;
 import pl.skrys.service.PdfService;
-import pl.skrys.service.SpRobotChargesService;
+import pl.skrys.service.SpRobotStatusService;
 import pl.skrys.service.SpUserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +18,13 @@ public class PdfControl {
 
     private PdfService pdfService;
     private SpUserService userAppService;
-    private SpRobotChargesService robotChargesService;
+    private SpRobotStatusService robotStatusService;
 
     @Autowired
-    public PdfControl(PdfService pdfService, SpUserService userAppService, SpRobotChargesService robotChargesService) {
+    public PdfControl(PdfService pdfService, SpUserService userAppService, SpRobotStatusService robotStatusService) {
         this.pdfService = pdfService;
         this.userAppService = userAppService;
-        this.robotChargesService = robotChargesService;
+        this.robotStatusService = robotStatusService;
     }
 
 
@@ -39,7 +39,7 @@ public class PdfControl {
     @RequestMapping(value = "/rachunek{r}_{userId}_{rachunekID}", method = RequestMethod.GET)
     public void generateRachunekPdf(@PathVariable Integer userId, @PathVariable Integer rachunekID, @PathVariable char r, HttpServletResponse response){
 
-        List<SpUserApp> userAppList = userAppService.getUserAppByRobot(robotChargesService.getRobotCharges(rachunekID).getRobot().getId());
+        List<SpUserApp> userAppList = userAppService.getUserAppByRobot(robotStatusService.getRobotStatus(rachunekID).getRobot().getId());
         boolean robprogValid = false;
 
         for (SpUserApp user:
@@ -57,7 +57,7 @@ public class PdfControl {
         }
 
         if(robprogValid){
-            pdfService.generateRachunekPdf(robotChargesService.getRobotCharges(rachunekID), userAppService.getUserAppByRobot(robotChargesService.getRobotCharges(rachunekID).getRobot().getId()),  userAppService.getUserApp(userId), ryczalt,  response);
+            pdfService.generateRachunekPdf(robotStatusService.getRobotStatus(rachunekID), userAppService.getUserAppByRobot(robotStatusService.getRobotStatus(rachunekID).getRobot().getId()),  userAppService.getUserApp(userId), ryczalt,  response);
 
         }else{
             System.out.println("BRAK DOSTEPU bledne dane rachunku");

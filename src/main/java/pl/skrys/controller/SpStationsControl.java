@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -46,16 +47,16 @@ public class SpStationsControl {
     private UserRoleService userRoleService;
     private SpStationService stationService;
     private SpRobotService robotService;
-    private SpRobotChargesService robotChargesService;
+    private SpRobotStatusService robotStatusService;
     private SpUserRepository userRepository;
     private SpUserValidator validator  = new SpUserValidator();
 
-    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotChargesService robotChargesService, SpUserRepository userRepository) {
+    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotStatusService robotStatusService, SpUserRepository userRepository) {
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.stationService = stationService;
         this.robotService = robotService;
-        this.robotChargesService = robotChargesService;
+        this.robotStatusService = robotStatusService;
         this.userRepository = userRepository;
     }
 
@@ -337,20 +338,24 @@ public class SpStationsControl {
             if (robot.getId() == 0) {
                 //dodawanie mieszkania
 
-                SpRobotCharges robotCharges = new SpRobotCharges();
-                robotCharges.setRobot(robot);
+                SpRobotStatus robotStatus = new SpRobotStatus();
+                robotStatus.setRobot(robot);
                 Date date = new Date();
-                LocalDate currentdate = LocalDate.now();
+                LocalDateTime currentdateTime = LocalDateTime.now();
 
-                date.setYear(currentdate.getYear());
+                date.setYear(currentdateTime.getYear());
+                date.setDate(currentdateTime.getDayOfMonth());
+                date.setMonth(currentdateTime.getMonthValue());
+                date.setHours(currentdateTime.getHour());
+                date.setMinutes(currentdateTime.getMinute());
+                date.setSeconds(currentdateTime.getSecond());
                 //System.out.println("Y: "+date.getYear());
-                date.setDate(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+                //date.setDate(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+
                 //System.out.println("D: "+date.getDate());
-                date.setMonth(currentdate.getMonthValue());
+
                 //System.out.println("M: "+date.getMonth());
-                date.setHours(23);
-                date.setMinutes(59);
-                date.setSeconds(59);
+
 
                 /*
                 //todo stawki
@@ -361,13 +366,13 @@ public class SpStationsControl {
                 //ścieki 9 zł 1m2
                 //woda zimna 6 zł
                 //woda ciepla 35zł
-                robotCharges.setFunduszRemontowy_stawka(cfunduszRemontowy_stawka);
-                robotCharges.setGaz_stawka(cgaz_stawka);
-                robotCharges.setOgrzewanie_stawka(cogrzewanie_stawka);
-                robotCharges.setPrad_stawka(cprad_stawka);
-                robotCharges.setScieki_stawka(cscieki_stawka);
-                robotCharges.setWoda_zimna_stawka(cwoda_zimna_stawka);
-                robotCharges.setWoda_ciepla_stawka(cwoda_ciepla_stawka);
+                robotStatus.setFunduszRemontowy_stawka(cfunduszRemontowy_stawka);
+                robotStatus.setGaz_stawka(cgaz_stawka);
+                robotStatus.setOgrzewanie_stawka(cogrzewanie_stawka);
+                robotStatus.setPrad_stawka(cprad_stawka);
+                robotStatus.setScieki_stawka(cscieki_stawka);
+                robotStatus.setWoda_zimna_stawka(cwoda_zimna_stawka);
+                robotStatus.setWoda_ciepla_stawka(cwoda_ciepla_stawka);
                 //todo stawki
                  */
 
@@ -397,16 +402,16 @@ public class SpStationsControl {
 
                 //System.out.println(date.getYear()+" miesiac: "+date.getMonth()+" dzien "+date.getDate());/
                 //System.out.println("data:"+date);
-                robotCharges.setData(date);
+                robotStatus.setData(date);
 
-                List<SpRobotCharges> robotChargesList = new ArrayList<SpRobotCharges>();
-                robotChargesList.add(robotCharges);
+                List<SpRobotStatus> robotStatusList = new ArrayList<SpRobotStatus>();
+                robotStatusList.add(robotStatus);
 
-                robot.setRobotCharges(robotChargesList);
+                robot.setRobotStatus(robotStatusList);
 
                 System.out.println("dodawanie mieszkania");
-                robotService.addRobot(robot);//dodac doawanie do robotCharges
-                robotChargesService.addRobotCharges(robotCharges);
+                robotService.addRobot(robot);//dodac doawanie do robotStatus
+                robotStatusService.addRobotStatus(robotStatus);
 
 
 
@@ -551,26 +556,26 @@ public class SpStationsControl {
         model.addAttribute("robprogsRobot", robprogsRobot);// wszyscy Lokatorzy
         model.addAttribute("addRobprog", srobot);
 
-        SpRobotCharges lastRobotCharges = null;
-        for (SpRobotCharges tempRobotCharges : srobot.getRobotCharges()) {
-            if(lastRobotCharges==null){
-                lastRobotCharges=tempRobotCharges;
-            }else if(lastRobotCharges.getData().getTime()<tempRobotCharges.getData().getTime()){
-                lastRobotCharges = tempRobotCharges;
+        SpRobotStatus lastRobotStatus = null;
+        for (SpRobotStatus tempRobotStatus : srobot.getRobotStatus()) {
+            if(lastRobotStatus==null){
+                lastRobotStatus=tempRobotStatus;
+            }else if(lastRobotStatus.getData().getTime()<tempRobotStatus.getData().getTime()){
+                lastRobotStatus = tempRobotStatus;
             }
         }
 
-        model.addAttribute("addCharges", lastRobotCharges);
+        model.addAttribute("addStatus", lastRobotStatus);
 
         /*
         double kwota = 0.0;
-        kwota+=lastRobotCharges.getFunduszRemontowy()*lastRobotCharges.getFunduszRemontowy_stawka();
-        kwota+=lastRobotCharges.getGaz()*lastRobotCharges.getGaz_stawka();
-        kwota+=lastRobotCharges.getOgrzewanie()*lastRobotCharges.getOgrzewanie_stawka();
-        kwota+=lastRobotCharges.getPrad()*lastRobotCharges.getPrad_stawka();
-        kwota+=lastRobotCharges.getScieki()*lastRobotCharges.getScieki_stawka();
-        kwota+=lastRobotCharges.getWoda_ciepla()*lastRobotCharges.getWoda_ciepla_stawka();
-        kwota+=lastRobotCharges.getWoda_zimna()*lastRobotCharges.getWoda_zimna_stawka();
+        kwota+=lastRobotStatus.getFunduszRemontowy()*lastRobotStatus.getFunduszRemontowy_stawka();
+        kwota+=lastRobotStatus.getGaz()*lastRobotStatus.getGaz_stawka();
+        kwota+=lastRobotStatus.getOgrzewanie()*lastRobotStatus.getOgrzewanie_stawka();
+        kwota+=lastRobotStatus.getPrad()*lastRobotStatus.getPrad_stawka();
+        kwota+=lastRobotStatus.getScieki()*lastRobotStatus.getScieki_stawka();
+        kwota+=lastRobotStatus.getWoda_ciepla()*lastRobotStatus.getWoda_ciepla_stawka();
+        kwota+=lastRobotStatus.getWoda_zimna()*lastRobotStatus.getWoda_zimna_stawka();
         model.addAttribute("doZaplaty", kwota);
 */
 
@@ -631,48 +636,105 @@ public class SpStationsControl {
     }
 
 
-    @RequestMapping(value = "/inRobotAddCharges", method = RequestMethod.POST)
-    public String addChargesToRobot(@Valid @ModelAttribute("addCharges") SpRobotCharges robotCharges, @RequestParam(value = "acceptedCheck", required = false) boolean acceptedCheck, @RequestParam(value = "zaplaconeCheck", required = false) boolean zaplaconeCheck, Model model, HttpServletRequest request) {
+    @RequestMapping(value = "/inRobotAddStatus", method = RequestMethod.POST)
+    public String addStatusToRobot(@Valid @ModelAttribute("addStatus") SpRobotStatus robotStatus, @RequestParam(value = "acceptedCheck", required = false) boolean acceptedCheck, @RequestParam(value = "potCheck", required = false) boolean potCheck, @RequestParam(value = "prodCheck", required = false) boolean prodCheck, Model model, HttpServletRequest request, Principal principal) {
 
-        robotCharges.setAccepted(acceptedCheck);
+        robotStatus.setAccepted(acceptedCheck);
+        robotStatus.setProd(prodCheck);
+        robotStatus.setPot(potCheck);
 
+        String userPesel = principal.getName();
+
+        SpRobotStatus oldrobotStatus = robotStatusService.getRobotStatus(robotStatus.getId());
+        long fID = oldrobotStatus.getRobot().getId();
+        long bID = oldrobotStatus.getRobot().getStation().getId();
+
+
+        if(userPesel != null){
+
+            SpRobotStatus nRobotStatus = new SpRobotStatus();
+
+
+            //robotStatus.setRobotyk(userService.findByPesel(userPesel));
+            nRobotStatus.setRobotyk(userService.findByPesel(userPesel));
+
+
+            //robotStatus.setRobot(oldrobotStatus.getRobot());
+            nRobotStatus.setRobot(oldrobotStatus.getRobot());
+
+            Date date = new Date();
+            LocalDateTime currentdateTime = LocalDateTime.now();
+
+            date.setYear(currentdateTime.getYear());
+            date.setDate(currentdateTime.getDayOfMonth());
+            date.setMonth(currentdateTime.getMonthValue());
+            date.setHours(currentdateTime.getHour());
+            date.setMinutes(currentdateTime.getMinute());
+            date.setSeconds(currentdateTime.getSecond());
+
+            //robotStatus.setData(date);
+            nRobotStatus.setData(date);
+
+            //Przekopiowanie wartosci z formularza do nowego
+            nRobotStatus.setProd(robotStatus.isProd());
+            nRobotStatus.setPot(robotStatus.isPot());
+            nRobotStatus.setAccepted(robotStatus.isAccepted());
+            nRobotStatus.setComment(robotStatus.getComment());
+            nRobotStatus.setTz(robotStatus.getTz());
+            nRobotStatus.setVel_pot(robotStatus.getVel_pot());
+            nRobotStatus.setVel_prod(robotStatus.getVel_prod());
+
+
+
+            //robotStatus.setId(oldrobotStatus.getId());
+
+            System.out.println("dateStatus "+oldrobotStatus.getData().getYear()+" "+oldrobotStatus.getData().getMonth());
+            System.out.println("accepted: "+robotStatus.isAccepted()+ " "+acceptedCheck);
+            System.out.println("fid "+fID+" bid "+bID);
+
+
+            //List<SpRobotStatus> robotStatusList = new ArrayList<SpRobotStatus>();
+            //robotStatusList.add(robotStatus);
+
+            SpRobot robot = robotService.getRobot(oldrobotStatus.getRobot().getId());
+
+
+            //robot.addRobotStatus(robotStatus);
+            robot.addRobotStatus(nRobotStatus);
+
+            robotStatusService.addRobotStatus(nRobotStatus);
+            robotService.editRobot(robot);
+
+
+            //todo robotStatusService.editRobotStatus(robotStatus);
+
+        }
+        return "redirect:/inRobotManag.html?fId="+fID;//todo
+
+
+        /*
         if(!acceptedCheck){
             zaplaconeCheck = false;
-        }
+        }*/
 
 
-        SpRobotCharges oldrobotCharges = robotChargesService.getRobotCharges(robotCharges.getId());
 
-        long fID = oldrobotCharges.getRobot().getId();
-        long bID = oldrobotCharges.getRobot().getStation().getId();
 
         //List<SpUserApp> mieszkancyUsers = userRepository.findBySpecificRoles("ROLE_ROBPROG");
 
 
-        robotCharges.setRobot(oldrobotCharges.getRobot());
-        robotCharges.setData(oldrobotCharges.getData());
-        robotCharges.setId(oldrobotCharges.getId());
 /*
-        robotCharges.setWoda_ciepla_stawka(oldrobotCharges.getWoda_ciepla_stawka());
-        robotCharges.setWoda_zimna_stawka(oldrobotCharges.getWoda_zimna_stawka());
-        robotCharges.setScieki_stawka(oldrobotCharges.getScieki_stawka());
-        robotCharges.setPrad_stawka(oldrobotCharges.getPrad_stawka());
-        robotCharges.setOgrzewanie_stawka(oldrobotCharges.getOgrzewanie_stawka());
-        robotCharges.setGaz_stawka(oldrobotCharges.getGaz_stawka());
-        robotCharges.setFunduszRemontowy_stawka(oldrobotCharges.getFunduszRemontowy_stawka());
+        robotStatus.setWoda_ciepla_stawka(oldrobotStatus.getWoda_ciepla_stawka());
+        robotStatus.setWoda_zimna_stawka(oldrobotStatus.getWoda_zimna_stawka());
+        robotStatus.setScieki_stawka(oldrobotStatus.getScieki_stawka());
+        robotStatus.setPrad_stawka(oldrobotStatus.getPrad_stawka());
+        robotStatus.setOgrzewanie_stawka(oldrobotStatus.getOgrzewanie_stawka());
+        robotStatus.setGaz_stawka(oldrobotStatus.getGaz_stawka());
+        robotStatus.setFunduszRemontowy_stawka(oldrobotStatus.getFunduszRemontowy_stawka());
 */
 
 
 
-
-        System.out.println("dateCharges "+oldrobotCharges.getData().getYear()+" "+oldrobotCharges.getData().getMonth());
-        System.out.println("accepted: "+robotCharges.isAccepted()+ " "+acceptedCheck);
-        System.out.println("fid "+fID+" bid "+bID);
-
-        robotChargesService.editRobotCharges(robotCharges);
-
-
-        return "redirect:/inRobotManag.html?fId="+fID;//todo
     }
 
     @RequestMapping("/deleteRobot/{robotId}")
@@ -682,32 +744,32 @@ public class SpStationsControl {
 
         List<SpUserApp> mieszkRobot = userService.getUserAppByRobot(robotId);
         SpRobot robot = robotService.getRobot(robotId);
-        List<SpRobotCharges> robotCharges = robot.getRobotCharges();
+        List<SpRobotStatus> robotStatus = robot.getRobotStatus();
 
 
 
 
-        System.out.println("przed nullowanie robot charges");
-        //todo robot nullowanie charges
+        System.out.println("przed nullowanie robot status");
+        //todo robot nullowanie status
 
-        //robot.setRobotCharges(null);
+        //robot.setRobotStatus(null);
         //robotService.editRobot(robot);
-        System.out.println("nullowanie robot charges");
-        System.out.println("usuwanie localCharges");
-        //todo usuwanie localCharges
+        System.out.println("nullowanie robot status");
+        System.out.println("usuwanie localStatus");
+        //todo usuwanie localStatus
 
-        for (Iterator<SpRobotCharges> iterator = robotCharges.iterator(); iterator.hasNext(); ) {
-            SpRobotCharges tempRobotCharges = iterator.next();
-            System.out.println("usuwanie localCharges: "+tempRobotCharges.getId());
-            robotChargesService.removeRobotCharges(tempRobotCharges.getId());
+        for (Iterator<SpRobotStatus> iterator = robotStatus.iterator(); iterator.hasNext(); ) {
+            SpRobotStatus tempRobotStatus = iterator.next();
+            System.out.println("usuwanie localStatus: "+tempRobotStatus.getId());
+            robotStatusService.removeRobotStatus(tempRobotStatus.getId());
         }
 
         /*
-        for (SpRobotCharges tempRobotCharges : robotCharges) {
-            robot.removeRobotCharges(tempRobotCharges);
+        for (SpRobotStatus tempRobotStatus : robotStatus) {
+            robot.removeRobotStatus(tempRobotStatus);
             //robotService.editRobot(robot);
-            System.out.println("usuwanie localCharges: "+tempRobotCharges.getId());
-            robotChargesService.removeRobotCharges(tempRobotCharges.getId());
+            System.out.println("usuwanie localStatus: "+tempRobotStatus.getId());
+            robotStatusService.removeRobotStatus(tempRobotStatus.getId());
 
         }*/
 
