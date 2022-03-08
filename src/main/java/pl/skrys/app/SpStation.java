@@ -13,6 +13,7 @@ public class SpStation {
 
 
     private String hala;
+    private String linia;
     private String sterownik;
 
     private String nazwa;
@@ -66,5 +67,13 @@ public class SpStation {
 
     public void setSterownik(String sterownik) {
         this.sterownik = sterownik;
+    }
+
+    public String getLinia() {
+        return linia;
+    }
+
+    public void setLinia(String linia) {
+        this.linia = linia;
     }
 }
