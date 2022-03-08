@@ -35,6 +35,11 @@ public class SpRobotStatusServiceImpl implements SpRobotStatusService{
         return spRobotStatusRepository.findFirstByRobotIdOrderByDataDesc(robotId);
     }
 
+    @Transactional
+    public List<SpRobotStatus>  getRobotStatusFromRobot(long robotId){
+        return spRobotStatusRepository.findByRobotIdOrderByDataDesc(robotId);
+    }
+
 
     @Transactional
     public void addRobotStatus(SpRobotStatus robotStatus) {

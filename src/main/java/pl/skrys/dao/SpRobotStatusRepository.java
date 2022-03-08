@@ -22,6 +22,8 @@ public interface SpRobotStatusRepository extends JpaRepository<SpRobotStatus, Lo
     @Query( value = "select count(fc) from SpRobotStatus fc JOIN fc.robot f where f.id = :robotId and fc.accepted=true")
     long getNumberOfAcceptedRobotStatus(@Param("robotId") long robotId);
 
+    List<SpRobotStatus> findByRobotIdOrderByDataDesc(long robotId);
+
 
 
     /*

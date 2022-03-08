@@ -14,6 +14,7 @@ public interface SpRobotStatusService {
     void removeRobotStatus(long id);
 
     SpRobotStatus getLastRobotStatusFromRobot(long robotId);
+    List<SpRobotStatus>  getRobotStatusFromRobot(long robotId);
     Long getCountOfRobotStatusAcceptedFromRobot(long robotId);
     List<SpRobotStatus> getLast12AcceptedRobotStatusByRobot(long robotId);
 }

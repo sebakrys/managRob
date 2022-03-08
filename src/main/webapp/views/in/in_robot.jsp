@@ -122,6 +122,64 @@
 
         </td>
     </tr>
+
+
+    <tr colspan="2">
+        <td>
+            <h3>
+                <spring:message code="label.statusList"/>
+            </h3>
+            <c:if test="${!empty robotStatusList}">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            <spring:message code="label.tz"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.vel_pot"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.vel_prod"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.pot"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.prod"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.accepted"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.comment"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.data"/>
+                        </th>
+                        <th>
+                            <spring:message code="label.email"/>
+                        </th>
+
+                    </tr><c:forEach items="${robotStatusList}" var="statusL">
+                    <tr>
+                        <td>${statusL.tz}</td>
+                        <td>${statusL.vel_pot}</td>
+                        <td>${statusL.vel_prod}</td>
+                        <td>${statusL.pot}</td>
+                        <td>${statusL.prod}</td>
+                        <td>${statusL.accepted}</td>
+                        <td>${statusL.comment}</td>
+                        <td>${statusL.data.getHours()}:${statusL.data.getMinutes()}:${statusL.data.getSeconds()} ${statusL.data.getDate()}.${statusL.data.getMonth()}.${statusL.data.getYear()}</td>
+                        <td>${statusL.robotyk.getEmail()}</td>
+
+                    </tr>
+                </c:forEach>
+                </table>
+            </c:if>
+        </td>
+    </tr>
+
+
 </table>
 
 

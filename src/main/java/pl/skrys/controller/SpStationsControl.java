@@ -298,7 +298,7 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inAddNewRobot", method = RequestMethod.POST)
-    public String addNewRobot(@Valid @ModelAttribute("addRobot") SpRobot robot, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+    public String addNewRobot(@Valid @ModelAttribute("addRobot") SpRobot robot, BindingResult result, Model model, HttpServletRequest request, Principal principal) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
 
 
         //model.addAttribute("stationsList", stationService.listStations());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
@@ -340,6 +340,12 @@ public class SpStationsControl {
 
                 SpRobotStatus robotStatus = new SpRobotStatus();
                 robotStatus.setRobot(robot);
+
+                String userPesel = principal.getName();
+                if(userPesel!=null){
+                    robotStatus.setRobotyk(userService.findByPesel(userPesel));
+                }
+
                 Date date = new Date();
                 LocalDateTime currentdateTime = LocalDateTime.now();
 
@@ -491,8 +497,12 @@ public class SpStationsControl {
 
     @RequestMapping(value = "/inRobotManag")
     public String robotManag(Model model, HttpServletRequest request, Principal principal){
+
+
+
         int robotId = ServletRequestUtils.getIntParameter(request, "fId", -1);
         SpRobot srobot = robotService.getRobot(robotId);
+
 
         String userPesel = principal.getName();
 
@@ -529,11 +539,13 @@ public class SpStationsControl {
             if(managerStation && manager || admin){
                 System.out.println("MANAGER I POSIADA TEN STATION");
                 model.addAttribute("managerB", true);
+                model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobot(srobot.getId()));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
 
 
             }else{
                 System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN STATION");
                 model.addAttribute("managerB", false);
+                model.addAttribute("robotStatusList", null);//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
 
 
             }
