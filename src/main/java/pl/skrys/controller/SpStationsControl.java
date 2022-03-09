@@ -1,11 +1,13 @@
 package pl.skrys.controller;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.skrys.app.*;
 import pl.skrys.dao.SpUserRepository;
 import pl.skrys.service.*;
@@ -13,6 +15,9 @@ import pl.skrys.validator.SpUserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -598,6 +603,22 @@ public class SpStationsControl {
         //model.addAttribute("addStation", new SpStation());
         //model.addAttribute("stationsList", stationService.listStations());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
         //model.addAttribute("robotList", robotService.listRobots());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+
+        String uploadDir = "/resources/uploads";
+        String realPath = request.getServletContext().getRealPath(uploadDir);
+
+        System.out.println(new File("/resources/uploads/"+robotId+".png").exists());
+        System.out.println(new File(realPath + "/" + robotId+".png").exists());
+
+        if(new File(realPath + "/" + robotId+".png").exists()){
+            model.addAttribute("imgExists", "png");
+        }else if(new File(realPath + "/" + robotId+".jpg").exists()){
+            model.addAttribute("imgExists", "jpg");
+        }else{
+            model.addAttribute("imgExists", null);
+        }
+
+
 
 
 
