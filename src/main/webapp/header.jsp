@@ -32,7 +32,7 @@
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
                     <li class="nav-item">
-                        <a class="nav-link" href="/inBuildings.html"><spring:message code="label.buildings"/></a>
+                        <a class="nav-link" href="/inStations.html"><spring:message code="label.stations"/></a>
                     </li>
                 </sec:authorize>
 

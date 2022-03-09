@@ -3,7 +3,7 @@ package pl.skrys.app;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sp_vertoken")
+@Table(name = "vertoken")
 public class SpVerifyToken {
 
 

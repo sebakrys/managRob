@@ -6,8 +6,8 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.skrys.app.SpBuilding;
-import pl.skrys.app.SpFlat;
+import pl.skrys.app.SpStation;
+import pl.skrys.app.SpRobot;
 import pl.skrys.app.SpUserApp;
 import pl.skrys.app.SpVerifyToken;
 import pl.skrys.dao.SpUserRepository;
@@ -81,8 +81,8 @@ public class SpUserServiceImpl implements SpUserService {
         System.out.println("nowe hasło"+user.getPassword());
 
         user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        user.setStations(oldUser.getStations());//przepisane stacji
         user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -104,8 +104,8 @@ public class SpUserServiceImpl implements SpUserService {
         System.out.println("nowe hasło"+user.getPassword());
 
         user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        user.setStations(oldUser.getStations());//przepisane stacji
         user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -116,15 +116,15 @@ public class SpUserServiceImpl implements SpUserService {
     }
 
 
-    public void addUserBuildings(SpUserApp user) {//todo
+    public void addUserStations(SpUserApp user) {//todo
         //user.setPassword(hashPassword(user.getPassword()));
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        Set<SpBuilding> oldBuildings = oldUser.getBuildings();
-        oldBuildings.addAll(user.getBuildings());
+        Set<SpStation> oldStations = oldUser.getStations();
+        oldStations.addAll(user.getStations());
 
-        oldUser.setBuildings(oldBuildings);
+        oldUser.setStations(oldStations);
 
         user = oldUser;
 
@@ -133,8 +133,8 @@ public class SpUserServiceImpl implements SpUserService {
 
 
         //user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        //user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        //user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        //user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        //user.setStations(oldUser.getStations());//przepisane stacji
         //user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -144,21 +144,21 @@ public class SpUserServiceImpl implements SpUserService {
         spUserRepository.save(user);
     }
 
-    public void removeUserBuilding(SpUserApp user, SpBuilding building) {
+    public void removeUserStation(SpUserApp user, SpStation station) {
         //user.setPassword(hashPassword(user.getPassword()));
 
         System.out.println("Usuwanie "+user.getPesel());
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        Set<SpBuilding> oldBuildings = oldUser.getBuildings();
-        //SpBuilding tempBuilToDel = new SpBuilding();
+        Set<SpStation> oldStations = oldUser.getStations();
+        //SpStation tempBuilToDel = new SpStation();
 
-        System.out.println("Przed usunieciem: "+oldBuildings);
-        for (SpBuilding tempBuild : oldBuildings) {
-            if(tempBuild.getId()==building.getId()){
+        System.out.println("Przed usunieciem: "+oldStations);
+        for (SpStation tempBuild : oldStations) {
+            if(tempBuild.getId()==station.getId()){
                 //tempBuilToDel = tempBuild
-                boolean suc = oldBuildings.remove(tempBuild);
+                boolean suc = oldStations.remove(tempBuild);
                 System.out.println("suc: "+suc+" "+tempBuild);
                 break;
             }
@@ -166,10 +166,10 @@ public class SpUserServiceImpl implements SpUserService {
 
 
 
-        System.out.println("Po usunieciu: "+oldBuildings);
-        //oldBuildings.addAll(user.getBuildings());
+        System.out.println("Po usunieciu: "+oldStations);
+        //oldStations.addAll(user.getStations());
 
-        oldUser.setBuildings(oldBuildings);
+        oldUser.setStations(oldStations);
 
         user = oldUser;
 
@@ -178,8 +178,8 @@ public class SpUserServiceImpl implements SpUserService {
 
 
         //user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        //user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        //user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        //user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        //user.setStations(oldUser.getStations());//przepisane stacji
         //user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -190,15 +190,15 @@ public class SpUserServiceImpl implements SpUserService {
     }
 
 
-    public void addUserFlat(SpUserApp user) {//todo
+    public void addUserRobot(SpUserApp user) {//todo
         //user.setPassword(hashPassword(user.getPassword()));
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        Set<SpFlat> oldFlat = oldUser.getFlat();
-        oldFlat.addAll(user.getFlat());
+        Set<SpRobot> oldRobot = oldUser.getRobot();
+        oldRobot.addAll(user.getRobot());
 
-        oldUser.setFlat(oldFlat);
+        oldUser.setRobot(oldRobot);
 
         user = oldUser;
 
@@ -207,8 +207,8 @@ public class SpUserServiceImpl implements SpUserService {
 
 
         //user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        //user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        //user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        //user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        //user.setStations(oldUser.getStations());//przepisane stacji
         //user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -221,32 +221,32 @@ public class SpUserServiceImpl implements SpUserService {
 
 
 
-    public void removeUserFlat(SpUserApp user, SpFlat flat) {
+    public void removeUserRobot(SpUserApp user, SpRobot robot) {
         //user.setPassword(hashPassword(user.getPassword()));
 
         System.out.println("Usuwanie "+user.getPesel());
 
         SpUserApp oldUser = getUserApp(user.getId());
 
-        Set<SpFlat> oldFlats = oldUser.getFlat();
-        //SpBuilding tempBuilToDel = new SpBuilding();
+        Set<SpRobot> oldRobots = oldUser.getRobot();
+        //SpStation tempBuilToDel = new SpStation();
 
-        System.out.println("Przed usunieciem: "+oldFlats);
-        for (SpFlat tempFlat : oldFlats) {
-            if(tempFlat.getId()==flat.getId()){
+        System.out.println("Przed usunieciem: "+oldRobots);
+        for (SpRobot tempRobot : oldRobots) {
+            if(tempRobot.getId()==robot.getId()){
                 //tempBuilToDel = tempBuild
-                boolean suc = oldFlats.remove(tempFlat);
-                System.out.println("suc: "+suc+" "+tempFlat);
+                boolean suc = oldRobots.remove(tempRobot);
+                System.out.println("suc: "+suc+" "+tempRobot);
                 break;
             }
         }
 
 
 
-        System.out.println("Po usunieciu: "+oldFlats);
-        //oldBuildings.addAll(user.getBuildings());
+        System.out.println("Po usunieciu: "+oldRobots);
+        //oldStations.addAll(user.getStations());
 
-        oldUser.setFlat(oldFlats);
+        oldUser.setRobot(oldRobots);
 
         user = oldUser;
 
@@ -255,8 +255,8 @@ public class SpUserServiceImpl implements SpUserService {
 
 
         //user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
-        //user.setFlat(oldUser.getFlat());//przepsanie mieszkań
-        //user.setBuildings(oldUser.getBuildings());//przepisane budynków
+        //user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        //user.setStations(oldUser.getStations());//przepisane stacji
         //user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
         //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
         //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
@@ -302,13 +302,13 @@ public class SpUserServiceImpl implements SpUserService {
     }
 
     @Transactional
-    public List<SpUserApp> getUserAppByBuilding(long BuildingId) {
-        return spUserRepository.findByBuildingId(BuildingId);
+    public List<SpUserApp> getUserAppByStation(long StationId) {
+        return spUserRepository.findByStationId(StationId);
     }
 
     @Transactional
-    public List<SpUserApp> getUserAppByFlat(long flatId) {
-        return spUserRepository.findByByFlatId(flatId);
+    public List<SpUserApp> getUserAppByRobot(long robotId) {
+        return spUserRepository.findByByRobotId(robotId);
     }
 
 
