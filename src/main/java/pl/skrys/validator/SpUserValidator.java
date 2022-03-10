@@ -141,8 +141,21 @@ public class SpUserValidator implements Validator {
     }
 
 
-    public void validateProject(Project project, BindingResult result) {
+    public void validateProject(Project project, BindingResult errors) {
         //TODO
         System.out.println("Validate Project");
+
+        ValidationUtils.rejectIfEmpty(errors, "nazwa", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "country", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "city", "error.field.required");
+        ValidationUtils.rejectIfEmpty(errors, "standard", "error.field.required");
+
+        if(errors.getErrorCount()==0){
+
+        }else{
+
+            System.out.println("BLEDY Validator PROJEKT");
+            System.out.println(errors.getAllErrors());
+        }
     }
 }

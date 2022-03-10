@@ -42,7 +42,7 @@ public class SpStationsControl {
 
 
 
-
+    private ProjectService projectService;
     private SpUserService userService;
     private UserRoleService userRoleService;
     private SpStationService stationService;
@@ -51,13 +51,14 @@ public class SpStationsControl {
     private SpUserRepository userRepository;
     private SpUserValidator validator  = new SpUserValidator();
 
-    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotStatusService robotStatusService, SpUserRepository userRepository) {
+    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotStatusService robotStatusService, SpUserRepository userRepository, ProjectService projectService) {
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.stationService = stationService;
         this.robotService = robotService;
         this.robotStatusService = robotStatusService;
         this.userRepository = userRepository;
+        this.projectService = projectService;
     }
 
 
@@ -150,7 +151,9 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inAddNewStation", method = RequestMethod.POST)
-    public String addNewStation(@Valid @ModelAttribute("addStation") SpStation station, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+    public String addNewStation(@Valid @ModelAttribute("addStation") SpStation station,@RequestParam(name = "project.id") Long projectId, BindingResult result, Model model, HttpServletRequest request, Principal principal) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+
+        //int projectId = ServletRequestUtils.getIntParameter(request, "project.id", -1);
 
 
         model.addAttribute("stationsList", stationService.listStations());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
@@ -168,21 +171,58 @@ public class SpStationsControl {
         if (result.getErrorCount() == 0) {
             if (station.getId() == 0) {
                 //dodawanie stacji
-                System.out.println("dodawanie stacji");
+                System.out.println("dodawanie stacji"+projectId);
                 stationService.addStation(station);
-                return "redirect:/inStations.html";
+                return "redirect:/projectStationsManag.html?bId="+projectId;
             } else {
+                System.out.println("edit stacji"+projectId);
                 stationService.editStation(station);
 
-                return "redirect:/inStations.html";
+                return "redirect:/projectStationsManag.html?bId="+projectId;
+                //return "redirect:/inStations.html";
             }
 
         }
 
         System.out.println("są bledy validatora");
 
+        List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
-        return "in_stations";
+        List<SpUserApp> managersProject = userService.getUserAppByProject(projectId);
+        System.out.println("l wszy MANAGERS "+managersUsers.size());
+        System.out.println("l  MANAGERS "+managersProject.size());
+
+
+
+        SpUserApp userApp = userService.findByPesel(principal.getName());
+        boolean admin = userService.hasRoleAdmin(userApp);
+        boolean manager = userService.hasRoleManager(userApp);
+        boolean managerProject = userService.isThisProjectManager(userApp, projectId);
+        if(managerProject && manager || admin){
+            System.out.println("MANAGER I POSIADA TEN Project");
+            model.addAttribute("managerB", true);
+
+            Project tempProj = projectService.getProject(projectId);
+            List<SpStation> tempListStacje = stationService.listStationsByProject(tempProj.getId());
+
+            model.addAttribute("stationsList", tempListStacje);
+
+            model.addAttribute("managers", managersUsers);
+            model.addAttribute("managersStacji", managersProject);
+            model.addAttribute("addStation", station);
+            model.addAttribute("addManager", station);
+            model.addAttribute("selectedProject", projectService.getProject(projectId));
+            model.addAttribute("bId", projectId);
+            return "in_project_stations_manager";
+        }else{
+            System.out.println("Nie powinno cie tu być");
+            return "/accessDenied";
+        }
+
+
+
+
+        //return "in_stations";
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
@@ -478,8 +518,10 @@ public class SpStationsControl {
 
 
     @RequestMapping("/deleteStation/{stationId}")
-    public String deleteStation(@PathVariable("stationId") Long stationId){
+    public String deleteStation(@PathVariable("stationId") Long stationId, @RequestParam(name = "bId") Long projectId){
         System.out.println("Usuwanie  stacji "+stationId);
+
+
 
         List<SpUserApp> managersStacji = userService.getUserAppByStation(stationId);
         SpStation station = stationService.getStation(stationId);
@@ -489,7 +531,8 @@ public class SpStationsControl {
         }
 
         stationService.removeStation(stationId);
-        return "redirect:/inStations";
+        return "redirect:/projectStationsManag.html?bId="+projectId;
+        //return "redirect:/inStations";
     }
 
 

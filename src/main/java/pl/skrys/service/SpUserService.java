@@ -44,4 +44,8 @@ public interface SpUserService {
 
     List<SpUserApp> findByEmail(String email);
 
+    boolean isThisProjectManager(SpUserApp userApp, Long projectId);
+    boolean hasRoleAdmin(SpUserApp userApp);
+    boolean hasRoleManager(SpUserApp userApp);
+    boolean hasRoleRobProg(SpUserApp userApp);
 }

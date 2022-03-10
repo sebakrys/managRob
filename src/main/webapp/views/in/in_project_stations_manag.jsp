@@ -58,7 +58,7 @@
                 <tr>
                     <td><form:label path="nazwa"><spring:message code="label.bName"/></form:label></td>
                     <td><form:input path="nazwa" /></td>
-                    <td><form:errors path="nazwa" /></td>
+                    <td><p style="font-size:10px; color:red"><form:errors path="nazwa" /></p></td>
                 </tr>
 
                 <tr>
@@ -142,7 +142,7 @@
                         <td>${stationsL.nazwa}</td>
                         <td>${stationsL.sterownik}</td>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html"><spring:message code="label.delete"/></a></td>
+                            <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html?bId=${selectedProject.id}"><spring:message code="label.delete"/></a></td>
                         </sec:authorize>
 
                         <td>

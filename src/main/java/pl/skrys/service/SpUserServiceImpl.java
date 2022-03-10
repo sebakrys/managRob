@@ -397,5 +397,47 @@ public class SpUserServiceImpl implements SpUserService {
         return spUserRepository.findByEmail(email);
     }
 
+    public boolean isThisProjectManager(SpUserApp userApp, Long projectId){
+        boolean managerProject = false;
+        Set<Project> userProjects =  userApp.getProjects();
+        for (Project tempProject: userProjects) {
+            if(tempProject.getId()==projectId){
+                managerProject=true;
+                break;
+            }
+        }
+        return managerProject;
+    }
+
+    public boolean hasRoleAdmin(SpUserApp userApp){
+        boolean admin = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_ADMIN")){
+                admin = true;
+                break;
+            }
+        }
+        return admin;
+    }
+    public boolean hasRoleManager(SpUserApp userApp){
+        boolean manager = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_MANAGER")){
+                manager = true;
+                break;
+            }
+        }
+        return manager;
+    }
+    public boolean hasRoleRobProg(SpUserApp userApp){
+        boolean robprog = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_ROBPROG")){
+                robprog = true;
+                break;
+            }
+        }
+        return robprog;
+    }
 
 }

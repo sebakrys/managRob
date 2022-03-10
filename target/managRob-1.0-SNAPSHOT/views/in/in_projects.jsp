@@ -32,7 +32,7 @@
                 <tr>
                     <td><form:label path="nazwa"><spring:message code="label.bName"/></form:label></td>
                     <td><form:input path="nazwa" /></td>
-                    <td><form:errors path="nazwa" /></td>
+                    <td><p style="font-size:10px; color:red"><form:errors path="nazwa" /></p></td>
                 </tr>
 
 

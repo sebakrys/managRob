@@ -212,7 +212,7 @@ public class ProjectsControl {
     @RequestMapping(value = "/projectStationsManag")
     public String robotsManagList(Model model, HttpServletRequest request, Principal principal){
 
-        int projectId = ServletRequestUtils.getIntParameter(request, "bId", -1);
+        long projectId = ServletRequestUtils.getIntParameter(request, "bId", -1);
         boolean stationExists = ServletRequestUtils.getBooleanParameter(request, "stationExists", false);
         String userPesel = principal.getName();
 
@@ -226,6 +226,11 @@ public class ProjectsControl {
 
 
             SpUserApp userApp = userService.findByPesel(userPesel);
+
+            admin = userService.hasRoleAdmin(userApp);
+            manager = userService.hasRoleManager(userApp);
+            robprog = userService.hasRoleRobProg(userApp);
+            /*OLD
             for (UserRole ur: userApp.getUserRole()) {
                 if(ur.getRole().equals("ROLE_ADMIN")){
                     admin = true;
@@ -234,16 +239,9 @@ public class ProjectsControl {
                 }else if(ur.getRole().equals("ROLE_ROBPROG")){
                     robprog = true;
                 }
-            }
+            }*/
 
-            Set<Project> userProjects =  userApp.getProjects();
-            for (Project tempProject:
-                    userProjects) {
-                if(tempProject.getId()==projectId){
-                    managerProject=true;
-                    break;
-                }
-            }
+            managerProject = userService.isThisProjectManager(userApp, projectId);
 
 
 
