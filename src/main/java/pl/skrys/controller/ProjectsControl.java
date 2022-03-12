@@ -94,15 +94,20 @@ public class ProjectsControl {
             }
 
             Set<Project> ProjectSet = new HashSet<Project>(0);
+            Set<SpStation> spStationSet = new HashSet<SpStation>(0);
             Set<Long> ProjectIdManagSet = new HashSet<Long>(0);
-            Set<SpStation> StationSet = userApp.getStations();
+            Set<SpRobot> robotSet = userApp.getRobot();
 
 
 
             if(robprog){
 
 
-                for (SpStation tempStation : StationSet) {
+                for (SpRobot tempRobot : robotSet) {
+                    spStationSet.add(tempRobot.getStation());
+                }
+
+                for (SpStation tempStation: spStationSet){
                     ProjectSet.add(tempStation.getProject());
                 }
             }
@@ -120,7 +125,9 @@ public class ProjectsControl {
             //model.addAttribute("addStation", new SpStation());
             //todo dla mieszkanca i managers
             model.addAttribute("projectsList", ProjectSet);//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
-            model.addAttribute("robotList", StationSet);//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+            //todo model.addAttribute("robotList", StationSet);//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+            model.addAttribute("robotList", ProjectSet);//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+
 
             model.addAttribute("projectsManagList", ProjectIdManagSet);
 
