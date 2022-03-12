@@ -17,6 +17,7 @@
 </head>
 <body>
 
+
 <table width="100%">
     <tr>
         <th>
@@ -31,6 +32,7 @@
             </table></h3>
 
             </th>
+
         <th><div class="float-right">
             <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
                 <c:if test="${managerB}">
@@ -194,8 +196,33 @@
                 </c:forEach>
                 </table>
             </c:if>
+
+            <c:if test="${imgExists!=null}">
+
+            <img style="width:100%;" src="/resources/uploads/${selectedRobot.id}.${imgExists}" alt="robot" height="auto">
+
+            </c:if>
+
+        </td>
+        <td>
+
+            <spring:message code="label.uploadPhoto"/> :
+
+            <form name="fileUpload" method="POST" action="uploadFile?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
+                <div class="mb-3">
+                <br/>
+                <input type="hidden" id="robId" name="fId" value="${selectedRobot.id}">
+                <input class="form-control" id="formFile" type="file" name="file" />
+                    <input class="btn btn-primary" type="submit" name="submit" value="<spring:message code="label.upload"/>" />
+                </div>
+            </form>
+
         </td>
     </tr>
+
+
+
+
 
 
 </table>

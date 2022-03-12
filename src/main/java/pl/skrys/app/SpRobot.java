@@ -25,6 +25,7 @@ public class SpRobot {
     private List<SpRobotStatus> robotStatus;
 
     private String robotNumber;
+
     //private String city;
     //private String street;
     //private String postalCode;
