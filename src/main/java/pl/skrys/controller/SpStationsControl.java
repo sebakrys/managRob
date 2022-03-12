@@ -1,5 +1,7 @@
 package pl.skrys.controller;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -496,7 +498,7 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inRobotManag")
-    public String robotManag(Model model, HttpServletRequest request, Principal principal){
+    public String robotManag(@RequestParam(required = false, name = "pg") Integer pg, Model model, HttpServletRequest request, Principal principal){
 
 
 
@@ -539,7 +541,26 @@ public class SpStationsControl {
             if(managerStation && manager || admin){
                 System.out.println("MANAGER I POSIADA TEN STATION");
                 model.addAttribute("managerB", true);
-                model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobot(srobot.getId()));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                //TODO model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobot(srobot.getId()));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                if(pg!=null){
+                    if(pg<0){
+                        pg=0;
+                    }else if(robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5)<pg){
+                        pg = (int) robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5);
+                    }
+
+                    System.out.println("pg="+pg);
+                }else{
+                    System.out.println("pg=null");
+                    pg = new Integer(0);
+                }
+
+                System.out.println(robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5));
+
+                //stronicowanie
+                model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobotStronicowane(srobot.getId(), new PageRequest(pg, 5)));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                model.addAttribute("pageNr", pg);
+                model.addAttribute("maxPageNr", robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5));
 
 
             }else{

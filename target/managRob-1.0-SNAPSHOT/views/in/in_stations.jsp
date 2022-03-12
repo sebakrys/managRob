@@ -43,6 +43,11 @@
                     <td><p style="font-size:10px; color:red"><form:errors path="hala"/></p></td>
                 </tr>
                 <tr>
+                    <td><form:label path="linia"><spring:message code="label.Linia"/>:</form:label></td>
+                    <td><form:input path="linia"/></td>
+                    <td><p style="font-size:10px; color:red"><form:errors path="linia"/></p></td>
+                </tr>
+                <tr>
                     <td><form:label path="sterownik"><spring:message code="label.Sterownik"/>:</form:label></td>
                     <td><form:input path="sterownik"/></td>
                     <td><p style="font-size:10px; color:red"><form:errors path="sterownik"/></p></td>
@@ -66,6 +71,7 @@
                 <table class="table table-striped">
                     <tr>
                         <th><spring:message code="label.Hala"/></th>
+                        <th><spring:message code="label.Linia"/></th>
                         <th><spring:message code="label.bName"/></th>
                         <th><spring:message code="label.Sterownik"/></th>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -76,6 +82,7 @@
                     </tr><c:forEach items="${stationsList}" var="stationsL">
                     <tr>
                         <td>${stationsL.hala}</td>
+                        <td>${stationsL.linia}</td>
                         <td>${stationsL.nazwa}</td>
                         <td>${stationsL.sterownik}</td>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
