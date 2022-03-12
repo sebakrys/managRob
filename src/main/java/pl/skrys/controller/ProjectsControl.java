@@ -266,16 +266,22 @@ public class ProjectsControl {
                 System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN STATION");
                 model.addAttribute("managerB", false);
 
-                Set<SpStation> userStations = userApp.getStations();
-                Set<SpStation> nUserStations = new HashSet<SpStation>(0);
+                Set<SpStation> userStations = userApp.getStations();//stacje managera
+                Set<SpStation> nUserStations = new HashSet<SpStation>(0);//stacje robotyka
 
-                for (SpStation tempStation :
-                        userStations) {
+                Set<SpRobot> spRobotSet = userApp.getRobot();
+                for (SpRobot tempRobot : spRobotSet) {
+                    nUserStations.add(tempRobot.getStation());
+                }
+
+                //fixme złe mozliwe że bedize dla managerow dzialac
+                /*
+                for (SpStation tempStation : userStations) {
                     if(tempStation.getProject().getId()==projectId){
                         nUserStations.add(tempStation);
                     }
-                }
-
+                }*/
+                //fixme
                 model.addAttribute("stationsList", nUserStations);
 
             }
