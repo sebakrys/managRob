@@ -17,6 +17,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class SpStationsControl {
@@ -233,25 +234,18 @@ public class SpStationsControl {
         boolean robotExists = ServletRequestUtils.getBooleanParameter(request, "robotExists", false);
         String userPesel = principal.getName();
 
+
+        SpUserApp userApp = userService.findByPesel(userPesel);
+        boolean admin = userService.hasRoleAdmin(userApp);
+        boolean manager = userService.hasRoleManager(userApp);
+        boolean robprog = userService.hasRoleRobProg(userApp);
+
         boolean managerStation = false;
-        boolean admin = false;
+
+
 
         if(userPesel != null) {
 
-            boolean robprog = false;
-            boolean manager = false;
-
-
-            SpUserApp userApp = userService.findByPesel(userPesel);
-            for (UserRole ur: userApp.getUserRole()) {
-                if(ur.getRole().equals("ROLE_ADMIN")){
-                    admin = true;
-                }else if(ur.getRole().equals("ROLE_MANAGER")){
-                    manager = true;
-                }else if(ur.getRole().equals("ROLE_ROBPROG")){
-                    robprog = true;
-                }
-            }
 
             Set<SpStation> userStations =  userApp.getStations();
             for (SpStation tempStation:
@@ -265,10 +259,14 @@ public class SpStationsControl {
 
 
 
-            if(managerStation && manager || admin){
+            if(manager || admin){
                 System.out.println("MANAGER I POSIADA TEN STATION");
-                model.addAttribute("managerB", true);
+                //pokazuj wszytskim managerom wszytskie roboty ze stacji
                 model.addAttribute("robotsList", stationService.getStation(stationId).getRobot());
+
+                if((managerStation && manager) || admin){
+                    model.addAttribute("managerB", true);
+                }
 
             }else{
                 System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN STATION");
@@ -292,12 +290,27 @@ public class SpStationsControl {
 
 
         SpRobot robot = new SpRobot();
-        robot.setStation(stationService.getStation(stationId));
+        SpStation station = stationService.getStation(stationId);
+        robot.setStation(station);
+
+
+        List<SpUserApp> managersUsers = null;
+        //to dla admina - znajduje wszytskich managerów
+        if(admin){
+            managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
+        }else if(manager){//todo dla managera - znajduje tylko managerow przypisanych do tego projektu
+            List<SpUserApp> allManagers = userRepository.findBySpecificRoles("ROLE_MANAGER");
+            List<SpUserApp> projectUsers = userRepository.findByProjectId(station.getProject().getId());
+
+            Set<Long> ids = projectUsers.stream().map(obj -> obj.getId()).collect(Collectors.toSet());
+            managersUsers = allManagers.stream()
+                    .filter(obj -> ids.contains(obj.getId()))
+                    .collect(Collectors.toList());
+
+        }
 
 
 
-
-        List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
         List<SpUserApp> managersStacji = userService.getUserAppByStation(stationId);
         System.out.println("l wszy MANAGERS "+managersUsers.size());
@@ -479,11 +492,16 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inStationAddManager", method = RequestMethod.POST)
-    public String addManagersToStation(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds,@RequestParam("station.id") long bID, Model model, HttpServletRequest request) {
+    public String addManagersToStation(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds,@RequestParam("station.id") long bID, Model model, HttpServletRequest request, Principal principal) {
 
 
         List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
+
+        SpUserApp usr = userService.findByPesel(principal.getName());
+
+        boolean admin = userService.hasRoleAdmin(usr);
+        boolean manager = userService.hasRoleManager(usr);
 
 
         if(zaIds!=null) {
@@ -492,22 +510,47 @@ public class SpStationsControl {
             System.out.println("id stacji: " + bID);
 
 
-            if (bID > 0) {
+            if (bID > 0 && (admin || manager)) {
                 List<SpUserApp> managersStacji = userService.getUserAppByStation(bID);
                 SpStation station = stationService.getStation(bID);
 
                 for (SpUserApp tempManag : managersStacji) {
-                    //usuwanie managers
+                    //usuwanie wszytskich managers
                     userService.removeUserStation(tempManag, station);
                 }
                 if (zaIds!=null) {
                     for (long zaId : zaIds) {//dodawanie managers
                         System.out.println("para: " + zaId);
+                        SpUserApp tempUserApp = userService.getUserApp(zaId);
+
+                        //Sprawdzenie czy manager należy też do projektu
+                        boolean isInProj = false;
+                        for (Project tmpProj:tempUserApp.getProjects()) {
+                            if(tmpProj.getId()==station.getProject().getId()){//znaleziono tego managera w projekcie
+                                isInProj = true;
+                                break;
+                            }
+                        }
+                        if(!isInProj) {//dodac tez do projektu w przypadku admina
+                            if (admin) {//dodawanie managera do projektu od stacji(ADMIN tylko) jesli nie jest w niej
+                                Set<Project> newProjects = new HashSet<Project>(0);
+                                newProjects.add(station.getProject());
+                                tempUserApp.setProjects(newProjects);
+                                userService.addUserProjects(tempUserApp);
+                            }else{
+                                return "redirect:/stationRobotsManag.html?bId="+bID;
+                            }
+                        }
+
+
+
                         Set<SpStation> newStations = new HashSet<SpStation>(0);
                         newStations.add(station);
-                        SpUserApp tempUserApp = userService.getUserApp(zaId);
                         tempUserApp.setStations(newStations);
                         userService.addUserStations(tempUserApp);
+
+
+
                     }
                 }
 

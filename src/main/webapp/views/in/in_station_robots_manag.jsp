@@ -31,7 +31,7 @@
 
             </th>
         <th><div class="float-right">
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
                 <h3><spring:message code="label.addManagers"/></h3>
 
             </sec:authorize>
@@ -72,7 +72,7 @@
 </sec:authorize>
         </td>
         <td>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
                 <form:form method="post" action="inStationAddManager.html" modelAttribute="addManager">
             <div class="form-group">
                 <form:hidden path="station.id" modelAttribute="addRobot"/>

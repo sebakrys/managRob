@@ -197,6 +197,7 @@ public class ProjectsControl {
                 //usuwanie managers
                 System.out.println("usuwanie managers1");
                 userService.removeUserProject(tempManag, project);
+
                 System.out.println("usuwanie managers1");
             }
             if (zaIds!=null) {
@@ -205,9 +206,20 @@ public class ProjectsControl {
                     Set<Project> newProjects = new HashSet<Project>(0);
                     newProjects.add(project);
                     SpUserApp tempUserApp = userService.getUserApp(zaId);
+
+                    managersProject.removeIf(e -> e.getId()==(tempUserApp.getId()));
+
                     tempUserApp.setProjects(newProjects);
                     userService.addUserProjects(tempUserApp);
                 }
+                //usuwanie przyległych stacji z projektu managerowni który został z projektu usuniety
+                System.out.println("liczba usunietych managerow: "+managersProject.size());
+                for (SpUserApp managToDel : managersProject) {
+                    for (SpStation stationToRemov:stationService.listStationsByProject(project.getId())) {
+                        userService.removeUserStation(managToDel, stationToRemov);
+                    }
+                }
+
             }
 
         }
