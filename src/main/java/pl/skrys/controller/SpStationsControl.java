@@ -72,7 +72,6 @@ public class SpStationsControl {
         this.projectService = projectService;
     }
 
-
     @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
     @RequestMapping(value = "/inStations")
     public String managStationsList(Model model, HttpServletRequest request, Principal principal){

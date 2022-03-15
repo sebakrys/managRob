@@ -13,6 +13,8 @@
 <html>
 <head>
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 </head>
 <body>
 
@@ -57,9 +59,34 @@
 
                 <tr>
                     <td><form:label path="nazwa"><spring:message code="label.bName"/></form:label></td>
-                    <td><form:input path="nazwa" /></td>
+                    <td><form:input path="nazwa" onkeyup="searchStation()"/></td>
                     <td><p style="font-size:10px; color:red"><form:errors path="nazwa" /></p></td>
                 </tr>
+                <tr>
+                    <td colspan="2"><table id="searchResults" class="w-100"></table></td>
+                </tr>
+                    <script>
+
+
+                        function searchStation(){
+
+                            if(document.getElementById('nazwa').value.length==0){
+                                //alert("0")
+                                $("#searchResults").html("");
+                            }else{
+                                $.ajax({url: "http://localhost:8080/searchStation", data: { nazwa: document.getElementById('nazwa').value, pId: ${selectedProject.id}}, error: function(xhr){
+                                        alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                                    }, success: function(msg){
+                                        //alert(msg);
+                                        //$.each(data, function(index, element) {
+
+                                        $("#searchResults").html(msg);
+                                    }});
+                            }
+
+
+                        }
+                    </script>
 
                 <tr>
                     <td><form:label path="hala"><spring:message code="label.Hala"/>:</form:label></td>
