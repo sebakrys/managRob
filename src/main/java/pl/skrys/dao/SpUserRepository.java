@@ -32,6 +32,10 @@ public interface SpUserRepository extends JpaRepository<SpUserApp, Long> {
     @Query( "select u from SpUserApp u JOIN FETCH u.projects b where b.id = :projectId" )
     List<SpUserApp> findByProjectId(@Param("projectId")long projectId);
 
+    /*
+    @Query( "select u from SpUserApp u JOIN FETCH u.projects b, u.userRole r where b.id = :projectId and r.role = :roleName")
+    List<SpUserApp> findByProjectIdAndManager(@Param("projectId")long projectId, @Param("roleName") String roleName);
+    */
 
     @Query( "select u from SpUserApp u JOIN FETCH u.robot b where b.id = :robotId" )
     List<SpUserApp> findByByRobotId(@Param("robotId") long robotId);
