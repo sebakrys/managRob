@@ -1,5 +1,6 @@
 package pl.skrys.dao;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,11 @@ public interface SpRobotStatusRepository extends JpaRepository<SpRobotStatus, Lo
 
     List<SpRobotStatus> findByRobotIdOrderByDataDesc(long robotId);
 
+    @Query( value = "select fc from SpRobotStatus fc JOIN fc.robot f where f.id = :robotId order by fc.data desc")
+    List<SpRobotStatus> findByRobotIdOrderByDataDescStronicowane(@Param("robotId") long robotId, Pageable pageable);
+
+
+    long countAllByRobotId(long robotId);
 
 
     /*

@@ -1,11 +1,18 @@
 package pl.skrys.controller;
 
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import org.apache.commons.io.FilenameUtils;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.skrys.app.*;
 import pl.skrys.dao.SpUserRepository;
 import pl.skrys.service.*;
@@ -13,6 +20,9 @@ import pl.skrys.validator.SpUserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -582,7 +592,7 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inRobotManag")
-    public String robotManag(Model model, HttpServletRequest request, Principal principal){
+    public String robotManag(@RequestParam(required = false, name = "pg") Integer pg, Model model, HttpServletRequest request, Principal principal){
 
 
 
@@ -625,7 +635,26 @@ public class SpStationsControl {
             if(managerStation && manager || admin){
                 System.out.println("MANAGER I POSIADA TEN STATION");
                 model.addAttribute("managerB", true);
-                model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobot(srobot.getId()));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                //TODO model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobot(srobot.getId()));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                if(pg!=null){
+                    if(pg<0){
+                        pg=0;
+                    }else if(robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5)<pg){
+                        pg = (int) robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5);
+                    }
+
+                    System.out.println("pg="+pg);
+                }else{
+                    System.out.println("pg=null");
+                    pg = new Integer(0);
+                }
+
+                System.out.println(robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5));
+
+                //stronicowanie
+                model.addAttribute("robotStatusList", robotStatusService.getRobotStatusFromRobotStronicowane(srobot.getId(), new PageRequest(pg, 5)));//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+                model.addAttribute("pageNr", pg);
+                model.addAttribute("maxPageNr", robotStatusService.gerNumberOfPagesRobotStatusFromRobot(srobot.getId(), 5));
 
 
             }else{
@@ -684,6 +713,22 @@ public class SpStationsControl {
         //model.addAttribute("addStation", new SpStation());
         //model.addAttribute("stationsList", stationService.listStations());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
         //model.addAttribute("robotList", robotService.listRobots());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
+
+        String uploadDir = "/resources/uploads";
+        String realPath = request.getServletContext().getRealPath(uploadDir);
+
+        System.out.println(new File("/resources/uploads/"+robotId+".png").exists());
+        System.out.println(new File(realPath + "/" + robotId+".png").exists());
+
+        if(new File(realPath + "/" + robotId+".png").exists()){
+            model.addAttribute("imgExists", "png");
+        }else if(new File(realPath + "/" + robotId+".jpg").exists()){
+            model.addAttribute("imgExists", "jpg");
+        }else{
+            model.addAttribute("imgExists", null);
+        }
+
+
 
 
 

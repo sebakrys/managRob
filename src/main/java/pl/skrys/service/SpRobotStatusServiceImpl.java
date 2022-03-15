@@ -1,6 +1,7 @@
 package pl.skrys.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.skrys.app.SpRobotStatus;
@@ -38,6 +39,14 @@ public class SpRobotStatusServiceImpl implements SpRobotStatusService{
     @Transactional
     public List<SpRobotStatus>  getRobotStatusFromRobot(long robotId){
         return spRobotStatusRepository.findByRobotIdOrderByDataDesc(robotId);
+    }
+
+    public List<SpRobotStatus>  getRobotStatusFromRobotStronicowane(long robotId, Pageable pageable){
+        return spRobotStatusRepository.findByRobotIdOrderByDataDescStronicowane(robotId, pageable);
+    }
+
+    public long gerNumberOfPagesRobotStatusFromRobot(long robotId, int pageSize){
+        return ((spRobotStatusRepository.countAllByRobotId(robotId)-1)/pageSize);
     }
 
 
