@@ -22,6 +22,10 @@ public class SpStation {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "station")
     private List<SpRobot> robot;
 
+    @ManyToOne
+    @JoinColumn(name="project_id", nullable=false)
+    private Project project;
+
 
     public void removeRobot(SpRobot robot) {
         this.robot.remove(robot);
@@ -75,5 +79,13 @@ public class SpStation {
 
     public void setLinia(String linia) {
         this.linia = linia;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

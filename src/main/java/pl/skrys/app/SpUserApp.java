@@ -76,6 +76,9 @@ public class SpUserApp {
     private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Project> projects = new HashSet<Project>(0);
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<SpStation> stations = new HashSet<SpStation>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -214,6 +217,11 @@ public class SpUserApp {
     }
 
 
+    public Set<Project> getProjects() {
+        return projects;
+    }
 
-
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
 }

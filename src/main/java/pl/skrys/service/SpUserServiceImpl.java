@@ -6,10 +6,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.skrys.app.SpStation;
-import pl.skrys.app.SpRobot;
-import pl.skrys.app.SpUserApp;
-import pl.skrys.app.SpVerifyToken;
+import pl.skrys.app.*;
 import pl.skrys.dao.SpUserRepository;
 import pl.skrys.dao.UserRoleRepository;
 
@@ -115,6 +112,33 @@ public class SpUserServiceImpl implements SpUserService {
         spUserRepository.save(user);
     }
 
+    public void addUserProjects(SpUserApp user){
+        //user.setPassword(hashPassword(user.getPassword()));
+
+        SpUserApp oldUser = getUserApp(user.getId());
+
+        Set<Project> oldProjects = oldUser.getProjects();
+        oldProjects.addAll(user.getProjects());
+
+        oldUser.setProjects(oldProjects);
+
+        user = oldUser;
+
+        //user.getUserRole().add(userRoleRepository.findByRole("ROLE_ROBPROG"));
+
+
+
+        //user.setEnabled(oldUser.isEnabled());//przepisanie aktywacji konta
+        //user.setRobot(oldUser.getRobot());//przepsanie mieszkań
+        //user.setStations(oldUser.getStations());//przepisane stacji
+        //user.setVerifyToken(oldUser.getVerifyToken());//przepisane tokena
+        //user.getUserRole().addAll(oldUser.getUserRole());//przepisane starej roli
+        //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
+        //user.setConfirmPassword(oldUser.getPassword());
+
+
+        spUserRepository.save(user);
+    }
 
     public void addUserStations(SpUserApp user) {//todo
         //user.setPassword(hashPassword(user.getPassword()));
@@ -140,6 +164,36 @@ public class SpUserServiceImpl implements SpUserService {
         //user.setPassword(oldUser.getPassword());//przepisywanie hasłą takie jak było wczesniej
         //user.setConfirmPassword(oldUser.getPassword());
 
+
+        spUserRepository.save(user);
+    }
+
+    public void removeUserProject(SpUserApp user, Project project){
+        //user.setPassword(hashPassword(user.getPassword()));
+
+        System.out.println("Usuwanie "+user.getPesel());
+
+        SpUserApp oldUser = getUserApp(user.getId());
+
+        Set<Project> oldProjects = oldUser.getProjects();
+        //SpStation tempBuilToDel = new SpStation();
+
+        System.out.println("Przed usunieciem: "+oldProjects);
+        for (Project tempProject : oldProjects) {
+            if(tempProject.getId()==project.getId()){
+                //tempBuilToDel = tempBuild
+                boolean suc = oldProjects.remove(tempProject);
+                System.out.println("suc: "+suc+" "+tempProject);
+                break;
+            }
+        }
+
+        System.out.println("Po usunieciu: "+oldProjects);
+        //oldStations.addAll(user.getStations());
+
+        oldUser.setProjects(oldProjects);
+
+        user = oldUser;
 
         spUserRepository.save(user);
     }
@@ -188,6 +242,8 @@ public class SpUserServiceImpl implements SpUserService {
 
         spUserRepository.save(user);
     }
+
+
 
 
     public void addUserRobot(SpUserApp user) {//todo
@@ -307,6 +363,12 @@ public class SpUserServiceImpl implements SpUserService {
     }
 
     @Transactional
+    public List<SpUserApp> getUserAppByProject(long ProjectId){
+        return spUserRepository.findByProjectId(ProjectId);
+    }
+
+
+    @Transactional
     public List<SpUserApp> getUserAppByRobot(long robotId) {
         return spUserRepository.findByByRobotId(robotId);
     }
@@ -335,5 +397,47 @@ public class SpUserServiceImpl implements SpUserService {
         return spUserRepository.findByEmail(email);
     }
 
+    public boolean isThisProjectManager(SpUserApp userApp, Long projectId){
+        boolean managerProject = false;
+        Set<Project> userProjects =  userApp.getProjects();
+        for (Project tempProject: userProjects) {
+            if(tempProject.getId()==projectId){
+                managerProject=true;
+                break;
+            }
+        }
+        return managerProject;
+    }
+
+    public boolean hasRoleAdmin(SpUserApp userApp){
+        boolean admin = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_ADMIN")){
+                admin = true;
+                break;
+            }
+        }
+        return admin;
+    }
+    public boolean hasRoleManager(SpUserApp userApp){
+        boolean manager = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_MANAGER")){
+                manager = true;
+                break;
+            }
+        }
+        return manager;
+    }
+    public boolean hasRoleRobProg(SpUserApp userApp){
+        boolean robprog = false;
+        for (UserRole ur: userApp.getUserRole()) {
+            if(ur.getRole().equals("ROLE_ROBPROG")){
+                robprog = true;
+                break;
+            }
+        }
+        return robprog;
+    }
 
 }

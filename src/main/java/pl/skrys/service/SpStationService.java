@@ -10,6 +10,7 @@ public interface SpStationService {
     void addStation(SpStation station);
     void editStation(SpStation station);
     List<SpStation> listStations();
+    List<SpStation> listStationsByProject(long id);
     SpStation getStation(long id);
     SpStation getStationByName(String name);
     void removeStation(long id);

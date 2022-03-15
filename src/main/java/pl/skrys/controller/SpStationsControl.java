@@ -27,6 +27,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class SpStationsControl {
@@ -52,7 +53,7 @@ public class SpStationsControl {
 
 
 
-
+    private ProjectService projectService;
     private SpUserService userService;
     private UserRoleService userRoleService;
     private SpStationService stationService;
@@ -61,13 +62,14 @@ public class SpStationsControl {
     private SpUserRepository userRepository;
     private SpUserValidator validator  = new SpUserValidator();
 
-    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotStatusService robotStatusService, SpUserRepository userRepository) {
+    public SpStationsControl(SpUserService userService, UserRoleService userRoleService, SpStationService stationService, SpRobotService robotService, SpRobotStatusService robotStatusService, SpUserRepository userRepository, ProjectService projectService) {
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.stationService = stationService;
         this.robotService = robotService;
         this.robotStatusService = robotStatusService;
         this.userRepository = userRepository;
+        this.projectService = projectService;
     }
 
 
@@ -160,7 +162,9 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inAddNewStation", method = RequestMethod.POST)
-    public String addNewStation(@Valid @ModelAttribute("addStation") SpStation station, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+    public String addNewStation(@Valid @ModelAttribute("addStation") SpStation station,@RequestParam(name = "project.id") Long projectId, BindingResult result, Model model, HttpServletRequest request, Principal principal) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
+
+        //int projectId = ServletRequestUtils.getIntParameter(request, "project.id", -1);
 
 
         model.addAttribute("stationsList", stationService.listStations());//dla ROLE_ADMIN, dla reszty ma pokazywac tylko przynależace
@@ -178,21 +182,58 @@ public class SpStationsControl {
         if (result.getErrorCount() == 0) {
             if (station.getId() == 0) {
                 //dodawanie stacji
-                System.out.println("dodawanie stacji");
+                System.out.println("dodawanie stacji"+projectId);
                 stationService.addStation(station);
-                return "redirect:/inStations.html";
+                return "redirect:/projectStationsManag.html?bId="+projectId;
             } else {
+                System.out.println("edit stacji"+projectId);
                 stationService.editStation(station);
 
-                return "redirect:/inStations.html";
+                return "redirect:/projectStationsManag.html?bId="+projectId;
+                //return "redirect:/inStations.html";
             }
 
         }
 
         System.out.println("są bledy validatora");
 
+        List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
-        return "in_stations";
+        List<SpUserApp> managersProject = userService.getUserAppByProject(projectId);
+        System.out.println("l wszy MANAGERS "+managersUsers.size());
+        System.out.println("l  MANAGERS "+managersProject.size());
+
+
+
+        SpUserApp userApp = userService.findByPesel(principal.getName());
+        boolean admin = userService.hasRoleAdmin(userApp);
+        boolean manager = userService.hasRoleManager(userApp);
+        boolean managerProject = userService.isThisProjectManager(userApp, projectId);
+        if(managerProject && manager || admin){
+            System.out.println("MANAGER I POSIADA TEN Project");
+            model.addAttribute("managerB", true);
+
+            Project tempProj = projectService.getProject(projectId);
+            List<SpStation> tempListStacje = stationService.listStationsByProject(tempProj.getId());
+
+            model.addAttribute("stationsList", tempListStacje);
+
+            model.addAttribute("managers", managersUsers);
+            model.addAttribute("managersStacji", managersProject);
+            model.addAttribute("addStation", station);
+            model.addAttribute("addManager", station);
+            model.addAttribute("selectedProject", projectService.getProject(projectId));
+            model.addAttribute("bId", projectId);
+            return "in_project_stations_manager";
+        }else{
+            System.out.println("Nie powinno cie tu być");
+            return "/accessDenied";
+        }
+
+
+
+
+        //return "in_stations";
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
@@ -203,25 +244,18 @@ public class SpStationsControl {
         boolean robotExists = ServletRequestUtils.getBooleanParameter(request, "robotExists", false);
         String userPesel = principal.getName();
 
+
+        SpUserApp userApp = userService.findByPesel(userPesel);
+        boolean admin = userService.hasRoleAdmin(userApp);
+        boolean manager = userService.hasRoleManager(userApp);
+        boolean robprog = userService.hasRoleRobProg(userApp);
+
         boolean managerStation = false;
-        boolean admin = false;
+
+
 
         if(userPesel != null) {
 
-            boolean robprog = false;
-            boolean manager = false;
-
-
-            SpUserApp userApp = userService.findByPesel(userPesel);
-            for (UserRole ur: userApp.getUserRole()) {
-                if(ur.getRole().equals("ROLE_ADMIN")){
-                    admin = true;
-                }else if(ur.getRole().equals("ROLE_MANAGER")){
-                    manager = true;
-                }else if(ur.getRole().equals("ROLE_ROBPROG")){
-                    robprog = true;
-                }
-            }
 
             Set<SpStation> userStations =  userApp.getStations();
             for (SpStation tempStation:
@@ -235,10 +269,14 @@ public class SpStationsControl {
 
 
 
-            if(managerStation && manager || admin){
+            if(manager || admin){
                 System.out.println("MANAGER I POSIADA TEN STATION");
-                model.addAttribute("managerB", true);
+                //pokazuj wszytskim managerom wszytskie roboty ze stacji
                 model.addAttribute("robotsList", stationService.getStation(stationId).getRobot());
+
+                if((managerStation && manager) || admin){
+                    model.addAttribute("managerB", true);
+                }
 
             }else{
                 System.out.println("NIE JEST !!!!!MANAGER I POSIADA TEN STATION");
@@ -262,12 +300,27 @@ public class SpStationsControl {
 
 
         SpRobot robot = new SpRobot();
-        robot.setStation(stationService.getStation(stationId));
+        SpStation station = stationService.getStation(stationId);
+        robot.setStation(station);
+
+
+        List<SpUserApp> managersUsers = null;
+        //to dla admina - znajduje wszytskich managerów
+        if(admin){
+            managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
+        }else if(manager){//todo dla managera - znajduje tylko managerow przypisanych do tego projektu
+            List<SpUserApp> allManagers = userRepository.findBySpecificRoles("ROLE_MANAGER");
+            List<SpUserApp> projectUsers = userRepository.findByProjectId(station.getProject().getId());
+
+            Set<Long> ids = projectUsers.stream().map(obj -> obj.getId()).collect(Collectors.toSet());
+            managersUsers = allManagers.stream()
+                    .filter(obj -> ids.contains(obj.getId()))
+                    .collect(Collectors.toList());
+
+        }
 
 
 
-
-        List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
         List<SpUserApp> managersStacji = userService.getUserAppByStation(stationId);
         System.out.println("l wszy MANAGERS "+managersUsers.size());
@@ -449,11 +502,16 @@ public class SpStationsControl {
 
 
     @RequestMapping(value = "/inStationAddManager", method = RequestMethod.POST)
-    public String addManagersToStation(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds,@RequestParam("station.id") long bID, Model model, HttpServletRequest request) {
+    public String addManagersToStation(@RequestParam(required = false, name = "ZaIds") List<Long> zaIds,@RequestParam("station.id") long bID, Model model, HttpServletRequest request, Principal principal) {
 
 
         List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
+
+        SpUserApp usr = userService.findByPesel(principal.getName());
+
+        boolean admin = userService.hasRoleAdmin(usr);
+        boolean manager = userService.hasRoleManager(usr);
 
 
         if(zaIds!=null) {
@@ -462,22 +520,47 @@ public class SpStationsControl {
             System.out.println("id stacji: " + bID);
 
 
-            if (bID > 0) {
+            if (bID > 0 && (admin || manager)) {
                 List<SpUserApp> managersStacji = userService.getUserAppByStation(bID);
                 SpStation station = stationService.getStation(bID);
 
                 for (SpUserApp tempManag : managersStacji) {
-                    //usuwanie managers
+                    //usuwanie wszytskich managers
                     userService.removeUserStation(tempManag, station);
                 }
                 if (zaIds!=null) {
                     for (long zaId : zaIds) {//dodawanie managers
                         System.out.println("para: " + zaId);
+                        SpUserApp tempUserApp = userService.getUserApp(zaId);
+
+                        //Sprawdzenie czy manager należy też do projektu
+                        boolean isInProj = false;
+                        for (Project tmpProj:tempUserApp.getProjects()) {
+                            if(tmpProj.getId()==station.getProject().getId()){//znaleziono tego managera w projekcie
+                                isInProj = true;
+                                break;
+                            }
+                        }
+                        if(!isInProj) {//dodac tez do projektu w przypadku admina
+                            if (admin) {//dodawanie managera do projektu od stacji(ADMIN tylko) jesli nie jest w niej
+                                Set<Project> newProjects = new HashSet<Project>(0);
+                                newProjects.add(station.getProject());
+                                tempUserApp.setProjects(newProjects);
+                                userService.addUserProjects(tempUserApp);
+                            }else{
+                                return "redirect:/stationRobotsManag.html?bId="+bID;
+                            }
+                        }
+
+
+
                         Set<SpStation> newStations = new HashSet<SpStation>(0);
                         newStations.add(station);
-                        SpUserApp tempUserApp = userService.getUserApp(zaId);
                         tempUserApp.setStations(newStations);
                         userService.addUserStations(tempUserApp);
+
+
+
                     }
                 }
 
@@ -488,8 +571,10 @@ public class SpStationsControl {
 
 
     @RequestMapping("/deleteStation/{stationId}")
-    public String deleteStation(@PathVariable("stationId") Long stationId){
+    public String deleteStation(@PathVariable("stationId") Long stationId, @RequestParam(name = "bId") Long projectId){
         System.out.println("Usuwanie  stacji "+stationId);
+
+
 
         List<SpUserApp> managersStacji = userService.getUserAppByStation(stationId);
         SpStation station = stationService.getStation(stationId);
@@ -499,7 +584,8 @@ public class SpStationsControl {
         }
 
         stationService.removeStation(stationId);
-        return "redirect:/inStations";
+        return "redirect:/projectStationsManag.html?bId="+projectId;
+        //return "redirect:/inStations";
     }
 
 

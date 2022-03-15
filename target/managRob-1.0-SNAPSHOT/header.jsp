@@ -35,6 +35,11 @@
                         <a class="nav-link" href="/inStations.html"><spring:message code="label.stations"/></a>
                     </li>
                 </sec:authorize>
+                <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inProjects.html"><spring:message code="label.projects"/></a>
+                    </li>
+                </sec:authorize>
 
             </ul>
             <form id="langForm" action="" method="GET" class="ms-auto">
