@@ -44,12 +44,31 @@
             </ul>
             <form id="langForm" action="" method="GET" class="ms-auto">
                         <span style="...">
-                            <select size="1" name="lang" onchange="form.submit()" class="form-select form-select-sm" aria-label=".form-select-sm" style="width:auto; border-radius:1.0rem;">
+                            <select size="1" id="lang" name="lang" onchange="langChang()" class="form-select form-select-sm" aria-label=".form-select-sm" style="width:auto; border-radius:1.0rem;">
                                 <option value="pl" <spring:message code="selected.selectedPL"/>>PL</option>
                                 <option value="en" <spring:message code="selected.selectedEN"/>>EN</option>
                                 <option value="de" <spring:message code="selected.selectedDE"/>>DE</option>
                             </select>
                         </span>
+                <script>
+                    function langChang(){
+
+
+                        if(window.location.search.substr(1).length>0){
+                            if(window.location.href.includes('lang')){
+                                //alert(window.location.href.substring(0, window.location.href.indexOf('lang')+5))
+                                window.location.href = window.location.href.substring(0, window.location.href.indexOf('lang')+5)+document.getElementById("lang").value;
+                            }else{
+                                window.location.href = window.location.href+"&lang="+document.getElementById("lang").value;
+                            }
+
+                        }else{
+                            window.location.href = window.location.href+"?lang="+document.getElementById("lang").value;
+                        }
+
+                        //document.getElementById("lang").submit();
+                    }
+                </script>
             </form>
         </div>
 

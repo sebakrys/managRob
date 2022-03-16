@@ -202,10 +202,4 @@ public class SpLoginRegisterControl {
         model.addAttribute("activated", 1);
         return"redirect:/login.html";
     }
-
-    @RequestMapping(value = "?lang", method = RequestMethod.GET)
-    public String changeLang(){
-        System.out.println("lang change");
-        return"refresh";//lub "reload"
-    }
 }
