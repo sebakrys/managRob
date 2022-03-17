@@ -7,6 +7,7 @@
 --%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link href="<c:url value="/resources/css/header.css" />" rel="stylesheet">
 
 <div class="page-header">
@@ -17,7 +18,7 @@
     <tr>
         <th><h3></h3></th>
         <th>
-<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER')">
+<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
     <a href="/inUser.html"><spring:message code="label.user"/></a>
 </sec:authorize>
     </th>
@@ -30,6 +31,9 @@
 <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
         <th><a href="/inProjects.html"><spring:message code="label.projects"/></a></th>
 </sec:authorize>
+
+<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
+<a href="/search"></a>
     </tr>
 </table>
 

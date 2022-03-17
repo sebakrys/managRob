@@ -10,6 +10,6 @@ import javax.transaction.Transactional;
 @Repository
 public interface SpRobotRepository extends JpaRepository<SpRobot, Long> {
     SpRobot findById(long id);
-
+    SpRobot findByRobotNumber(String robotNumber);
 
 }

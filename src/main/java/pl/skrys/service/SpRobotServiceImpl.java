@@ -54,6 +54,11 @@ public class SpRobotServiceImpl implements SpRobotService{
         return spRobotRepository.findById(id);
     }
 
+    @Override
+    public SpRobot getSpRobot(String robotNumber) {
+        return spRobotRepository.findByRobotNumber(robotNumber);
+    }
+
     @Transactional
     public void removeRobot(long id) {
         System.out.println("Usuwanie mieszkania service "+id);

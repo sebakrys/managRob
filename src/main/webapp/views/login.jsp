@@ -51,7 +51,7 @@
         <div class="msg">${msg}</div>
     </c:if>
 
-    <form name="loginForm" action="<c:url value='/login'/>" method="POST">
+    <form name="loginForm" action="/search" method="POST">
         <table>
             <tr>
                 <td>AppUser:</td>

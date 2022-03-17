@@ -10,5 +10,6 @@ public interface SpRobotService {
     void editRobot(SpRobot robot);
     List<SpRobot> listRobots();
     SpRobot getRobot(long id);
+    SpRobot getSpRobot(String robotNumber);
     void removeRobot(long id);
 }

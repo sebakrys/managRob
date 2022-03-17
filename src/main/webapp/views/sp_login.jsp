@@ -54,7 +54,7 @@
     <form name="loginForm" action="<c:url value='/login'/>" method="POST">
         <table>
             <tr>
-                <td>PESEL:</td>
+                <td>E-mail:</td>
                 <td><input type="text" name="login" value=""></td>
             </tr>
             <tr>

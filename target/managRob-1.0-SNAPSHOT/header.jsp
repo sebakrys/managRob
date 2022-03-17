@@ -8,6 +8,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <link href="<c:url value="/resources/css/header.css" />" rel="stylesheet">
 
@@ -42,6 +43,17 @@
                 </sec:authorize>
 
             </ul>
+<sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
+<form:form action="search" method="POST">
+                <table>
+                    <tr>
+                        <td>Search:</td>
+                        <td><input type="text" id="robotNumber" name="robotNumber" /></td>
+                    </tr>
+                </table>
+            </form:form>
+</sec:authorize>
+
             <form id="langForm" action="" method="GET" class="ms-auto">
                         <span style="...">
                             <select size="1" name="lang" onchange="form.submit()" class="form-select form-select-sm" aria-label=".form-select-sm" style="width:auto; border-radius:1.0rem;">

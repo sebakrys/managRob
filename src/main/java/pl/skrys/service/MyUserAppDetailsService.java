@@ -29,8 +29,10 @@ public class MyUserAppDetailsService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(final String pesel) throws UsernameNotFoundException {
-        SpUserApp userApp = userAppService.findByPesel(pesel);
+    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+        List<SpUserApp> tmpList = userAppService.findByEmail(email); // logowanie przez email
+        SpUserApp userApp = tmpList.get(0);
+//        SpUserApp userApp = userAppService.findByPesel(pesel); // logowanie przez pesel
         List<GrantedAuthority> authorities = buildUserAuthority(userApp.getUserRole());
         return buildUserForAuthentication(userApp, authorities);
     }

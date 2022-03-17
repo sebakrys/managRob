@@ -100,4 +100,9 @@
         <put-attribute name="title" value="Project" />
         <put-attribute name="body" value="/views/in/in_project_stations_manag.jsp" />
     </definition>
+    <definition name="in_search_robot" extends="base.definition">
+        <put-attribute name="title" value="Search" />
+        <put-attribute name="body" value="/views/in/in_search_robot.jsp" />
+
+    </definition>
 </tiles-definitions>
