@@ -105,7 +105,7 @@
 
         </td>
     </tr>
-    <tr colspan="2">
+    <tr colspan="8">
         <td>
             <h3>
                 <spring:message code="label.robotsList"/>
@@ -114,6 +114,12 @@
                 <table class="table table-striped">
                     <tr>
                         <th><spring:message code="label.number"/></th>
+                        <th><spring:message code="short.tz"/></th>
+                        <th><spring:message code="short.vpot"/></th>
+                        <th><spring:message code="short.vprod"/></th>
+                        <th><spring:message code="short.pot"/></th>
+                        <th><spring:message code="short.prod"/></th>
+                        <th><spring:message code="short.accepted"/></th>
                 <c:if test="${managerB}">
                         <th>&nbsp;</th>
                 </c:if>
@@ -121,6 +127,12 @@
                     </tr><c:forEach items="${robotsList}" var="robotsL">
                     <tr>
                         <td>${robotsL.robotNumber}</td>
+                        <td>${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).tz}</td>
+                        <td>${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).vel_pot}</td>
+                        <td>${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).vel_prod}</td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).pot ? 'checked' : ''} disabled></td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).prod ? 'checked' : ''} disabled></td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${robotsL.robotStatus.get(robotsL.robotStatus.size() - 1).accepted ? 'checked' : ''} disabled></td>
                         <c:if test="${managerB}">
                         <td><a type="button" class="btn btn-danger btn-sm" href="deleteRobot/${robotsL.id}.html?bId=${selectedStation.id}"><spring:message code="label.delete"/></a></td>
                         </c:if>
