@@ -37,6 +37,10 @@
                 <h3><spring:message code="label.addManagers"/></h3>
 
             </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_MANAGER') && !hasRole('ROLE_ADMIN')">
+                <h3><spring:message code="label.Managers"/></h3>
+
+            </sec:authorize>
         </div></th>
     </tr>
     <tr>
@@ -112,15 +116,18 @@
 </sec:authorize>
         </td>
         <td>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
+<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">
+
                 <form:form method="post" action="inProjectAddManager.html" modelAttribute="addManager">
+
             <div class="form-group">
                 <form:hidden path="project.id" modelAttribute="addStation"/>
                 <div class="overflow-auto" style="max-height: 260px;">
-                <table class="table table-hover" >
+                <table class="table<sec:authorize access="hasRole('ROLE_ADMIN')"> table-hover</sec:authorize>" >
 
 
                     <c:forEach items="${managers}" var="zaUser">
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <tr><td><input type="checkbox" class="btn-check" autocomplete="off" id="btn-check-outlined ${zaUser.id}" name="ZaIds" value="${zaUser.id}"
 
                         <c:forEach items="${managersStacji}" var="managersStacja">
@@ -132,14 +139,27 @@
                         >
                             <label class="btn btn-outline-primary" for="btn-check-outlined ${zaUser.id}"> ${zaUser.pesel}<br>${zaUser.firstName} ${zaUser.lastName}</label></td></tr>
 
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_MANAGER')">
+                            <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                            <c:forEach items="${managersStacji}" var="managersStacja">
+                                <c:if test="${zaUser.id == managersStacja.id}">
+                                    <tr><td><span class="badge rounded-pill bg-primary">${zaUser.email}<br>${zaUser.firstName} ${zaUser.lastName}</span></td></tr>
+                                </c:if>
 
+
+                            </c:forEach>
+                            </sec:authorize>
+                        </sec:authorize>
                     </c:forEach>
 
 
                 </table>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
             </div>
                 <input class="btn btn-primary" type="submit" value="<spring:message code="button.submit"/>"/>
             </div>
+                    </sec:authorize>
                 </form:form>
 </sec:authorize>
 
