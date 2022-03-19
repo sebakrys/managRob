@@ -228,8 +228,9 @@ public class ProjectsControl {
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ROBPROG", "ROLE_ADMIN"})
-    @RequestMapping(value = "/projectStationsManag")
-    public String robotsManagList(Model model, HttpServletRequest request, Principal principal){
+    @RequestMapping(value = {"/projectStationsManag", "/searchStation/{stationId}/"})
+    public String robotsManagList(@RequestParam(required = false, name = "sId") Long stationId, Model model, HttpServletRequest request, Principal principal){
+
 
         long projectId = ServletRequestUtils.getIntParameter(request, "bId", -1);
         boolean stationExists = ServletRequestUtils.getBooleanParameter(request, "stationExists", false);
@@ -332,7 +333,7 @@ public class ProjectsControl {
 
 
 
-        model.addAttribute("addStation", station);
+
         model.addAttribute("addManager", station);
 
         model.addAttribute("selectedProject", projectService.getProject(projectId));
@@ -348,7 +349,22 @@ public class ProjectsControl {
 
         model.addAttribute("stationExists", stationExists);
 
+        if(stationId!=null){
+            System.out.println("searchStation "+stationId);
 
+            SpStation tmpSta = stationService.getStation(stationId);
+            //station = new SpStation();
+            station.setNazwa(tmpSta.getNazwa());
+            station.setHala(tmpSta.getHala());
+            station.setLinia(tmpSta.getLinia());
+            station.setSterownik(tmpSta.getSterownik());
+
+
+            model.addAttribute("addStation", station);
+        }else{
+            System.out.println("searchStation ==NULL ");
+            model.addAttribute("addStation", station);
+        }
 
         return "in_project_stations_manager";
 

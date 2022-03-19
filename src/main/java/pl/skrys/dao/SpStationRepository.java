@@ -16,5 +16,11 @@ public interface SpStationRepository extends JpaRepository<SpStation, Long> {
     SpStation findByNazwa(String nazwa);
     List<SpStation> findAllByProjectId(long id);
 
+    List<SpStation> findByNazwaContainingIgnoreCase(String nazwa);
+
+/*
+    @Query( "select s from SpStation s where s.nazwa like :searchNazwa" )
+    List<SpStation> searchStationsBysearch(@Param("searchNazwa") String searchNazwa);*/
+
 
 }

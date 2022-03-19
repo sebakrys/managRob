@@ -42,6 +42,11 @@ public class SpStationServiceImpl implements SpStationService{
     }
 
     @Transactional
+    public List<SpStation> searchStationsWithName(String nazwa) {
+        return spStationRepository.findByNazwaContainingIgnoreCase(nazwa);
+    }
+
+    @Transactional
     public List<SpStation> listStations() {
         return spStationRepository.findAll();
     }

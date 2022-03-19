@@ -14,4 +14,6 @@ public interface SpStationService {
     SpStation getStation(long id);
     SpStation getStationByName(String name);
     void removeStation(long id);
+
+    List<SpStation> searchStationsWithName(String nazwa);
 }
