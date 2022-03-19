@@ -322,8 +322,8 @@ public class SpStationsControl {
 
 
         List<SpUserApp> managersStacji = userService.getUserAppByStation(stationId);
-        System.out.println("l wszy MANAGERS "+managersUsers.size());
-        System.out.println("l  MANAGERS "+managersStacji.size());
+        //todo System.out.println("l wszy MANAGERS "+managersUsers.size());
+        //todo System.out.println("l  MANAGERS "+managersStacji.size());
 
         model.addAttribute("managers", managersUsers);
         model.addAttribute("managersStacji", managersStacji);
