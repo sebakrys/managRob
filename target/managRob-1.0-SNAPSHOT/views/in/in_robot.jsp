@@ -14,6 +14,8 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/resources/css/lightbox.css">
+    <script src="/resources/js/jquery.min.js"></script>
 </head>
 <body>
 
@@ -197,9 +199,16 @@
                 </table>
             </c:if>
 
+
             <c:if test="${imgExists!=null}">
 
-            <img style="width:100%;" src="/resources/uploads/${selectedRobot.id}.${imgExists}" alt="robot" height="auto">
+
+                <a class="ripple" style="height: auto; width: 50%; display: block;" href="/resources/uploads/${selectedRobot.id}.${imgExists}" data-lightbox="robot_image_1" data-title="robot ${selectedRobot.robotNumber}">
+                <div class="bg-image hover-zoom hover-overlay">
+                    <img src="/resources/uploads/${selectedRobot.id}.${imgExists}" class="img-fluid rounded float-start" >
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.35)"></div>
+                </div>
+                </a>
 
             </c:if>
 
@@ -229,6 +238,8 @@
 
 
 
+
+<script src="/resources/js/lightbox.min.js"></script>
 
 </body>
 </html>
