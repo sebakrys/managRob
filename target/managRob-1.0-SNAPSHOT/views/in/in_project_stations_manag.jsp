@@ -13,7 +13,6 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="/resources/css/bootstrap-lightbox.min.css">
     <script src="/resources/js/jquery.min.js"></script>
 </head>
 <body>

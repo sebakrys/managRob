@@ -130,6 +130,7 @@
 
     <tr colspan="2">
         <td>
+            <sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
             <h3>
                 <spring:message code="label.statusList"/>
             </h3>
@@ -139,17 +140,18 @@
                 <ul class="pagination">
                     <li class="page-item${pageNr>0 ? "" : " disabled"}">
                         <a class="page-link" href="inRobotManag.html?fId=${selectedRobot.id}&pg=${pageNr>0 ? pageNr-1 : 0}" aria-label="Previous">
-                            <span class="sr-only">🡄</span>
+                            🡄
                         </a>
                     </li>
                     <li class="page-item disabled"><a class="page-link" href="#"><spring:message code="label.Page"/>: ${pageNr+1}/${maxPageNr+1}</a></li>
                     <li class="page-item${pageNr<maxPageNr ? "" : " disabled"}">
                         <a class="page-link" href="inRobotManag.html?fId=${selectedRobot.id}&pg=${pageNr<maxPageNr ? pageNr+1 : maxPageNr}" aria-label="Next">
-                            <span class="sr-only">🡆</span>
+                            🡆
                         </a>
                     </li>
                 </ul>
             </nav>
+
 
             <c:if test="${!empty robotStatusList}">
                 <table class="table table-striped">
@@ -187,9 +189,9 @@
                         <td>${statusL.tz}</td>
                         <td>${statusL.vel_pot}</td>
                         <td>${statusL.vel_prod}</td>
-                        <td>${statusL.pot}</td>
-                        <td>${statusL.prod}</td>
-                        <td>${statusL.accepted}</td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${statusL.pot ? 'checked' : ''} disabled></td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${statusL.prod ? 'checked' : ''} disabled></td>
+                        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" ${statusL.accepted ? 'checked' : ''} disabled></td>
                         <td>${statusL.comment}</td>
                         <td>${statusL.data.getHours()}:${statusL.data.getMinutes()}:${statusL.data.getSeconds()} ${statusL.data.getDate()}.${statusL.data.getMonth()}.${statusL.data.getYear()}</td>
                         <td>${statusL.robotyk.getEmail()}</td>
@@ -198,6 +200,7 @@
                 </c:forEach>
                 </table>
             </c:if>
+            </sec:authorize>
 
 
             <c:if test="${imgExists!=null}">
