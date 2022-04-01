@@ -35,30 +35,15 @@ public class SpUserApp {
     @Size(min = 9, max = 9, message = "{error.size.tel}")
     private String telephone;
 
-
-
-
-    @NotNull
-    @Column(unique = true)
-    @Size(min = 11, max = 11, message = "{error.size.pesel}")
     private String pesel;
 
     @NotNull
-    //@Size(min = 6, message = "{error.size.pass}")//validacja wystepuje w innym miejscu
     private String password;
 
     @Transient
     private String confirmPassword;
 
-
-
     private boolean enabled;
-
-    /*
-    @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Pesel pesel;
-*/
 
     @OneToOne(cascade = CascadeType.ALL)
     private SpVerifyToken verifyToken;
@@ -83,27 +68,6 @@ public class SpUserApp {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<SpRobot> robot = new HashSet<SpRobot>(0);
-
-
-/*
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-        //checkPassword();
-    }*/
-
-/*
-    private void checkPassword() {
-        if(this.password == null || this.confirmPassword == null){
-            return;
-        }else if(!this.password.equals(confirmPassword)){
-            this.confirmPassword = null;
-        }
-    }*/
-
 
     public Set<SpRobot> getRobot() {
         return robot;
@@ -175,7 +139,6 @@ public class SpUserApp {
 
     public void setPassword(String password) {
         this.password = password;
-        //checkPassword();
     }
 
 

@@ -28,11 +28,6 @@
     </tr>
 
     <tr>
-        <td><form:label path="pesel"><spring:message code="label.pesel"/></form:label></td>
-        <td><form:input path="pesel" /></td>
-        <td><p style="font-size:10px; color:red"><form:errors path="pesel" /></p></td>
-    </tr>
-    <tr>
         <td><form:label path="password"><spring:message code="label.password"/></form:label></td>
         <td><form:input path="password" type="password" /></td>
         <td><p style="font-size:10px; color:red"><form:errors path="password" /></p></td>

@@ -167,7 +167,7 @@ public class PdfServiceImpl implements PdfService{
             OutputStream o = response.getOutputStream();
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=" + userApp.getPesel() + ".pdf");
+            response.setHeader("Content-Disposition", "inline; filename=" + userApp.getEmail() + ".pdf");
             Document pdf = new Document();
             PdfWriter.getInstance(pdf, o);
             pdf.open();
@@ -178,10 +178,6 @@ public class PdfServiceImpl implements PdfService{
             table.addCell(userApp.getFirstName());
             table.addCell("LastName");
             table.addCell(userApp.getLastName());
-            table.addCell("PESEL");
-            table.addCell(userApp.getPesel());
-            table.addCell("Login");
-            table.addCell(userApp.getPesel());
             table.addCell("Email");
             table.addCell(userApp.getEmail());
             table.addCell("Active");

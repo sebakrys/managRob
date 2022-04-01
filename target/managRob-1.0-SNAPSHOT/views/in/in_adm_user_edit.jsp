@@ -34,12 +34,6 @@
         </td>
     </tr>
 
-    <tr>
-        <td><form:label path="pesel"><spring:message code="label.pesel"/></form:label></td>
-        <td><form:input path="pesel" /></td>
-        <td><form:errors path="pesel" /></td>
-    </tr>
-
 
     <tr>
         <td><form:label path="firstName"><spring:message code="label.firstName"/>:</form:label></td>

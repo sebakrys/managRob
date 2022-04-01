@@ -32,16 +32,6 @@
                 </tr>
 
                 <tr>
-                    <td><form:label path="pesel"><spring:message code="label.pesel"/></form:label></td>
-                    <td><form:input path="pesel" /></td>
-                    <td><form:errors path="pesel" /></td>
-                </tr>
-
-
-
-
-
-                <tr>
                     <td><form:label path="firstName"><spring:message code="label.firstName"/>:</form:label></td>
                     <td><form:input path="firstName"/></td>
                     <td><p style="font-size:10px; color:red"><form:errors path="firstName"/></p></td>
@@ -75,7 +65,6 @@
                 <tr>
                     <td>
                         <form:hidden path="id"/>
-                        <form:hidden path="pesel"/>
                         <form:hidden path="email"/>
                         <form:hidden path="telephone"/>
                         <form:hidden path="firstName"/>
@@ -105,9 +94,6 @@
     </tr>
 
 </table>
-
-
-
 
 </body>
 </html>

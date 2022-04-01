@@ -165,7 +165,9 @@ public class SpAdmListUsers {
 
 
         System.out.println("są bledy validatora");
-        SpUserApp user = userService.findByPesel(userApp.getPesel());
+            List<SpUserApp> tmp = new ArrayList<SpUserApp>();
+            tmp = userService.findByEmail(userApp.getEmail());
+        SpUserApp user = tmp.get(0);
         user.setPassword("");
         user.setConfirmPassword("");
         model.addAttribute("userPassEdit", user);

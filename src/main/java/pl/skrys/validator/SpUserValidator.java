@@ -52,11 +52,6 @@ public class SpUserValidator implements Validator {
             }
 
 
-
-            if(!((SpUserApp)arg0).getPesel().matches("[0-9]+")){
-                errors.rejectValue("pesel", "error.size.pesel");
-            }
-
         }else{
 
             System.out.println("BLEDY Validator");

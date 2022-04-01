@@ -21,7 +21,6 @@
 <c:if test="${!empty userAppList}">
     <table class="table table-striped">
         <tr>
-            <th><spring:message code="label.pesel"/></th>
             <th><spring:message code="label.firstName"/></th>
             <th><spring:message code="label.lastName"/></th>
             <th><spring:message code="label.email"/></th>
@@ -32,7 +31,6 @@
             <th>&nbsp;</th>
         </tr><c:forEach items="${userAppList}" var="userApp">
         <tr>
-            <td>${userApp.pesel}</td>
             <td>${userApp.firstName}</td>
             <td>${userApp.lastName}</td>
             <td>${userApp.email}</td>

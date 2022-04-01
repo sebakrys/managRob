@@ -16,6 +16,7 @@
 <html>
 <head>
 
+    <c:if test="${!empty object}">
     <table class="table table-striped">
         <tr>
             <th><spring:message code="label.project"/></th>
@@ -25,13 +26,18 @@
             <th>&nbsp;</th>
         </tr>
         <tr>
-            <td>${project.nazwa}</td>
-            <td>${station.nazwa}</td>
-            <td>${robot.robotNumber}</td>
-
-            <td><a ype="button" class="btn btn-secondary btn-sm" href="inRobotManag.html?fId=${robot.id}"><spring:message code="label.robotAndMedia"/></a></td>
+            <c:forEach items="${object}" var="objectL">
+                <td>${objectL.nazwaProjektu}</td>
+                <td>${objectL.nazwaStacji}</td>
+                <td>${objectL.nazwaRobota}</td>
+                <td><a ype="button" class="btn btn-secondary btn-sm" href="inRobotManag.html?fId=${objectL.numerIdRobota}">
+                    <spring:message code="label.robotAndMedia"/></a></td>
+                <tr></tr>
+            </c:forEach>
         </tr>
     </table>
+    </c:if>
+
 </head>
 <body>
 </body>

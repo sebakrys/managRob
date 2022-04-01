@@ -58,7 +58,7 @@ public class SpLoginRegisterControl {
                               @RequestParam(value = "registered", required = false) String registered,
                               Model model){
         if(error != null){
-            model.addAttribute("error", "Invalid PESEL or password");
+            model.addAttribute("error", "Invalid E-mail or password");
         }
 
         if(logout != null){
@@ -115,10 +115,6 @@ public class SpLoginRegisterControl {
         spUserValidator.validate(userApp, result);
         boolean recaptchaVerify = reCaptchaService.verify(request.getParameter("g-recaptcha-response"));
 
-        if(spUserService.findByPesel(userApp.getPesel())!=null){
-            //todo duplikat pesel
-            result.rejectValue("pesel", "error.alreadyExists");
-        }
         if(spUserService.findByTel(userApp.getTelephone()).size()!=0){
             //todo duplikat tele
             result.rejectValue("telephone", "error.alreadyExists");

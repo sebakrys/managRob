@@ -36,8 +36,6 @@ public interface SpUserService {
     public void removeUserApp(long id);
     public SpUserApp getUserApp(long id);
 
-
-
     SpUserApp findByPesel(String pesel);
     List<SpUserApp> findByTel(String tele);
 

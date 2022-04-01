@@ -68,11 +68,6 @@
             <td><p style="font-size:10px; color:red"><form:errors path="age"/></p></td>
         </tr>
         <tr>
-            <td><form:label path="pesel.PESEL"><spring:message code="label.pesel"/>:</form:label></td>
-            <td><form:input path="pesel.PESEL" /></td>
-            <td><p style="font-size:10px; color:red"><form:errors path="pesel"/></p></td>
-        </tr>
-        <tr>
             <td><form:label path="address"><spring:message code="label.address"/>:</form:label></td>
             <td><form:select path="address" >
                 <c:forEach items="${addressesList}" var="address">
