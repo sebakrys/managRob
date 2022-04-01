@@ -49,6 +49,11 @@ public class SpRobotServiceImpl implements SpRobotService{
         return spRobotRepository.findAll();
     }
 
+    @Override
+    public List<SpRobot> getRobotsByName(String name) {
+        return spRobotRepository.findByRobotNumberContainingIgnoreCase(name);
+    }
+
     @Transactional
     public SpRobot getRobot(long id) {
         return spRobotRepository.findById(id);

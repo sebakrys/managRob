@@ -79,7 +79,8 @@
                         </sec:authorize>
                         <th>&nbsp;</th>
 
-                    </tr><c:forEach items="${stationsList}" var="stationsL">
+                    </tr>
+                    <c:forEach items="${stationsList}" var="stationsL">
                     <tr>
                         <td>${stationsL.hala}</td>
                         <td>${stationsL.linia}</td>
