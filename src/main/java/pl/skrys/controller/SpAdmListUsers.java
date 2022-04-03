@@ -51,7 +51,6 @@ public class SpAdmListUsers {
         if(userAppId > 0){
             SpUserApp userApp = userService.getUserApp(userAppId);
             userApp.setPassword("");
-            //model.addAttribute("userRole", );
             model.addAttribute("admUserEdit", userApp);
 
 
@@ -94,13 +93,6 @@ public class SpAdmListUsers {
                 userService.editUserAppWoPassword(userApp);
                 return "redirect:/inAdmEditUser.html?userId="+userApp.getId();
             }
-            //return "redirect:registered.html";
-            //SpVerifyToken verifyToken = new SpVerifyToken();
-            //String USRtoken = UUID.randomUUID().toString();
-            //verifyToken.setVerifyToken(USRtoken);
-            //verifyTokenService.addVerifyToken(verifyToken);
-
-
         }
 
 
@@ -145,8 +137,6 @@ public class SpAdmListUsers {
         userApp.setUserRole(tempUserRoleSet);
         System.out.println("roles: "+userApp.getUserRole());//todo delete
 
-        //spUserValidator.validate(userApp, result);
-
 
             if (userApp.getId() == 0) {
                 //teoretycznei dodawanie usera
@@ -155,14 +145,6 @@ public class SpAdmListUsers {
                 userService.editUserAppRole(userApp);
                 return "redirect:/inAdmEditUser.html?userId="+userApp.getId();
             }
-            //return "redirect:registered.html";
-            //SpVerifyToken verifyToken = new SpVerifyToken();
-            //String USRtoken = UUID.randomUUID().toString();
-            //verifyToken.setVerifyToken(USRtoken);
-            //verifyTokenService.addVerifyToken(verifyToken);
-
-
-
 
         System.out.println("są bledy validatora");
             List<SpUserApp> tmp = new ArrayList<SpUserApp>();
@@ -211,18 +193,4 @@ public class SpAdmListUsers {
         return "redirect:/inAdmUsers.html";
 
     }
-
-
-/*
-    @ModelAttribute("rolesStringList")
-    public List<String> getRolesStringList() {
-        List<String> rolesStringList = new ArrayList<String>();
-        rolesStringList.add("ROLE_ADMIN");
-        rolesStringList.add("ROLE_MANAGER");
-        rolesStringList.add("ROLE_ROBPROG");
-        return rolesStringList;
-    }*/
-
-
-
 }

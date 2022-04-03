@@ -38,7 +38,7 @@ public class MyUserAppDetailsService implements UserDetailsService {
     }
 
     private User buildUserForAuthentication(SpUserApp userApp, List<GrantedAuthority> authorities){
-        return new User(userApp.getPesel(), userApp.getPassword(), userApp.isEnabled(),
+        return new User(userApp.getEmail(), userApp.getPassword(), userApp.isEnabled(),
                 true, true, true, authorities);
     }
 
