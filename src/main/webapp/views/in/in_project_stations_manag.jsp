@@ -13,8 +13,7 @@
 <html>
 <head>
     <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
+    <script src="/resources/js/jquery.min.js"></script>
 </head>
 <body>
 
