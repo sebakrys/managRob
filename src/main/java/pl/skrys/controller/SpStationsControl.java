@@ -78,14 +78,15 @@ public class SpStationsControl {
 
         System.out.println("ROLE_MANAGER lub ROBPROG");
 
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
+        //System.out.println(userEmail);
 
-        if(userPesel != null) {
+        if(userEmail != null) {
             boolean admin = false;
             boolean robprog = false;
             boolean manager = false;
 
-            SpUserApp userApp = userService.findByPesel(userPesel);
+            SpUserApp userApp = userService.findByEmail(userEmail);
 
             for (UserRole ur: userApp.getUserRole()) {
                 if(ur.getRole().equals("ROLE_ADMIN")){
@@ -204,7 +205,7 @@ public class SpStationsControl {
 
 
 
-        SpUserApp userApp = userService.findByPesel(principal.getName());
+        SpUserApp userApp = userService.findByEmail(principal.getName());
         boolean admin = userService.hasRoleAdmin(userApp);
         boolean manager = userService.hasRoleManager(userApp);
         boolean managerProject = userService.isThisProjectManager(userApp, projectId);
@@ -241,10 +242,10 @@ public class SpStationsControl {
 
         int stationId = ServletRequestUtils.getIntParameter(request, "bId", -1);
         boolean robotExists = ServletRequestUtils.getBooleanParameter(request, "robotExists", false);
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
 
-        SpUserApp userApp = userService.findByPesel(userPesel);
+        SpUserApp userApp = userService.findByEmail(userEmail);
         boolean admin = userService.hasRoleAdmin(userApp);
         boolean manager = userService.hasRoleManager(userApp);
         boolean robprog = userService.hasRoleRobProg(userApp);
@@ -253,7 +254,7 @@ public class SpStationsControl {
 
 
 
-        if(userPesel != null) {
+        if(userEmail != null) {
 
 
             Set<SpStation> userStations =  userApp.getStations();
@@ -403,9 +404,9 @@ public class SpStationsControl {
                 SpRobotStatus robotStatus = new SpRobotStatus();
                 robotStatus.setRobot(robot);
 
-                String userPesel = principal.getName();
-                if(userPesel!=null){
-                    robotStatus.setRobotyk(userService.findByPesel(userPesel));
+                String userEmail = principal.getName();
+                if(userEmail!=null){
+                    robotStatus.setRobotyk(userService.findByEmail(userEmail));
                 }
 
                 Date date = new Date();
@@ -507,7 +508,7 @@ public class SpStationsControl {
         List<SpUserApp> managersUsers = userRepository.findBySpecificRoles("ROLE_MANAGER");
 
 
-        SpUserApp usr = userService.findByPesel(principal.getName());
+        SpUserApp usr = userService.findByEmail(principal.getName());
 
         boolean admin = userService.hasRoleAdmin(usr);
         boolean manager = userService.hasRoleManager(usr);
@@ -599,18 +600,18 @@ public class SpStationsControl {
         SpRobot srobot = robotService.getRobot(robotId);
 
 
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
         boolean managerStation = false;
         boolean admin = false;
 
-        if(userPesel != null) {
+        if(userEmail != null) {
 
             boolean robprog = false;
             boolean manager = false;
 
 
-            SpUserApp userApp = userService.findByPesel(userPesel);
+            SpUserApp userApp = userService.findByEmail(userEmail);
             for (UserRole ur : userApp.getUserRole()) {
                 if (ur.getRole().equals("ROLE_ADMIN")) {
                     admin = true;
@@ -785,20 +786,20 @@ public class SpStationsControl {
         robotStatus.setProd(prodCheck);
         robotStatus.setPot(potCheck);
 
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
         SpRobotStatus oldrobotStatus = robotStatusService.getRobotStatus(robotStatus.getId());
         long fID = oldrobotStatus.getRobot().getId();
         long bID = oldrobotStatus.getRobot().getStation().getId();
 
 
-        if(userPesel != null){
+        if(userEmail != null){
 
             SpRobotStatus nRobotStatus = new SpRobotStatus();
 
 
-            //robotStatus.setRobotyk(userService.findByPesel(userPesel));
-            nRobotStatus.setRobotyk(userService.findByPesel(userPesel));
+            //robotStatus.setRobotyk(userService.findByEmail(userEmail));
+            nRobotStatus.setRobotyk(userService.findByEmail(userEmail));
 
 
             //robotStatus.setRobot(oldrobotStatus.getRobot());

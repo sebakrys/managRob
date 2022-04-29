@@ -110,7 +110,7 @@ public class SpLoginRegisterControl {
 
     @RequestMapping(value = "/registerUSER", method = RequestMethod.POST)
     public String addAppUser(@Valid @ModelAttribute("userRegister") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request){// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
-        System.out.println(userApp.getId()+" 1name: "+userApp.getFirstName()+" lstName: "+userApp.getLastName()+" tel: "+userApp.getTelephone()+" email: "+userApp.getEmail()+" pesel: "+userApp.getPesel());
+        System.out.println(userApp.getId()+" 1name: "+userApp.getFirstName()+" lstName: "+userApp.getLastName()+" tel: "+userApp.getTelephone()+" email: "+userApp.getEmail());
 
         spUserValidator.validate(userApp, result);
         boolean recaptchaVerify = reCaptchaService.verify(request.getParameter("g-recaptcha-response"));
@@ -119,7 +119,7 @@ public class SpLoginRegisterControl {
             //todo duplikat tele
             result.rejectValue("telephone", "error.alreadyExists");
         }
-        if(spUserService.findByEmail(userApp.getEmail()).size()!=0){
+        if(spUserService.findByEmail(userApp.getEmail()) != null){
             //todo duplikat email
             result.rejectValue("email", "error.alreadyExists");
         }

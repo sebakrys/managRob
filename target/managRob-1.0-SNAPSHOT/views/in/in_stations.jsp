@@ -19,47 +19,6 @@
 <table>
     <tr>
         <td>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-            <form:form method="post" action="inAddNewStation.html" modelAttribute="addStation"><!--modelAttribute="userApp" musi sie pokrywać z tym co jest w AddUserControl.java attributeName "userApp" -->
-            <table>
-                <tr>
-                    <td>
-
-                        <form:hidden path="id"/>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><form:label path="nazwa"><spring:message code="label.bName"/></form:label></td>
-                    <td><form:input path="nazwa" /></td>
-                    <td><form:errors path="nazwa" /></td>
-                </tr>
-
-
-
-                <tr>
-                    <td><form:label path="hala"><spring:message code="label.Hala"/>:</form:label></td>
-                    <td><form:input path="hala"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="hala"/></p></td>
-                </tr>
-                <tr>
-                    <td><form:label path="linia"><spring:message code="label.Linia"/>:</form:label></td>
-                    <td><form:input path="linia"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="linia"/></p></td>
-                </tr>
-                <tr>
-                    <td><form:label path="sterownik"><spring:message code="label.Sterownik"/>:</form:label></td>
-                    <td><form:input path="sterownik"/></td>
-                    <td><p style="font-size:10px; color:red"><form:errors path="sterownik"/></p></td>
-                </tr>
-
-
-                <td colspan="2">
-                    <input type="submit" class="btn btn-primary" value="<spring:message code="button.addStation"/>"/>
-                </td>
-            </table>
-            </form:form>
-</sec:authorize>
         </td>
     </tr>
     <tr colspan="2">

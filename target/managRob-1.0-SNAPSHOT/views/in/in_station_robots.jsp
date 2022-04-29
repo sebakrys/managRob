@@ -82,7 +82,7 @@
                         </c:forEach>
 
                         >
-                            <label class="btn btn-outline-primary" for="btn-check-outlined ${zaUser.id}"> ${zaUser.pesel}<br>${zaUser.firstName} ${zaUser.lastName}</label></td></tr>
+                            <label class="btn btn-outline-primary" for="btn-check-outlined ${zaUser.id}"> ${zaUser.email}<br>${zaUser.firstName} ${zaUser.lastName}</label></td></tr>
 
 
                     </c:forEach>

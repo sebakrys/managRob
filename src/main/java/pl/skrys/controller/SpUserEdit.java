@@ -40,12 +40,12 @@ public class SpUserEdit {
 
         System.out.println("Principal Name: "+principal.getName());
 
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
-        if(userPesel != null){
+        if(userEmail != null){
             System.out.println("jest jakis user ID");
 
-            SpUserApp userApp = userService.findByPesel(userPesel);
+            SpUserApp userApp = userService.findByEmail(userEmail);
             if(userApp==null){//zmienił sie pesel ,  wylogowanie usera
                 try {
                     request.logout();
@@ -82,19 +82,19 @@ public class SpUserEdit {
 
     @RequestMapping(value = "/inUserEdit", method = RequestMethod.POST)
     public String editUserWoPass(@Valid @ModelAttribute("userEdit") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
-        System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getPesel());
+        System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getEmail());
         userApp.setPassword("");
         userApp.setConfirmPassword("");
-        System.out.println(userApp.getPesel()+" "+userApp.getId()+" -"+userApp.getPassword()+"-");
+        System.out.println(userApp.getEmail()+" "+userApp.getId()+" -"+userApp.getPassword()+"-");
         System.out.println(result.getErrorCount());
         spUserValidator.validateWoPassword(userApp, result);
 
 
         SpUserApp oldUser = userService.getUserApp(userApp.getId());
 
-        if(userService.findByPesel(userApp.getPesel())!=null){
+        if(userService.findByEmail(userApp.getEmail())!=null){
             //todo duplikat pesel
-            if(!oldUser.getPesel().equals(userApp.getPesel())){
+            if(!oldUser.getEmail().equals(userApp.getEmail())){
                 result.rejectValue("pesel", "error.alreadyExists");
             }
 
@@ -128,7 +128,7 @@ public class SpUserEdit {
         }
 
         System.out.println("są bledy validatora");
-        //SpUserApp user = userService.findByPesel(userApp.getPesel());
+        //SpUserApp user = userService.findByEmail(userApp.getEmail());
         SpUserApp user = userService.getUserApp(userApp.getId());
         user.setPassword("");
         user.setConfirmPassword("");
@@ -143,10 +143,10 @@ public class SpUserEdit {
 
     @RequestMapping(value = "/inUserPassEdit", method = RequestMethod.POST)
     public String editUserPass(@Valid @ModelAttribute("userPassEdit") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
-        System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getPesel());
+        System.out.println("1name: " + userApp.getFirstName() + " lstName: " + userApp.getLastName() + " tel: " + userApp.getTelephone() + " email: " + userApp.getEmail() + " pesel: " + userApp.getEmail());
 
 
-        System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
+        System.out.println(userApp.getEmail()+" "+userApp.getId()+" "+userApp.getPassword());
         spUserValidator.validatePass(userApp, result);
 
         if (result.getErrorCount() == 0) {
@@ -166,7 +166,7 @@ public class SpUserEdit {
 
         }
         System.out.println("są bledy validatora");
-        SpUserApp user = userService.findByPesel(userApp.getPesel());
+        SpUserApp user = userService.findByEmail(userApp.getEmail());
         user.setPassword("");
         user.setConfirmPassword("");
         model.addAttribute("userEdit", user);

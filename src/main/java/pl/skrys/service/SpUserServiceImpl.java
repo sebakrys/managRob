@@ -171,7 +171,7 @@ public class SpUserServiceImpl implements SpUserService {
     public void removeUserProject(SpUserApp user, Project project){
         //user.setPassword(hashPassword(user.getPassword()));
 
-        System.out.println("Usuwanie "+user.getPesel());
+        System.out.println("Usuwanie "+user.getEmail());
 
         SpUserApp oldUser = getUserApp(user.getId());
 
@@ -201,7 +201,7 @@ public class SpUserServiceImpl implements SpUserService {
     public void removeUserStation(SpUserApp user, SpStation station) {
         //user.setPassword(hashPassword(user.getPassword()));
 
-        System.out.println("Usuwanie "+user.getPesel());
+        System.out.println("Usuwanie "+user.getEmail());
 
         SpUserApp oldUser = getUserApp(user.getId());
 
@@ -280,7 +280,7 @@ public class SpUserServiceImpl implements SpUserService {
     public void removeUserRobot(SpUserApp user, SpRobot robot) {
         //user.setPassword(hashPassword(user.getPassword()));
 
-        System.out.println("Usuwanie "+user.getPesel());
+        System.out.println("Usuwanie "+user.getEmail());
 
         SpUserApp oldUser = getUserApp(user.getId());
 
@@ -376,16 +376,16 @@ public class SpUserServiceImpl implements SpUserService {
 
     @Transactional
     public void activateUserApp(SpUserApp userApp, boolean enabled) {
-        System.out.println("ACTIVATEuser "+userApp.getPesel()+" "+enabled);
+        System.out.println("ACTIVATEuser "+userApp.getEmail()+" "+enabled);
         userApp.setEnabled(enabled);//TODO ACTIVATE
         spUserRepository.save(userApp);
     }
 
-
+/*
     @Override
     public SpUserApp findByPesel(String pesel) {
         return spUserRepository.findByPesel(pesel);
-    }
+    }*/
 
     @Override
     public List<SpUserApp> findByTel(String tele) {
@@ -393,7 +393,7 @@ public class SpUserServiceImpl implements SpUserService {
     }
 
     @Override
-    public List<SpUserApp> findByEmail(String email) {
+    public SpUserApp findByEmail(String email) {
         return spUserRepository.findByEmail(email);
     }
 

@@ -1,6 +1,7 @@
 package pl.skrys.controller;
 
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class SpAdmListUsers {
         this.userRoleService = userRoleService;
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/inAdmUsers")
     public String admUsersList(Model model, HttpServletRequest request){
 
@@ -43,6 +45,7 @@ public class SpAdmListUsers {
 
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/inAdmEditUser")
     public String admEditUser(Model model, HttpServletRequest request){//todo liste ROLE zrobic jako checkboxy
 
@@ -77,12 +80,13 @@ public class SpAdmListUsers {
     }
 
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/inAdmUserEdit", method = RequestMethod.POST)
     public String editAdmUserWoPass(@Valid @ModelAttribute("admUserEdit") SpUserApp userApp, BindingResult result, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         userApp.setPassword("");
         userApp.setConfirmPassword("");
         userApp.setUserRole(userService.getUserApp(userApp.getId()).getUserRole());
-        System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
+        System.out.println(userApp.getEmail()+" "+userApp.getId()+" "+userApp.getPassword());
         spUserValidator.validateWoPassword(userApp, result);
 
         if (result.getErrorCount() == 0) {
@@ -98,7 +102,7 @@ public class SpAdmListUsers {
 
 
         System.out.println("są bledy validatora");
-        //todo SpUserApp user = userService.findByPesel(userApp.getPesel());/
+        //todo SpUserApp user = userService.findByEmail(userApp.getEmail());/
         SpUserApp user = userService.getUserApp(userApp.getId());
         user.setPassword("");
         user.setConfirmPassword("");
@@ -110,12 +114,13 @@ public class SpAdmListUsers {
     }
 
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/inAdmRoleUserEdit", method = RequestMethod.POST)
     public String editAdmUserRoleWoPass(@RequestParam("id") long uID, @RequestParam(required = false, name = "ROLE_ADMIN") boolean rAdmin, @RequestParam(required = false, name = "ROLE_MANAGER") boolean rManager, @RequestParam(required = false, name = "ROLE_ROBPROG") boolean rMieszkaniec, Model model, HttpServletRequest request) {// nie wiem po co to jest, ale powinno(ale nie musi) być tak jak w attributeName "userApp"
         SpUserApp userApp = userService.getUserApp(uID);
         userApp.setPassword("");
         userApp.setConfirmPassword("");
-        System.out.println(userApp.getPesel()+" "+userApp.getId()+" "+userApp.getPassword());
+        System.out.println(userApp.getEmail()+" "+userApp.getId()+" "+userApp.getPassword());
         model.addAttribute("admUserEdit", userApp);
 
         System.out.println("a "+rAdmin+" z "+rManager+" m "+rMieszkaniec);
@@ -147,9 +152,8 @@ public class SpAdmListUsers {
             }
 
         System.out.println("są bledy validatora");
-            List<SpUserApp> tmp = new ArrayList<SpUserApp>();
-            tmp = userService.findByEmail(userApp.getEmail());
-        SpUserApp user = tmp.get(0);
+
+        SpUserApp user = userService.findByEmail(userApp.getEmail());
         user.setPassword("");
         user.setConfirmPassword("");
         model.addAttribute("userPassEdit", user);
@@ -158,6 +162,7 @@ public class SpAdmListUsers {
         return "in_adm_user_edit";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping("/admUserDelete/{userId}")
     public String deleteUser(@PathVariable("userId") Long userId){
         userService.removeUserApp(userId);
@@ -165,6 +170,7 @@ public class SpAdmListUsers {
     }
 
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/inAdmActivateUser")
     public String admActivUser(Model model, HttpServletRequest request){
 
@@ -177,7 +183,7 @@ public class SpAdmListUsers {
         if(userAppId > 0){
             SpUserApp userApp = userService.getUserApp(userAppId);
 
-            System.out.println("user "+userApp.getPesel()+" "+enable);
+            System.out.println("user "+userApp.getEmail()+" "+enable);
 
             userService.activateUserApp(userApp, !enable);
 

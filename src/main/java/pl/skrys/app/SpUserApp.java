@@ -35,7 +35,7 @@ public class SpUserApp {
     @Size(min = 9, max = 9, message = "{error.size.tel}")
     private String telephone;
 
-    private String pesel;
+    //private String pesel;
 
     @NotNull
     private String password;
@@ -123,14 +123,6 @@ public class SpUserApp {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
     }
 
     public String getPassword() {

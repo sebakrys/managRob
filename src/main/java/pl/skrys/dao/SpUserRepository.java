@@ -18,9 +18,9 @@ public interface SpUserRepository extends JpaRepository<SpUserApp, Long> {
     //@Query("select u from UserApp u where u.id = ?1")
     SpUserApp findById(long id);
 
-    SpUserApp findByPesel(String pesel);
+    //SpUserApp findByPesel(String pesel);
     List<SpUserApp> findByTelephone(String telephone);
-    List<SpUserApp> findByEmail(String email);
+    SpUserApp findByEmail(String email);
 
     @Query( "select u from SpUserApp u JOIN FETCH u.userRole r where r.role = :roleName" )
     List<SpUserApp> findBySpecificRoles(@Param("roleName") String roleName);

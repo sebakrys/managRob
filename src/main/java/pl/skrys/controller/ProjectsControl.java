@@ -50,14 +50,14 @@ public class ProjectsControl {
 
         System.out.println("ROLE_ADMIN");
 
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
-        if(userPesel != null) {
+        if(userEmail != null) {
             boolean admin = false;
             boolean robprog = false;
             boolean manager = false;
 
-            SpUserApp userApp = userService.findByPesel(userPesel);
+            SpUserApp userApp = userService.findByEmail(userEmail);
 
             for (UserRole ur: userApp.getUserRole()) {
                 if(ur.getRole().equals("ROLE_ADMIN")){
@@ -234,18 +234,18 @@ public class ProjectsControl {
 
         long projectId = ServletRequestUtils.getIntParameter(request, "bId", -1);
         boolean stationExists = ServletRequestUtils.getBooleanParameter(request, "stationExists", false);
-        String userPesel = principal.getName();
+        String userEmail = principal.getName();
 
         boolean managerProject = false;
         boolean admin = false;
 
-        if(userPesel != null) {
+        if(userEmail != null) {
 
             boolean robprog = false;
             boolean manager = false;
 
 
-            SpUserApp userApp = userService.findByPesel(userPesel);
+            SpUserApp userApp = userService.findByEmail(userEmail);
 
             admin = userService.hasRoleAdmin(userApp);
             manager = userService.hasRoleManager(userApp);

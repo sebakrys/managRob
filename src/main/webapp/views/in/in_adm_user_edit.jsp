@@ -72,7 +72,6 @@
 
         <form:form method="POST" action="inAdmRoleUserEdit.html" modelAttribute="admUserRoleEdit">
             <form:hidden path="id"/>
-            <form:hidden path="pesel"/>
             <input type="checkbox" id="admin" name="ROLE_ADMIN" value="true"
             <c:forEach items="${admUserEdit.userRole}" var="userRole">
             <c:if test="${userRole.getRole()=='ROLE_ADMIN'}">

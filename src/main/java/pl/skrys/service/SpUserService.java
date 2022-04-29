@@ -25,7 +25,7 @@ public interface SpUserService {
     void addUserRobot(SpUserApp user);
     void removeUserRobot(SpUserApp user, SpRobot robot);
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR (#spUserApp.pesel == principal.username)")//TODO
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR (#spUserApp.email == principal.username)")//TODO
     public void editUserApp(SpUserApp user);
     public void editUserAppWoPassword(SpUserApp user);
     void editUserAppRole(SpUserApp user);
@@ -36,11 +36,11 @@ public interface SpUserService {
     public void removeUserApp(long id);
     public SpUserApp getUserApp(long id);
 
-    SpUserApp findByPesel(String pesel);
+    //SpUserApp findByPesel(String pesel);
     List<SpUserApp> findByTel(String tele);
 
 
-    List<SpUserApp> findByEmail(String email);
+    SpUserApp findByEmail(String email);
 
     boolean isThisProjectManager(SpUserApp userApp, Long projectId);
     boolean hasRoleAdmin(SpUserApp userApp);
