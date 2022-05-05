@@ -26,7 +26,11 @@
             <form:hidden path="verifyToken.verifyToken"/>
         </td>
     </tr>
-
+    <tr>
+        <td><form:label path="email"><spring:message code="label.email"/>:</form:label></td>
+        <td><form:input path="email"/></td>
+        <td><p style="font-size:10px; color:red"><form:errors path="email"/></p></td>
+    </tr>
     <tr>
         <td><form:label path="password"><spring:message code="label.password"/></form:label></td>
         <td><form:input path="password" type="password" /></td>
@@ -47,11 +51,6 @@
         <td><form:label path="lastName"><spring:message code="label.lastName"/>:</form:label></td>
         <td><form:input path="lastName"/></td>
         <td><p style="font-size:10px; color:red"><form:errors path="lastName"/></p></td>
-    </tr>
-    <tr>
-        <td><form:label path="email"><spring:message code="label.email"/>:</form:label></td>
-        <td><form:input path="email"/></td>
-        <td><p style="font-size:10px; color:red"><form:errors path="email"/></p></td>
     </tr>
     <tr>
         <td><form:label path="telephone"><spring:message code="label.mobile"/>:</form:label></td>
