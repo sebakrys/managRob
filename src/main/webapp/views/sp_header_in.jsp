@@ -35,6 +35,7 @@
 <sec:authorize access="hasAnyRole('ROLE_ROBPROG', 'ROLE_MANAGER', 'ROLE_ADMIN')">
 <a href="/search"></a>
     </tr>
+    </sec:authorize>
 </table>
 
 <!--<span style="...">

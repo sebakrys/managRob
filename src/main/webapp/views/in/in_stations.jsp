@@ -29,6 +29,7 @@
             <c:if test="${!empty stationsList}">
                 <table class="table table-striped">
                     <tr>
+                        <th><spring:message code="label.projects"/></th>
                         <th><spring:message code="label.Hala"/></th>
                         <th><spring:message code="label.Linia"/></th>
                         <th><spring:message code="label.bName"/></th>
@@ -41,6 +42,7 @@
                     </tr>
                     <c:forEach items="${stationsList}" var="stationsL">
                     <tr>
+                        <td>${stationsL.project.nazwa}</td>
                         <td>${stationsL.hala}</td>
                         <td>${stationsL.linia}</td>
                         <td>${stationsL.nazwa}</td>

@@ -283,8 +283,10 @@ public class ProjectsControl {
                 Set<SpStation> nUserStations = new HashSet<SpStation>(0);//stacje robotyka
 
                 Set<SpRobot> spRobotSet = userApp.getRobot();
-                for (SpRobot tempRobot : spRobotSet) {
-                    nUserStations.add(tempRobot.getStation());
+                for (SpRobot tempRobot : spRobotSet) {//todo(chyba dziala) szukac tylko po robotach przyleglych do tej stacji
+                    if(tempRobot.getStation().getProject().getId()==projectId){
+                        nUserStations.add(tempRobot.getStation());
+                    }
                 }
 
                 //fixme złe mozliwe że bedize dla managerow dzialac

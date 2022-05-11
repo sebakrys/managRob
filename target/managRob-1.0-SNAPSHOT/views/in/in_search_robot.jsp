@@ -12,7 +12,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+<sec:authorize access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_ROBPROG')">
 <html>
 <head>
 

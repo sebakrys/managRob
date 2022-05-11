@@ -176,7 +176,7 @@
                         <th><spring:message code="label.Linia"/></th>
                         <th><spring:message code="label.bName"/></th>
                         <th><spring:message code="label.Sterownik"/></th>
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">
                             <th>&nbsp;</th>
                         </sec:authorize>
                         <th>&nbsp;</th>
@@ -187,7 +187,7 @@
                         <td>${stationsL.linia}</td>
                         <td>${stationsL.nazwa}</td>
                         <td>${stationsL.sterownik}</td>
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">
                             <td><a type="button" class="btn btn-danger btn-sm" href="deleteStation/${stationsL.id}.html?bId=${selectedProject.id}"><spring:message code="label.delete"/></a></td>
                         </sec:authorize>
 
