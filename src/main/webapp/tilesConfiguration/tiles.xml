@@ -105,4 +105,9 @@
         <put-attribute name="body" value="/views/in/in_search_robot.jsp" />
 
     </definition>
+    <definition name="remind_pass" extends="base.definition">
+        <put-attribute name="title" value="Remind password" />
+        <put-attribute name="body" value="/views/sp_remind.jsp" />
+
+    </definition>
 </tiles-definitions>

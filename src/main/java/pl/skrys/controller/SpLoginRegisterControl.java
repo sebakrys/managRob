@@ -51,6 +51,16 @@ public class SpLoginRegisterControl {
         return "in_home";
     }
 
+    @RequestMapping(value = "/remindPass")
+    public String remindPassword(@RequestParam(value = "email", required = false) String email, Model model){
+        if(email!=null){
+            System.out.println(email);
+            model.addAttribute("msg", "Email to "+email+" sent");
+        }
+
+        return "remind_pass";
+    }
+
     @RequestMapping(value ={ "/login", "/"})
     public String customLogin(@RequestParam(value = "error", required = false) String error,
                               @RequestParam(value = "logout", required = false) String logout,

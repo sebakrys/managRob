@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login Page</title>
+    <title>Remind Password</title>
     <style>
         .error{
             padding: 15px;
@@ -43,7 +43,7 @@
 </head>
 <body onload='document.loginForm.username.focus();'>
 <div id="login-box">
-    <h3><spring:message code="label.login.loginWithPesel"/></h3>
+    <h3><spring:message code="label.forgotpass"/></h3>
     <c:if test="${not empty error}">
         <div class="error">${error}<a class="link-info" href="/remindPass.html">&nbsp;<spring:message code="label.forgotpass"/></a></div>
     </c:if>
@@ -51,19 +51,14 @@
         <div class="msg">${msg}</div>
     </c:if>
 
-    <form name="loginForm" action="<c:url value='/login'/>" method="POST">
+    <form name="remindForm" action="<c:url value='/remindPass'/>" method="POST">
         <table>
             <tr>
                 <td>E-mail:</td>
-                <td><input type="text" name="login" value=""></td>
+                <td><input type="text" name="email" value=""></td>
             </tr>
             <tr>
-                <td>Password:</td>
-                <td><input type="password" name="password"/></td>
-            </tr>
-            <tr>
-                <td colspan="1"><input name="submit" type="submit" value="submit" class="btn btn-success"/></td>
-                <td><spring:message code="label.register.NoAccount"/> <a class="link-warning" href="/register.html"><spring:message code="label.register"/></a></td>
+                <td colspan="1"><input name="submit" type="submit" value="<spring:message code="label.sendResLink"/>" class="btn btn-success"/></td>
             </tr>
 
         </table>

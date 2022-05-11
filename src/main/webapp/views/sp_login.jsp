@@ -26,7 +26,7 @@
             margin-bottom: 20px;
             border: 1px solid transparent;
             border-radius: 4px;
-            color: #00ff96;
+            color: #004a2c;
             background-color: rgba(199, 243, 221, 0.76);
             border-color: #7494f1;
         }
@@ -45,7 +45,7 @@
 <div id="login-box">
     <h3><spring:message code="label.login.loginWithPesel"/></h3>
     <c:if test="${not empty error}">
-        <div class="error">${error}</div>
+        <div class="error">${error}<a class="link-info" href="/remindPass.html">&nbsp;<spring:message code="label.forgotpass"/></a></div>
     </c:if>
     <c:if test="${not empty msg}">
         <div class="msg">${msg}</div>
