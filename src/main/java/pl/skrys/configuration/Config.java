@@ -37,10 +37,36 @@ public class Config implements WebMvcConfigurer {
     @Resource(name = "userRoleService")
     private UserRoleService userRoleService;
 
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+
+        /*Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(userName, password);
+            }
+        });*/
+
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.zoho.eu");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("skrysmailspring@zohomail.eu");
+        mailSender.setPassword("Springmail1!");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.required", "true");
+        props.put("mail.debug", "true");
+
+        return mailSender;
+    }
 
 
     //skrysmailspring@gmail.com
     //springmail1
+    /*old - nie dziala bo gmail
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -57,7 +83,7 @@ public class Config implements WebMvcConfigurer {
         props.put("mail.debug", "true");
 
         return mailSender;
-    }
+    }*/
 
 
     //do uploadu plikow

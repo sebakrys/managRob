@@ -19,7 +19,8 @@ public class SpMailServiceImpl implements SpMailService{
     public void sendSimpleMessage(String to, String subject, String text) {
         //...
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@SkrysSpol.pl");
+        //message.setFrom("noreply@SkrysSpol.pl");
+        message.setFrom("skrysmailspring@zohomail.eu");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
